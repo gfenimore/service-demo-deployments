@@ -56,7 +56,7 @@
         //     __MAPBOX_TOKEN__ -> a publishable (pk.*) Mapbox token, URL-restricted in the
         //                         Mapbox account; read by geocode_on_save forms.
         integrations: {
-            mapboxToken: '__MAPBOX_TOKEN__'
+            mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY21jcWVqazh1MGdkaTJrb3NjcmttMDlkbyJ9.Mv7mFPvdY2EK9POGezqzOw'
         },
         user_id:   'system',
         role:      'admin',
