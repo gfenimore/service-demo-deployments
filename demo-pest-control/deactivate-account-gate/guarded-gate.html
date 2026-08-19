@@ -1,0 +1,27 @@
+<!--
+  Deactivate account - Guarded Gate HTML Template
+  Blueprint ID: c0000001-0001-0001-0005-000000000001
+  Pattern: GUARDED-GATE
+  Gate: PEST.CUST.ACCT.DEACTIVATE.CONFIRM
+
+  NOTE: This HTML template is NOT the component. The gate builds its own markup in
+  JavaScript via mount(), the same contract the other v2 patterns follow.
+
+  Usage:
+  1. Include guarded-gate.js (which contains the AccountGateUI class)
+  2. Include guarded-gate.css (scoped blueprint-* styles)
+  3. Mount it:
+
+     const gate = new AccountGateUI();
+     gate.mount(document.getElementById('container'));
+     gate.onContext({
+       tenant_id: 'your-tenant',
+       user_id: 'your-user',
+       role: 'your-role',
+       subject_id: 'the-thing-being-judged',
+       state: {  }
+     });
+
+  The gate reports the result of every verdict INSIDE its own panel. That placement is
+  fixed by the schema (outcome.placement is a one-value enum) and is not configurable.
+-->

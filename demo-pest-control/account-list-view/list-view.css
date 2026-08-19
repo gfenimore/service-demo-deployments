@@ -1,0 +1,448 @@
+/**
+ * Account - Blueprint UI Styles
+ * Blueprint ID: c1000000-0000-0000-0000-000000000001
+ * Pattern: LIST-VIEW-SIMPLE
+ * Entity: account
+ * 
+ * Scoped CSS with blueprint- prefix for shell-agnostic styling
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES (Theme Variables)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-account-list {
+  /* Background colors */
+  --blueprint-bg: var(--shell-bg, #ffffff);
+  --blueprint-surface: var(--shell-surface, #ffffff);
+  --blueprint-hover-bg: var(--shell-hover, #f5f5f5);
+  
+  /* Text colors */
+  --blueprint-text: var(--shell-text, #000000);
+  --blueprint-text-secondary: var(--shell-text-secondary, #666666);
+  
+  /* Border colors */
+  --blueprint-border: var(--shell-border, #000000);
+  --blueprint-border-light: var(--shell-border-light, #e0e0e0);
+  
+  /* Interactive colors */
+  --blueprint-primary: var(--shell-primary, #000000);
+  --blueprint-primary-text: var(--shell-primary-text, #ffffff);
+  
+  /* Status colors */
+  --blueprint-success: var(--shell-success, #000000);
+  --blueprint-error: var(--shell-error, #000000);
+  --blueprint-warning: var(--shell-warning, #666666);
+  --blueprint-info: var(--shell-info, #666666);
+  
+  /* Spacing */
+  --blueprint-spacing-xs: 4px;
+  --blueprint-spacing-sm: 8px;
+  --blueprint-spacing-md: 12px;
+  --blueprint-spacing-lg: 16px;
+  --blueprint-spacing-xl: 24px;
+  
+  /* Layout */
+  --blueprint-row-height: 48px;
+  --blueprint-header-height: 48px;
+  --blueprint-border-radius: 2px;
+  
+  /* Typography */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CONTAINER STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-account-list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--blueprint-bg);
+  color: var(--blueprint-text);
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MESSAGE STATES (Loading, Empty, Error)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-message,
+.blueprint-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: var(--blueprint-spacing-xl);
+  text-align: center;
+  background: var(--blueprint-surface);
+}
+
+.blueprint-message p,
+.blueprint-loading p {
+  margin: 0 0 var(--blueprint-spacing-lg) 0;
+  font-size: 16px;
+  color: var(--blueprint-text);
+}
+
+.blueprint-message.blueprint-warning {
+  color: var(--blueprint-warning);
+}
+
+.blueprint-message.blueprint-info {
+  color: var(--blueprint-info);
+}
+
+.blueprint-message.blueprint-error {
+  color: var(--blueprint-error);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LOADING SPINNER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 0 var(--blueprint-spacing-lg) 0;
+  border: 3px solid var(--blueprint-border-light);
+  border-top-color: var(--blueprint-primary);
+  border-radius: 50%;
+  animation: blueprint-spin 0.8s linear infinite;
+}
+
+@keyframes blueprint-spin {
+  to { transform: rotate(360deg); }
+}
+
+.blueprint-loading p {
+  animation: blueprint-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes blueprint-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LIST VIEW CONTAINER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-list-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--blueprint-surface);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TABLE CONTAINER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-table-container {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  background: var(--blueprint-surface);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DATA TABLE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--blueprint-surface);
+  table-layout: auto;
+}
+
+/* Table Header */
+.blueprint-data-table thead {
+  position: sticky;
+  top: 0;
+  background: var(--blueprint-primary);
+  color: var(--blueprint-primary-text);
+  z-index: 10;
+}
+
+.blueprint-table-header {
+  height: var(--blueprint-header-height);
+  padding: var(--blueprint-spacing-md) var(--blueprint-spacing-lg);
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-right: 1px solid var(--blueprint-primary-text);
+  white-space: nowrap;
+}
+
+.blueprint-table-header:last-child {
+  border-right: none;
+}
+
+.blueprint-table-header[data-align="center"] {
+  text-align: center;
+}
+
+.blueprint-table-header[data-align="right"] {
+  text-align: right;
+}
+
+/* Table Body */
+.blueprint-table-body tr {
+  border-bottom: 1px solid var(--blueprint-border-light);
+  background: var(--blueprint-surface);
+  transition: background-color 0.15s ease;
+}
+
+.blueprint-table-body tr:last-child {
+  border-bottom: none;
+}
+
+.blueprint-table-body tr:hover {
+  background: var(--blueprint-hover-bg);
+  cursor: pointer;
+}
+
+.blueprint-table-body td {
+  height: var(--blueprint-row-height);
+  padding: var(--blueprint-spacing-md) var(--blueprint-spacing-lg);
+  font-size: 14px;
+  color: var(--blueprint-text);
+  vertical-align: middle;
+}
+
+.blueprint-table-body td[data-align="center"] {
+  text-align: center;
+}
+
+.blueprint-table-body td[data-align="right"] {
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   STATUS BADGE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-status-badge {
+  display: inline-block;
+  padding: var(--blueprint-spacing-xs) var(--blueprint-spacing-md);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--blueprint-border-radius);
+}
+
+.blueprint-status-badge.active {
+  background: var(--blueprint-primary);
+  color: var(--blueprint-primary-text);
+}
+
+.blueprint-status-badge.inactive {
+  background: var(--blueprint-surface);
+  color: var(--blueprint-text);
+  border: 1px solid var(--blueprint-border);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGINATION
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--blueprint-spacing-lg);
+  padding: var(--blueprint-spacing-lg);
+  border-top: 1px solid var(--blueprint-border-light);
+  background: var(--blueprint-surface);
+  flex-shrink: 0;
+}
+
+.blueprint-btn {
+  padding: var(--blueprint-spacing-sm) var(--blueprint-spacing-lg);
+  background: var(--blueprint-surface);
+  color: var(--blueprint-text);
+  border: 2px solid var(--blueprint-border);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 90px;
+  border-radius: var(--blueprint-border-radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.blueprint-btn:hover:not(:disabled) {
+  background: var(--blueprint-primary);
+  color: var(--blueprint-primary-text);
+  border-color: var(--blueprint-primary);
+}
+
+.blueprint-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.blueprint-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.blueprint-page-info {
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+  color: var(--blueprint-text);
+}
+
+.blueprint-current-range {
+  font-weight: 600;
+}
+
+.blueprint-total-count {
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THEME OVERRIDES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Dark theme support */
+.blueprint-account-list.theme-dark {
+  --blueprint-bg: #1a1a1a;
+  --blueprint-surface: #2a2a2a;
+  --blueprint-hover-bg: #3a3a3a;
+  --blueprint-text: #ffffff;
+  --blueprint-text-secondary: #aaaaaa;
+  --blueprint-border: #444444;
+  --blueprint-border-light: #333333;
+  --blueprint-primary: #ffffff;
+  --blueprint-primary-text: #000000;
+}
+
+/* Light theme (default) */
+.blueprint-account-list.theme-light {
+  --blueprint-bg: #ffffff;
+  --blueprint-surface: #ffffff;
+  --blueprint-hover-bg: #f5f5f5;
+  --blueprint-text: #000000;
+  --blueprint-text-secondary: #666666;
+  --blueprint-border: #000000;
+  --blueprint-border-light: #e0e0e0;
+  --blueprint-primary: #000000;
+  --blueprint-primary-text: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .blueprint-table-container {
+    overflow-x: auto;
+  }
+  
+  .blueprint-data-table {
+    min-width: 600px;
+  }
+  
+  .blueprint-table-header,
+  .blueprint-table-body td {
+    padding: var(--blueprint-spacing-sm) var(--blueprint-spacing-md);
+    font-size: 13px;
+  }
+  
+  .blueprint-pagination-container {
+    gap: var(--blueprint-spacing-md);
+    padding: var(--blueprint-spacing-md);
+  }
+  
+  .blueprint-btn {
+    min-width: 70px;
+    padding: 6px var(--blueprint-spacing-md);
+    font-size: 13px;
+  }
+  
+  .blueprint-page-info {
+    font-size: 13px;
+    min-width: 100px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Focus styles for keyboard navigation */
+.blueprint-btn:focus {
+  outline: 2px solid var(--blueprint-primary);
+  outline-offset: 2px;
+}
+
+.blueprint-table-body tr:focus-within {
+  outline: 2px solid var(--blueprint-primary);
+  outline-offset: -2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .blueprint-account-list {
+    --blueprint-border: #000000;
+    --blueprint-border-light: #000000;
+  }
+  
+  .blueprint-table-body tr {
+    border-bottom: 2px solid var(--blueprint-border);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .blueprint-btn,
+  .blueprint-table-body tr {
+    transition: none;
+  }
+  
+  .blueprint-spinner {
+    animation: none;
+    border: 3px solid var(--blueprint-border);
+  }
+  
+  .blueprint-loading p {
+    animation: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PRINT STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media print {
+  .blueprint-message,
+  .blueprint-loading {
+    display: none;
+  }
+  
+  .blueprint-pagination-container {
+    display: none;
+  }
+  
+  .blueprint-data-table {
+    display: table !important;
+  }
+  
+  .blueprint-table-body tr:hover {
+    background: var(--blueprint-surface);
+  }
+  
+  .blueprint-table-body tr {
+    page-break-inside: avoid;
+  }
+}

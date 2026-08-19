@@ -1,0 +1,180 @@
+/*
+ * Deactivate account - Guarded Gate styles
+ * Blueprint ID: c0000001-0001-0001-0005-000000000001
+ * Pattern: GUARDED-GATE
+ * Gate: PEST.CUST.ACCT.DEACTIVATE.CONFIRM
+ *
+ * Monochrome by rule: state is carried by a glyph and a word, never by colour alone.
+ * Every selector is scoped to .blueprint-account-gate so the gate cannot restyle its host.
+ */
+
+.blueprint-account-gate {
+  --bp-ink: #111;
+  --bp-mut: #666;
+  --bp-line: #ccc;
+  --bp-line2: #e6e6e6;
+  --bp-bg: #fff;
+  --bp-fill: #f4f4f4;
+  font: 14px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color: var(--bp-ink);
+  border: 1px solid var(--bp-ink);
+  padding: 12px 14px;
+  background: var(--bp-bg);
+}
+
+.blueprint-account-gate .blueprint-gate-head {
+  font-weight: 700;
+  font-size: 13px;
+  border-bottom: 2px solid var(--bp-ink);
+  padding-bottom: 5px;
+}
+
+.blueprint-account-gate .blueprint-gate-code {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--bp-mut);
+  margin-left: 8px;
+}
+
+.blueprint-account-gate .blueprint-gate-subject {
+  margin: 10px 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--bp-line);
+}
+
+.blueprint-account-gate .blueprint-gate-verdicts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.blueprint-account-gate .blueprint-gate-btn {
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 12px;
+  background: var(--bp-bg);
+  color: var(--bp-ink);
+  border: 1px solid var(--bp-ink);
+}
+
+.blueprint-account-gate .blueprint-gate-btn:hover:not(:disabled) {
+  background: var(--bp-ink);
+  color: var(--bp-bg);
+}
+
+.blueprint-account-gate .blueprint-gate-btn.is-primary {
+  background: var(--bp-ink);
+  color: var(--bp-bg);
+}
+
+.blueprint-account-gate .blueprint-gate-btn.is-primary:hover:not(:disabled) {
+  background: var(--bp-bg);
+  color: var(--bp-ink);
+}
+
+.blueprint-account-gate .blueprint-gate-btn:disabled {
+  cursor: not-allowed;
+  color: var(--bp-mut);
+  border-color: var(--bp-line);
+}
+
+.blueprint-account-gate .blueprint-gate-consequence {
+  font-size: 11px;
+  color: var(--bp-mut);
+  margin-top: 6px;
+}
+
+/* Inputs a verdict requires before it can be recorded. Monochrome, like everything else
+   here: state is carried by the word "required" and by the refusal message, never by colour. */
+.blueprint-account-gate .blueprint-gate-input {
+  margin: 10px 0;
+}
+
+.blueprint-account-gate .blueprint-gate-input label {
+  display: block;
+  font-size: 11px;
+  color: var(--bp-mut);
+  margin-bottom: 3px;
+}
+
+.blueprint-account-gate .blueprint-gate-input select,
+.blueprint-account-gate .blueprint-gate-input textarea,
+.blueprint-account-gate .blueprint-gate-input input[type="text"] {
+  font: inherit;
+  width: 100%;
+  max-width: 420px;
+  padding: 4px 6px;
+  background: var(--bp-bg);
+  color: var(--bp-ink);
+  border: 1px solid var(--bp-ink);
+}
+
+.blueprint-account-gate .blueprint-gate-input textarea {
+  resize: vertical;
+}
+
+.blueprint-account-gate .blueprint-gate-help {
+  font-size: 11px;
+  color: var(--bp-mut);
+  margin-top: 3px;
+}
+
+.blueprint-account-gate .blueprint-gate-req {
+  font-weight: 700;
+}
+
+/* The required marker is a glyph for sighted readers and a word for everyone else. */
+.blueprint-account-gate .blueprint-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.blueprint-account-gate .blueprint-gate-closed {
+  font-size: 12px;
+  color: var(--bp-mut);
+  margin-top: 12px;
+  padding: 6px 8px;
+  background: var(--bp-fill);
+  border-left: 2px dashed var(--bp-ink);
+}
+
+/*
+ * The outcome. It lives INSIDE the panel, directly beneath the controls that produce it.
+ * RI-202 measured the earlier arrangement at 696-750px above its panel, where a failed
+ * verdict read as "nothing happened". The schema now refuses any other placement.
+ */
+.blueprint-account-gate .blueprint-gate-outcome {
+  font-size: 11px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  background: var(--bp-fill);
+  border-left: 2px solid var(--bp-line);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.blueprint-account-gate .blueprint-gate-outcome[hidden] {
+  display: none;
+}
+
+.blueprint-account-gate .blueprint-gate-outcome.is-bad {
+  border-left-color: var(--bp-ink);
+  font-weight: 700;
+}
+
+.blueprint-account-gate .blueprint-gate-outcome.is-bad::before {
+  content: "\2717\00a0";
+}
+
+.blueprint-account-gate .blueprint-gate-outcome.is-pending::before {
+  content: "\00B7\00a0";
+}

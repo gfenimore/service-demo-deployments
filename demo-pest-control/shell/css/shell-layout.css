@@ -1,0 +1,108 @@
+/**
+ * Carbon shell -- layout only.
+ * Generated for Demo Pest Control (a0004000-0000-0000-0000-000000000001).
+ *
+ * THIS FILE REPLACES FOUR. The sidebar shell ships shell-reset, shell-structure, shell-theme-bw
+ * and shell-responsive -- roughly 690 lines of hand-rolled CSS. Carbon supplies every one of those
+ * concerns: a reset, a grid, four themes as token sets, and breakpoints. What is left is the
+ * handful of rules that place the content region against Carbon's FIXED header and side-nav, plus
+ * the persona switcher, which is ours and not Carbon's.
+ *
+ * Everything below uses Carbon tokens rather than literal values, for the same reason the factory's
+ * own tokens-base.css said "patterns MUST use these via var(), never hardcode": a literal here
+ * would not follow a theme change, and the whole point of the token layer is that it does.
+ */
+
+/* ── content region ──────────────────────────────────────────────────────────────────────────
+   Carbon's header is 48px (3rem) and fixed; the side-nav is 16rem and fixed. Neither is in the
+   document flow, so the content region is positioned around them by hand -- this is the one
+   layout fact a Carbon UI Shell page still has to state for itself.
+*/
+.app-content {
+    margin-top: 3rem;
+    margin-left: 16rem;
+    padding: 2rem;
+    min-height: calc(100vh - 3rem);
+    background: var(--cds-background);
+    color: var(--cds-text-primary);
+    /* Matches Carbon's own side-nav collapse timing so the content does not lag behind it. */
+    transition: margin-left 110ms cubic-bezier(0.2, 0, 1, 0.9);
+}
+
+/* ── side-nav below the header ──────────────────────────────────────────────────────────────
+   cds-side-nav[is-not-child-of-header] renders from the viewport TOP and overlays the fixed
+   header's left region -- caught on the first Demo Pest Control render (s31, 2026-08-19): the
+   module panel sat on the brand and clipped it. A side-nav outside the header owes the same
+   3rem offset the content region states above; document-level rules on the host element win
+   over the component's :host defaults. */
+cds-side-nav {
+    top: 3rem;
+    height: calc(100vh - 3rem);
+}
+
+/* Carbon collapses the side-nav below 1056px. The content has to reclaim the space on the same
+   breakpoint, or there is a 16rem hole where the nav used to be. */
+@media (max-width: 1055px) {
+    .app-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
+
+.pattern-mount {
+    width: 100%;
+}
+
+/* ── the persona switcher ────────────────────────────────────────────────────────────────────
+   Ours, not Carbon's -- Carbon has no opinion about personas. Styled to sit in the header without
+   pretending to be a Carbon component, because it is a development affordance and looking
+   slightly foreign is honest.
+
+   margin-left:auto pushes it to the right of the header nav.
+*/
+.shell-persona {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+}
+
+.shell-persona__label {
+    color: var(--cds-text-secondary, #c6c6c6);
+    white-space: nowrap;
+}
+
+.shell-persona__select {
+    background: var(--cds-field-02, #393939);
+    color: var(--cds-text-primary, #f4f4f4);
+    border: 0;
+    border-bottom: 1px solid var(--cds-border-strong-01, #8d8d8d);
+    padding: 0.375rem 0.5rem;
+    font: inherit;
+    min-width: 11rem;
+}
+
+.shell-persona__select:focus {
+    outline: 2px solid var(--cds-focus, #0f62fe);
+    outline-offset: -2px;
+}
+
+/* ── before Carbon upgrades ──────────────────────────────────────────────────────────────────
+   The custom elements are inert until the ESM import resolves. Undefined elements are display:
+   inline by default, so an un-upgraded page would render the nav as a run of words across the top.
+   Blocking them out keeps a slow CDN looking like a plain page rather than a broken one -- and
+   :not([data-carbon-ready]) means these rules stop applying the moment Carbon lands.
+*/
+body:not([data-carbon-ready]) cds-header,
+body:not([data-carbon-ready]) cds-side-nav {
+    display: block;
+}
+
+body:not([data-carbon-ready]) cds-header-nav-item,
+body:not([data-carbon-ready]) cds-side-nav-link,
+body:not([data-carbon-ready]) cds-side-nav-menu-item {
+    display: block;
+    padding: 0.25rem 1rem;
+}

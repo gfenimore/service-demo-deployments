@@ -1,0 +1,466 @@
+/**
+ * Account - Blueprint UI Styles (Form)
+ * Blueprint ID: d0000001-0001-0001-0002-000000000001
+ * Pattern: FORM-CRUD-SIMPLE
+ * Entity: account
+ * 
+ * Scoped CSS with blueprint- prefix for shell-agnostic styling
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES (Theme Variables)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-account-form {
+  /* Background colors */
+  --blueprint-bg: var(--shell-bg, #ffffff);
+  --blueprint-surface: var(--shell-surface, #ffffff);
+  
+  /* Text colors */
+  --blueprint-text: var(--shell-text, #000000);
+  --blueprint-text-secondary: var(--shell-text-secondary, #666666);
+  
+  /* Border colors */
+  --blueprint-border: var(--shell-border, #000000);
+  --blueprint-border-light: var(--shell-border-light, #e0e0e0);
+  
+  /* Interactive colors */
+  --blueprint-primary: var(--shell-primary, #000000);
+  --blueprint-primary-text: var(--shell-primary-text, #ffffff);
+  
+  /* Input colors */
+  --blueprint-input-bg: var(--shell-input-bg, #ffffff);
+  --blueprint-input-border: var(--shell-input-border, #000000);
+  --blueprint-input-focus: var(--shell-input-focus, #000000);
+  
+  /* Status colors */
+  --blueprint-error: var(--shell-error, #000000);
+  --blueprint-success: var(--shell-success, #000000);
+  
+  /* Spacing */
+  --blueprint-spacing-xs: 4px;
+  --blueprint-spacing-sm: 8px;
+  --blueprint-spacing-md: 12px;
+  --blueprint-spacing-lg: 16px;
+  --blueprint-spacing-xl: 24px;
+  
+  /* Layout */
+  --blueprint-field-gap: 20px;
+  --blueprint-border-radius: 2px;
+  
+  /* Typography */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CONTAINER STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-account-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--blueprint-bg);
+  color: var(--blueprint-text);
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SECTION DIVIDERS
+   A labelled rule between groups of fields. HITL 2026-08-08 chose dividers over collapsible
+   groups: nothing here hides a field, so a required field can never be out of sight.
+   The first group carries no label and therefore no top rule.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-form-section {
+  margin: var(--blueprint-spacing-lg) 0 var(--blueprint-spacing-sm) 0;
+  padding-top: var(--blueprint-spacing-md);
+  border-top: 1px solid var(--blueprint-border);
+}
+
+.blueprint-form-section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.blueprint-form-section-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blueprint-text-secondary, var(--blueprint-text));
+}
+
+/* A persona that may not create is told so, rather than shown a form it cannot submit. */
+.blueprint-form-refusal {
+  padding: var(--blueprint-spacing-lg);
+  border: 1px solid var(--blueprint-border);
+  border-radius: 4px;
+  background: var(--blueprint-surface);
+  color: var(--blueprint-text-secondary, var(--blueprint-text));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MESSAGE STATES (Loading, Warning)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-message,
+.blueprint-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: var(--blueprint-spacing-xl);
+  text-align: center;
+  background: var(--blueprint-surface);
+}
+
+.blueprint-message p,
+.blueprint-loading p {
+  margin: 0 0 var(--blueprint-spacing-lg) 0;
+  font-size: 16px;
+  color: var(--blueprint-text);
+}
+
+.blueprint-message.blueprint-warning {
+  color: var(--blueprint-text-secondary);
+}
+
+.blueprint-message.blueprint-error {
+  color: var(--blueprint-error);
+  border: 2px dashed var(--blueprint-error);
+  padding: var(--blueprint-spacing-lg);
+}
+
+.blueprint-message.blueprint-success {
+  color: var(--blueprint-success);
+  border: 2px solid var(--blueprint-success);
+  padding: var(--blueprint-spacing-lg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LOADING SPINNER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 0 var(--blueprint-spacing-lg) 0;
+  border: 3px solid var(--blueprint-border-light);
+  border-top-color: var(--blueprint-primary);
+  border-radius: 50%;
+  animation: blueprint-spin 0.8s linear infinite;
+}
+
+@keyframes blueprint-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FORM CONTAINER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-form-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--blueprint-spacing-xl);
+  background: var(--blueprint-surface);
+}
+
+.blueprint-form-title {
+  margin: 0 0 var(--blueprint-spacing-xl) 0;
+  padding-bottom: var(--blueprint-spacing-lg);
+  border-bottom: 2px solid var(--blueprint-border);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--blueprint-text);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FORM FIELDS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blueprint-field-gap);
+}
+
+.blueprint-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blueprint-spacing-sm);
+}
+
+.blueprint-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blueprint-text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INPUTS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-input,
+.blueprint-textarea,
+.blueprint-select {
+  width: 100%;
+  padding: var(--blueprint-spacing-md);
+  font-size: 16px;
+  font-family: inherit;
+  background: var(--blueprint-input-bg);
+  color: var(--blueprint-text);
+  border: 2px solid var(--blueprint-input-border);
+  border-radius: var(--blueprint-border-radius);
+  transition: border-color 0.2s ease, outline 0.2s ease;
+}
+
+.blueprint-input:focus,
+.blueprint-textarea:focus,
+.blueprint-select:focus {
+  outline: 2px solid var(--blueprint-input-focus);
+  outline-offset: 2px;
+  border-color: var(--blueprint-input-focus);
+}
+
+.blueprint-input:disabled,
+.blueprint-textarea:disabled,
+.blueprint-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--blueprint-border-light);
+}
+
+.blueprint-input[readonly],
+.blueprint-textarea[readonly],
+.blueprint-select[readonly] {
+  opacity: 0.7;
+  background: var(--blueprint-border-light);
+}
+
+.blueprint-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.blueprint-checkbox {
+  width: auto;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FIELD ERRORS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-field-error {
+  font-size: 12px;
+  color: var(--blueprint-error);
+  font-style: italic;
+  min-height: 16px;
+}
+
+.blueprint-field-error:empty {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FORM ACTIONS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-form-actions {
+  display: flex;
+  gap: var(--blueprint-spacing-md);
+  padding-top: var(--blueprint-spacing-xl);
+  margin-top: var(--blueprint-spacing-lg);
+  border-top: 2px solid var(--blueprint-border);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-btn {
+  padding: var(--blueprint-spacing-md) var(--blueprint-spacing-xl);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--blueprint-border-radius);
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.blueprint-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.blueprint-btn-primary {
+  background: var(--blueprint-primary);
+  color: var(--blueprint-primary-text);
+  border-color: var(--blueprint-primary);
+}
+
+.blueprint-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.blueprint-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.blueprint-btn-secondary {
+  background: var(--blueprint-surface);
+  color: var(--blueprint-text);
+  border-color: var(--blueprint-border);
+}
+
+.blueprint-btn-secondary:hover:not(:disabled) {
+  background: var(--blueprint-primary);
+  color: var(--blueprint-primary-text);
+  border-color: var(--blueprint-primary);
+}
+
+.blueprint-btn-delete {
+  background: var(--blueprint-surface);
+  color: var(--blueprint-error);
+  border-color: var(--blueprint-error);
+  border-style: dashed;
+  margin-left: auto;
+}
+
+.blueprint-btn-delete:hover:not(:disabled) {
+  background: var(--blueprint-error);
+  color: var(--blueprint-surface);
+  border-style: solid;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THEME OVERRIDES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Dark theme support */
+.blueprint-account-form.theme-dark {
+  --blueprint-bg: #1a1a1a;
+  --blueprint-surface: #2a2a2a;
+  --blueprint-text: #ffffff;
+  --blueprint-text-secondary: #aaaaaa;
+  --blueprint-border: #444444;
+  --blueprint-border-light: #333333;
+  --blueprint-primary: #ffffff;
+  --blueprint-primary-text: #000000;
+  --blueprint-input-bg: #1a1a1a;
+  --blueprint-input-border: #444444;
+  --blueprint-input-focus: #ffffff;
+}
+
+/* Light theme (default) */
+.blueprint-account-form.theme-light {
+  --blueprint-bg: #ffffff;
+  --blueprint-surface: #ffffff;
+  --blueprint-text: #000000;
+  --blueprint-text-secondary: #666666;
+  --blueprint-border: #000000;
+  --blueprint-border-light: #e0e0e0;
+  --blueprint-primary: #000000;
+  --blueprint-primary-text: #ffffff;
+  --blueprint-input-bg: #ffffff;
+  --blueprint-input-border: #000000;
+  --blueprint-input-focus: #000000;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .blueprint-form-container {
+    padding: var(--blueprint-spacing-lg);
+  }
+  
+  .blueprint-form-title {
+    font-size: 20px;
+  }
+  
+  .blueprint-form-actions {
+    flex-direction: column;
+  }
+  
+  .blueprint-btn-delete {
+    margin-left: 0;
+  }
+  
+  .blueprint-input,
+  .blueprint-textarea,
+  .blueprint-select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Focus styles for keyboard navigation */
+.blueprint-btn:focus {
+  outline: 2px solid var(--blueprint-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .blueprint-account-form {
+    --blueprint-border: #000000;
+    --blueprint-input-border: #000000;
+  }
+  
+  .blueprint-input,
+  .blueprint-textarea,
+  .blueprint-select {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .blueprint-btn,
+  .blueprint-input,
+  .blueprint-textarea,
+  .blueprint-select {
+    transition: none;
+  }
+  
+  .blueprint-spinner {
+    animation: none;
+    border: 3px solid var(--blueprint-border);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PRINT STYLES
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media print {
+  .blueprint-form-actions {
+    display: none;
+  }
+  
+  .blueprint-input,
+  .blueprint-textarea,
+  .blueprint-select {
+    border: 1px solid #000;
+  }
+}
