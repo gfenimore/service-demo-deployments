@@ -56,7 +56,7 @@
         //     pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY21jcWVqazh1MGdkaTJrb3NjcmttMDlkbyJ9.Mv7mFPvdY2EK9POGezqzOw -> a publishable (pk.*) Mapbox token, URL-restricted in the
         //                         Mapbox account; read by geocode_on_save forms.
         integrations: {
-            mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY21jcWVqazh1MGdkaTJrb3NjcmttMDlkbyJ9.Mv7mFPvdY2EK9POGezqzOw'
+            mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY210MDhua3F0MDIxNDJ3b2dkbXI1dWd0dCJ9.c76YTkNeZHQYHlH1LtPFgg'
         },
         user_id:   'system',
         role:      'admin',
