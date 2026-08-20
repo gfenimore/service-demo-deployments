@@ -53,7 +53,7 @@
         // OPTIONAL third-party capabilities (s31). Substituted only when a blueprint of this
         // app declares the capability; an unsubstituted value is not a preflight fault -- the
         // component that needs it warns at use time and proceeds degraded.
-        //     __MAPBOX_TOKEN__ -> a publishable (pk.*) Mapbox token, URL-restricted in the
+        //     pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY21jcWVqazh1MGdkaTJrb3NjcmttMDlkbyJ9.Mv7mFPvdY2EK9POGezqzOw -> a publishable (pk.*) Mapbox token, URL-restricted in the
         //                         Mapbox account; read by geocode_on_save forms.
         integrations: {
             mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY21jcWVqazh1MGdkaTJrb3NjcmttMDlkbyJ9.Mv7mFPvdY2EK9POGezqzOw'

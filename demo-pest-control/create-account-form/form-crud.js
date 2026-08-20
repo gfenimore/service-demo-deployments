@@ -710,7 +710,20 @@
       console.warn('[AccountFormUI] Supabase client library not loaded');
       return;
     }
-    
+
+    // THE SHELL'S CLIENT WINS (s31 resume, 2026-08-20). When the shell publishes
+    // window.ShellData -- one client for the page, its auth token read fresh per
+    // request on gated apps -- every component on the shell's schema shares it. The
+    // fallback below builds a per-component client whose session JWT is FROZEN at
+    // mount; it stays only for shells that publish no ShellData.
+    const shellSchema = (window.AppContext && window.AppContext.supabase &&
+                         window.AppContext.supabase.schema) || 'public';
+    if (window.ShellData && (this.config.database.schema || 'public') === shellSchema) {
+      this.supabaseClient = window.ShellData;
+      console.log('[AccountFormUI] using the shell data client');
+      return;
+    }
+
     try {
       this.supabaseClient = window.supabase.createClient(
         supabaseConfig.url,

@@ -42,19 +42,6 @@
             <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000002">Accounts</cds-header-nav-item>
         </cds-header-nav>
 
-        <!--
-          PERSONA SWITCHER. Hidden until app-init finds a mounted component carrying a persona
-          gate -- a switcher over nothing is furniture that lies.
-
-          !! IT MUST NOT SHIP TO PRODUCTION. In a real deployment the persona comes from whoever
-          signed in, and a control that lets a user change it is a security hole wearing a
-          dropdown. It is emitted here because no app yet has sign-in; the app definition should
-          govern it the moment one does.
-        -->
-        <div class="shell-persona" id="persona-switcher" hidden>
-            <label for="persona-select" class="shell-persona__label">Viewing as</label>
-            <select id="persona-select" class="shell-persona__select" aria-label="Switch persona"></select>
-        </div>
     </cds-header>
 
     <!-- ═══ SIDE NAV ═════════════════════════════════════════════════════════════════════════
@@ -379,15 +366,34 @@
         // this exists so the two agree about who may be here. Users are created by the
         // operator in the Supabase dashboard; there is no signup, by ruling.
         //
-        // KNOWN LIMIT, recorded: components attach the session token as a static header at
-        // mount time, so a session outliving its JWT (~1h) fetches as anon until reload.
-        // Acceptable for the MSP's entry sessions; revisit with the security pile.
+        // THE SHELL OWNS ONE DATA CLIENT (s31 resume, 2026-08-20). Components used to
+        // build their own clients with the session JWT frozen in as a static header at
+        // mount -- a session outliving its JWT then fetched as anon until reload,
+        // silently (the recorded "known limit", promoted to a fixed defect the morning
+        // it blanked the deployed app for a returning user). window.ShellData is the one
+        // client every component shares: on a gated app its accessToken callback reads
+        // the CURRENT session from ShellAuth per request, so a refreshed session is
+        // simply used; on an open app it is a plain anon client.
         var REQUIRES_AUTH = true;
 
+        function makeShellData(sb, tokenFn) {
+            var opts = { db: { schema: sb.schema || 'public' } };
+            if (tokenFn) { opts.accessToken = tokenFn; }
+            window.ShellData = window.supabase.createClient(sb.url, sb.anonKey, opts);
+        }
+
         function bootWhenAuthorized() {
-            if (!REQUIRES_AUTH) { bootGateSix(); return; }
             var sb = (window.AppContext || {}).supabase || {};
-            if (!window.supabase || !window.supabase.createClient || !sb.url || !sb.anonKey) {
+            var placeholder = /^__[A-Z_]+__$/;
+            var configSane = window.supabase && window.supabase.createClient && sb.url &&
+                sb.anonKey && !placeholder.test(sb.url) && !placeholder.test(sb.anonKey);
+
+            if (!REQUIRES_AUTH) {
+                if (configSane) { makeShellData(sb, null); }
+                bootGateSix();
+                return;
+            }
+            if (!configSane) {
                 console.error('[AppShell] requires_auth is declared but the Supabase client or ' +
                               'config is missing -- refusing to mount anything.');
                 return;
@@ -396,10 +402,20 @@
             window.ShellAuth = auth;
 
             function enter(session) {
+                // Kept for components on shells without ShellData; here ShellData is the live path.
                 window.AppContext.authHeaders = { Authorization: 'Bearer ' + session.access_token };
                 if (session.user && session.user.email) { window.AppContext.user_id = session.user.email; }
                 var gate = document.getElementById('shell-signin-gate');
                 if (gate) { gate.remove(); }
+                // Re-entry after a mid-session sign-in (the gate re-shown on session death):
+                // components are already mounted, so a clean reload beats a double mount.
+                if (window.__shellBooted) { window.location.reload(); return; }
+                window.__shellBooted = true;
+                makeShellData(sb, function () {
+                    return auth.auth.getSession().then(function (r) {
+                        return (r.data && r.data.session && r.data.session.access_token) || null;
+                    });
+                });
                 console.log('[AppShell] signed in as ' + (window.AppContext.user_id || '(user)') + ' -- mounting.');
                 bootGateSix();
             }
@@ -442,6 +458,22 @@
                     });
                 });
             }
+
+            // A DATA FAILURE MUST NEVER BE SILENT (s31 resume, 2026-08-20: a signed-in
+            // user's morning screen showed "no accounts" over a 403). Components paint
+            // their own error state and emit blueprint:error; the shell's added duty is
+            // the AUTH case -- when the session is gone, the honest answer is the
+            // sign-in gate, not an error nobody can act on. A live session with a
+            // failing read stays visible as the component's error: that is a grants
+            // problem, and re-signing-in would just hide it.
+            document.addEventListener('blueprint:error', function (e) {
+                var d = e.detail || {};
+                if (d.code !== 'DATA_LOAD_FAILED') { return; }
+                auth.auth.getSession().then(function (r) {
+                    var live = r.data && r.data.session;
+                    if (!live && !document.getElementById('shell-signin-gate')) { showGate(); }
+                });
+            });
 
             auth.auth.getSession().then(function (r) {
                 var session = r.data && r.data.session;

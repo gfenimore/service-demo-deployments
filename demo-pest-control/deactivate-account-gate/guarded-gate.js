@@ -29,7 +29,7 @@
       "code": "DEACTIVATE",
       "label": "Deactivate account",
       "confirm": "Deactivate this account? Service and billing stop, and the reason you gave is recorded against it.",
-      "endpoint": "/accounts/deactivate",
+      "endpoint": "rpc:deactivate_account",
       "method": "POST",
       "payload": {
         "action": "deactivate"
@@ -37,6 +37,14 @@
       "consequence": "Stops service and billing for this account and records who deactivated it, when, and why.",
       "reaches": null,
       "tone": "primary",
+      "argMap": {
+        "p_actor": "user_id",
+        "p_notes": "notes",
+        "p_reason": "deactivation_reason",
+        "p_verdict": "verdict",
+        "p_gate_code": "gate_code",
+        "p_account_id": "subject_id"
+      },
       "inputs": [
         {
           "field": "deactivation_reason",
@@ -89,6 +97,7 @@
     constructor() {
       this.container = null;
       this.context = null;
+      this._recordId = null;
       this._boundHandlers = new Map();
       this.metadata = {
         blueprint_id: 'c0000001-0001-0001-0005-000000000001',
@@ -130,6 +139,16 @@
       console.log('[AccountGateUI] Context received:', { role: context && context.role });
     }
 
+    // ---- the record bridge ----------------------------------------------------------
+    // The shell hands the selected record's id to every mounted component exposing
+    // setRecordId. For a gate the record IS the subject: until one arrives, nothing
+    // actionable renders (s31 resume, 2026-08-20 -- the deployed landing view showed a
+    // live deactivate form with no account chosen, HIS find).
+    setRecordId(recordId) {
+      this._recordId = recordId || null;
+      if (this.container) this.render();
+    }
+
     // ---- contract: getMetadata ------------------------------------------------------
     getMetadata() { return Object.assign({}, this.metadata); }
 
@@ -147,7 +166,7 @@
       return st[GATE.enabledWhen.field] === GATE.enabledWhen.equals ? 'OPEN' : 'CLOSED';
     }
 
-    subjectId() { return (this.context && this.context.subject_id) || null; }
+    subjectId() { return this._recordId || (this.context && this.context.subject_id) || null; }
 
     // ---- render ---------------------------------------------------------------------
 
@@ -164,9 +183,20 @@
         return;
       }
 
+      // NO SUBJECT, NO VERDICT UI. A gate records a verdict ABOUT a record; without one
+      // it is an instruction, not a form (s31 resume, 2026-08-20).
+      if (!this.subjectId()) {
+        this.container.innerHTML =
+          '<div class="blueprint-gate-head">' + esc(GATE.title) +
+          '<span class="blueprint-gate-code">' + esc(GATE.code) + '</span></div>' +
+          '<div class="blueprint-gate-closed">No account selected. Open one from the list to use this gate.</div>';
+        return;
+      }
+
       var html =
         '<div class="blueprint-gate-head">' + esc(GATE.title) +
-        '<span class="blueprint-gate-code">' + esc(GATE.code) + '</span></div>';
+        '<span class="blueprint-gate-code">' + esc(GATE.code) + '</span></div>' +
+        '<div class="blueprint-gate-subject">For account: ' + esc(this.subjectId()) + '</div>';
 
       if (GATE.subject) {
         html += '<div class="blueprint-gate-subject">' + esc(GATE.subject) + '</div>';
@@ -293,7 +323,7 @@
         // input can overwrite who acted, on what, or under which verdict. The schema already
         // makes those six field names unwritable in a blueprint; this is the second lock, so
         // the guarantee does not depend on someone never reordering this merge.
-        var body = Object.assign({}, v.payload || {}, collected, {
+        var merged = Object.assign({}, v.payload || {}, collected, {
           subject_id: this.subjectId(),
           verdict: v.code,
           gate_code: GATE.code,
@@ -301,9 +331,45 @@
           user_id: this.context && this.context.user_id,
           role: this.context && this.context.role
         });
-        var res = await fetch(v.endpoint, {
+
+        // rpc:<name> targets the app's own data engine -- the sanctioned worker exposed
+        // over PostgREST -- with the caller's credentials. Before this, the blueprint's
+        // "/accounts/deactivate" pointed at an API server no static deploy has, and the
+        // fetch carried no credentials at all (s31 resume, 2026-08-20). A plain URL
+        // endpoint keeps the original behavior for shells that do run an API.
+        var endpoint = v.endpoint;
+        var headers = { 'Content-Type': 'application/json' };
+        var sbCfg = (window.AppContext && window.AppContext.supabase) || {};
+        if (/^rpc:/.test(endpoint) && sbCfg.url) {
+          endpoint = sbCfg.url + '/rest/v1/rpc/' + endpoint.slice(4);
+          if (sbCfg.anonKey) {
+            headers.apikey = sbCfg.anonKey;
+            headers.Authorization = 'Bearer ' + sbCfg.anonKey;
+          }
+          if (sbCfg.schema) { headers['Content-Profile'] = sbCfg.schema; }
+          if (window.ShellAuth) {
+            var sess = await window.ShellAuth.auth.getSession();
+            if (sess.data && sess.data.session) {
+              headers.Authorization = 'Bearer ' + sess.data.session.access_token;
+            }
+          }
+        }
+
+        // argMap: the blueprint names the worker's own parameters ({"p_account_id":
+        // "subject_id", ...}) so a Postgres function receives exactly its declared
+        // arguments. Without one, the merged fields go as-is -- the API-server shape
+        // this template always sent.
+        var body = merged;
+        if (v.argMap) {
+          body = {};
+          Object.keys(v.argMap).forEach(function (arg) {
+            body[arg] = merged[v.argMap[arg]] !== undefined ? merged[v.argMap[arg]] : null;
+          });
+        }
+
+        var res = await fetch(endpoint, {
           method: v.method || 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
           body: JSON.stringify(body)
         });
         var data = await res.json().catch(function () { return {}; });

@@ -30,14 +30,22 @@
 }
 
 /* ── side-nav below the header ──────────────────────────────────────────────────────────────
-   cds-side-nav[is-not-child-of-header] renders from the viewport TOP and overlays the fixed
-   header's left region -- caught on the first Demo Pest Control render (s31, 2026-08-19): the
-   module panel sat on the brand and clipped it. A side-nav outside the header owes the same
-   3rem offset the content region states above; document-level rules on the host element win
-   over the component's :host defaults. */
+   cds-side-nav renders its NAVIGATION in shadow DOM with position:fixed, so it starts at the
+   viewport TOP and overlays the fixed header's left region -- caught on the first Demo Pest
+   Control render (s31, 2026-08-19): the module panel sat on the brand and clipped it. The
+   first fix (top/height on the host) moved only the host box, which is empty; the fixed
+   internals ignored it and the overlap SHIPPED (his find on the deployed app, 2026-08-20).
+
+   The working fix, measured live on that deployment before landing here: give the HOST a
+   transform. A transformed element becomes the containing block for fixed-position
+   descendants -- shadow DOM included -- so Carbon's internal nav now positions against the
+   host box (items land at exactly 3rem) instead of the viewport. */
 cds-side-nav {
+    position: fixed;
     top: 3rem;
-    height: calc(100vh - 3rem);
+    left: 0;
+    bottom: 0;
+    transform: translateZ(0);
 }
 
 /* Carbon collapses the side-nav below 1056px. The content has to reclaim the space on the same
@@ -67,6 +75,13 @@ cds-side-nav {
     gap: 0.5rem;
     padding: 0 1rem;
     font-size: 0.875rem;
+}
+
+/* The hidden attribute must actually hide. display:flex above outranks the UA's
+   [hidden]{display:none}, which is how an EMPTY switcher sat visible in the deployed
+   header (s31 resume, 2026-08-20). */
+.shell-persona[hidden] {
+    display: none;
 }
 
 .shell-persona__label {

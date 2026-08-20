@@ -513,7 +513,20 @@
       console.warn('[AccountDetailPanelUI] Supabase client library not loaded');
       return;
     }
-    
+
+    // THE SHELL'S CLIENT WINS (s31 resume, 2026-08-20). When the shell publishes
+    // window.ShellData -- one client for the page, its auth token read fresh per
+    // request on gated apps -- every component on the shell's schema shares it. The
+    // fallback below builds a per-component client whose session JWT is FROZEN at
+    // mount; it stays only for shells that publish no ShellData.
+    const shellSchema = (window.AppContext && window.AppContext.supabase &&
+                         window.AppContext.supabase.schema) || 'public';
+    if (window.ShellData && (this.config.database.schema || 'public') === shellSchema) {
+      this.supabaseClient = window.ShellData;
+      console.log('[AccountDetailPanelUI] using the shell data client');
+      return;
+    }
+
     try {
       this.supabaseClient = window.supabase.createClient(
         supabaseConfig.url,
@@ -551,11 +564,12 @@
     }
     
     this.isLoading = true;
+    this.loadError = null;
     this.render();
-    
+
     // Create abort controller for cancellation
     this._abortController = new AbortController();
-    
+
     try {
       let result;
       
@@ -593,8 +607,13 @@
       }
       
       this.isLoading = false;
+      // A failed read must LOOK failed (s31 resume, 2026-08-20): rendering the
+      // not-found state over a permissions error told a signed-in user the record
+      // did not exist. The message renders; the event lets the shell re-show the
+      // sign-in gate when the session is gone.
+      this.loadError = error.message || String(error);
       this.render();
-      
+
       // Emit error event for shell to handle
       this.emit('blueprint:error', {
         code: 'DATA_LOAD_FAILED',
@@ -751,11 +770,22 @@
       return this.buildNoRecordIdHTML();
     } else if (this.isLoading) {
       return this.buildLoadingHTML();
+    } else if (this.loadError) {
+      return this.buildLoadErrorHTML();
     } else if (!this.data) {
       return this.buildNotFoundHTML();
     } else {
       return this.buildDetailHTML();
     }
+  }
+
+  buildLoadErrorHTML() {
+    return `
+      <div class="blueprint-message blueprint-error">
+        <p>Could not load Account: ${String(this.loadError).replace(/[<>&]/g, '')}</p>
+        <p>If you were signed in, your session may have ended -- sign in again.</p>
+      </div>
+    `;
   }
   
   buildNoContextHTML() {
@@ -963,6 +993,11 @@
       }
     };
     
+    // One listener, not one per render: this runs on EVERY render, and the map
+    // overwrite below orphaned the previous handler where nothing could remove it
+    // (the s31 triple-emit nit, fixed 2026-08-20 on the resume).
+    const prev = this._boundHandlers.get(this.container);
+    if (prev) { this.container.removeEventListener('click', prev); }
     this.container.addEventListener('click', handler);
     this._boundHandlers.set(this.container, handler);
   }
