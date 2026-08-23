@@ -192,31 +192,6 @@
 },
       // Every persona's gate for this entity. visibleFields() picks one by context.facet.
       personas: {
-  "FIELD_TECH": {
-    "fields": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "next_service_date"
-    ],
-    "readonly": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "next_service_date"
-    ],
-    "filters": {
-      "status": [
-        "active"
-      ]
-    },
-    "actions": [
-      "view",
-      "search"
-    ]
-  },
   "ADMIN_FULL": {
     "fields": [
       "account_name",
@@ -248,6 +223,31 @@
       "export",
       "bulk_actions",
       "create"
+    ]
+  },
+  "FIELD_TECH": {
+    "fields": [
+      "account_name",
+      "billing_street_address",
+      "billing_city",
+      "phone",
+      "next_service_date"
+    ],
+    "readonly": [
+      "account_name",
+      "billing_street_address",
+      "billing_city",
+      "phone",
+      "next_service_date"
+    ],
+    "filters": {
+      "status": [
+        "active"
+      ]
+    },
+    "actions": [
+      "view",
+      "search"
     ]
   },
   "GENERIC_USER": {
@@ -333,6 +333,42 @@
       "schedule",
       "assign_tech",
       "create"
+    ]
+  },
+  "CUSTOMER_SERVICE": {
+    "fields": [
+      "account_name",
+      "account_type",
+      "status",
+      "billing_street_address",
+      "billing_city",
+      "billing_state",
+      "billing_zip_code",
+      "internal_notes",
+      "created_at",
+      "phone",
+      "email"
+    ],
+    "readonly": [
+      "account_name",
+      "status",
+      "balance",
+      "last_service_date",
+      "next_service_date"
+    ],
+    "filters": {
+      "status": [
+        "active"
+      ]
+    },
+    "actions": [
+      "view",
+      "search",
+      "sort",
+      "filter",
+      "edit",
+      "log_call",
+      "schedule"
     ]
   }
 }
@@ -1112,8 +1148,11 @@
     // Emit navigation event. `id` rides at the top level so the shell's bridge can
     // hand it to any component exposing setRecordId() without knowing entity key names
     // (s31, 2026-08-19 -- the record-to-detail handshake's missing half).
+    // `entity` is the key the generator supplies; `entityName` never was, so this emitted `//<id>`
+    // in every deployed list (measured 2026-08-22). The shell's bridge takes the id and moves to the
+    // feature's record route itself; this route is the fallback for shells without a bridge.
     this.emit('blueprint:navigate', {
-      route: `//${id}`,
+      route: `/account/${id}`,
       id: id,
       params: { mode: 'view', record }
     });

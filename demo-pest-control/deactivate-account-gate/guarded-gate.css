@@ -2,7 +2,7 @@
  * Deactivate account - Guarded Gate styles
  * Blueprint ID: c0000001-0001-0001-0005-000000000001
  * Pattern: GUARDED-GATE
- * Gate: PEST.CUST.ACCT.DEACTIVATE.CONFIRM
+ * Gate: ACCOUNT.DEACTIVATE.CONFIRM
  *
  * Monochrome by rule: state is carried by a glyph and a word, never by colour alone.
  * Every selector is scoped to .blueprint-account-gate so the gate cannot restyle its host.

@@ -2,7 +2,7 @@
  * Deactivate account - Guarded Gate (contract compliant)
  * Blueprint ID: c0000001-0001-0001-0005-000000000001
  * Pattern: GUARDED-GATE
- * Gate: PEST.CUST.ACCT.DEACTIVATE.CONFIRM
+ * Gate: ACCOUNT.DEACTIVATE.CONFIRM
  *
  * Contract:
  * - mount(container): render into container
@@ -21,7 +21,7 @@
   'use strict';
 
   var GATE = {
-  "code": "PEST.CUST.ACCT.DEACTIVATE.CONFIRM",
+  "code": "ACCOUNT.DEACTIVATE.CONFIRM",
   "title": "Deactivate account",
   "subject": "Deactivating stops service and billing for this account. It can be reversed by reactivating, but the reason you record here is kept.",
   "verdicts": [

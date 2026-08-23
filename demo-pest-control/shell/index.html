@@ -27,8 +27,8 @@
          mounted, and the first Demo Pest Control render was an empty frame with a working nav.
          Shell CSS loads first so a component can override it. -->
     <link rel="stylesheet" href="../account-list-view/list-view.css">
+    <link rel="stylesheet" href="../account-record-card/cascading-cards.css">
     <link rel="stylesheet" href="../create-account-form/form-crud.css">
-    <link rel="stylesheet" href="../account-detail-view/detail-panel.css">
     <link rel="stylesheet" href="../deactivate-account-gate/guarded-gate.css">
 </head>
 <body data-app-id="a0004000-0000-0000-0000-000000000001" data-shell-type="carbon-hybrid">
@@ -54,6 +54,7 @@
             <cds-side-nav-menu title="Accounts" data-module-id="a0004000-0000-0000-0000-000000000002">
                 <cds-side-nav-menu-item href="#/accounts" data-feature-id="a0004000-0000-0000-0000-000000000004">View Accounts</cds-side-nav-menu-item>
                 <cds-side-nav-menu-item href="#/accounts/new" data-feature-id="b7c5b459-bb73-4d88-9d46-9e0f0a732d01">New Account</cds-side-nav-menu-item>
+                <cds-side-nav-menu-item href="#/accounts/:id" data-feature-id="a0004000-0000-0000-0000-000000000010">Account Master View</cds-side-nav-menu-item>
             </cds-side-nav-menu>
         </cds-side-nav-items>
     </cds-side-nav>
@@ -96,8 +97,8 @@
          system; the wiring generator's files stay reference-only beside it.
          ================================================================== -->
     <script src="../account-list-view/list-view.js"></script>
+    <script src="../account-record-card/cascading-cards.js"></script>
     <script src="../create-account-form/form-crud.js"></script>
-    <script src="../account-detail-view/detail-panel.js"></script>
     <script src="../deactivate-account-gate/guarded-gate.js"></script>
 
     <script>
@@ -115,6 +116,17 @@
     "route": "/accounts"
   },
   {
+    "slug": "account-record-card",
+    "name": "Account Record Card",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "c3000000-0000-0000-0000-000000000001",
+    "patternId": "cascading-cards-001",
+    "script": "../account-record-card/cascading-cards.js",
+    "css": "../account-record-card/cascading-cards.css",
+    "route": "/accounts/:id"
+  },
+  {
     "slug": "create-account-form",
     "name": "Create Account Form",
     "zone": "main",
@@ -126,26 +138,15 @@
     "route": "/accounts/new"
   },
   {
-    "slug": "account-detail-view",
-    "name": "Account Detail View",
-    "zone": "main",
-    "order": 2,
-    "blueprintId": "c2000000-0000-0000-0000-000000000001",
-    "patternId": "detail-panel-simple-001",
-    "script": "../account-detail-view/detail-panel.js",
-    "css": "../account-detail-view/detail-panel.css",
-    "route": "/accounts"
-  },
-  {
     "slug": "deactivate-account-gate",
     "name": "Deactivate Account Gate",
     "zone": "main",
-    "order": 3,
+    "order": 2,
     "blueprintId": "c0000001-0001-0001-0005-000000000001",
     "patternId": "guarded-gate-001",
     "script": "../deactivate-account-gate/guarded-gate.js",
     "css": "../deactivate-account-gate/guarded-gate.css",
-    "route": "/accounts"
+    "route": "/accounts/:id"
   }
 ];
 
@@ -287,9 +288,33 @@
                             (shown.length ? shown.join(', ') : '(nothing mounted at this route)'));
             }
 
+            // THE ROUTE'S PARAMETER IS A RECORD (s37, 2026-08-22). ShellNavigation matched `:id` and
+            // this handler threw it away, so a typed or bookmarked /accounts/<id> showed the panels
+            // with no record -- the next-morning re-entry opened empty. Now the matched parameter is
+            // handed to every component the route shows that can take a record.
             routes.forEach(function (r) {
-                window.ShellNavigation.registerRoute(r, function () { show(r); });
+                window.ShellNavigation.registerRoute(r, function (params) {
+                    show(r);
+                    var keys = Object.keys(params || {});
+                    var id = keys.length ? params[keys[0]] : null;
+                    if (!id) return;
+                    var handed = 0;
+                    (routed[r] || []).forEach(function (slug) {
+                        var c = (window.ShellComponents || {})[slug];
+                        if (c && typeof c.setRecordId === 'function') { c.setRecordId(decodeURIComponent(id)); handed++; }
+                    });
+                    console.log('[AppShell] route ' + r + ' carries ' + keys[0] + '=' + id + ' -> handed to ' + handed + ' component(s)');
+                });
             });
+
+            // THE RECORD ROUTE under a route: /accounts -> /accounts/:id. The bridge below uses it to
+            // move from a list to the record's own screen without either component knowing the other.
+            function recordRouteUnder(route) {
+                return routes.filter(function (r) {
+                    return r.indexOf('/:') !== -1 && r.slice(0, r.indexOf('/:')) === route;
+                })[0] || null;
+            }
+            window.ShellRecordRouteUnder = recordRouteUnder;
 
             // Carbon renders nav links with href="#/route"; intercept them into the router.
             document.addEventListener('click', function (e) {
@@ -317,6 +342,10 @@
                 console.warn('[AppShell] declared default route "' + declared + '" has no mounted ' +
                              'component -- opening at "' + start + '" instead.');
             }
+            // A BOOKMARKED URL WINS (s37): the page opened at #/accounts/<id> goes there, not to the
+            // default. The hash is matched against the registered patterns before it is trusted.
+            var hash = (window.location.hash || '').slice(1);
+            if (hash && window.ShellNavigation._matchRoute(hash)) { start = hash; }
             window.ShellNavigation.navigate(start, false);
 
             console.log('[AppShell] ' + routes.length + ' route(s) registered, ' +
@@ -349,6 +378,13 @@
                 if (handed) {
                     console.log('[AppShell] blueprint:navigate -> record ' + id +
                                 ' handed to ' + handed + ' component(s)');
+                    // THE RECORD'S OWN SCREEN (s37): when the feature under the current route has a
+                    // record route (/accounts -> /accounts/:id), go there -- the list stays a list and
+                    // the card is where the picture puts it. Without one, the handoff is the whole act
+                    // (the s31 list-beside-detail shape).
+                    var here = window.ShellNavigation.getCurrentRoute();
+                    var rec = window.ShellRecordRouteUnder ? window.ShellRecordRouteUnder(here) : null;
+                    if (rec) { window.ShellNavigation.navigate(rec.replace(/:[^/]+/, encodeURIComponent(id))); }
                     return;
                 }
             }

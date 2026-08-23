@@ -212,31 +212,6 @@
 },
       // Every persona's gate for this entity. visibleFields() picks one by context.facet.
       personas: {
-  "FIELD_TECH": {
-    "fields": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "next_service_date"
-    ],
-    "readonly": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "next_service_date"
-    ],
-    "filters": {
-      "status": [
-        "active"
-      ]
-    },
-    "actions": [
-      "view",
-      "search"
-    ]
-  },
   "ADMIN_FULL": {
     "fields": [
       "account_name",
@@ -268,6 +243,31 @@
       "export",
       "bulk_actions",
       "create"
+    ]
+  },
+  "FIELD_TECH": {
+    "fields": [
+      "account_name",
+      "billing_street_address",
+      "billing_city",
+      "phone",
+      "next_service_date"
+    ],
+    "readonly": [
+      "account_name",
+      "billing_street_address",
+      "billing_city",
+      "phone",
+      "next_service_date"
+    ],
+    "filters": {
+      "status": [
+        "active"
+      ]
+    },
+    "actions": [
+      "view",
+      "search"
     ]
   },
   "GENERIC_USER": {
@@ -353,6 +353,42 @@
       "schedule",
       "assign_tech",
       "create"
+    ]
+  },
+  "CUSTOMER_SERVICE": {
+    "fields": [
+      "account_name",
+      "account_type",
+      "status",
+      "billing_street_address",
+      "billing_city",
+      "billing_state",
+      "billing_zip_code",
+      "internal_notes",
+      "created_at",
+      "phone",
+      "email"
+    ],
+    "readonly": [
+      "account_name",
+      "status",
+      "balance",
+      "last_service_date",
+      "next_service_date"
+    ],
+    "filters": {
+      "status": [
+        "active"
+      ]
+    },
+    "actions": [
+      "view",
+      "search",
+      "sort",
+      "filter",
+      "edit",
+      "log_call",
+      "schedule"
     ]
   }
 }

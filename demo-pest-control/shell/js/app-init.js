@@ -231,7 +231,7 @@
         console.log('[App] Initializing components...');
         ComponentRegistry.init(window.AccountBlueprintUI, 'account-list-view');
         ComponentRegistry.init(window.AccountFormUI, 'create-account-form');
-        ComponentRegistry.init(window.AccountDetailPanelUI, 'account-detail-view');
+        ComponentRegistry.init(window.AccountBlueprintUI, 'account-record-card');
         ComponentRegistry.init(window.AccountGateUI, 'deactivate-account-gate');
         
         // Step 3: Register routes
@@ -249,6 +249,13 @@
                 instance.setRecordId(params.id);
             }
             ComponentRegistry.mount('create-account-form');
+        });
+        window.ShellNavigation.registerRoute('/accounts/:id', function(params) {
+            const instance = ComponentRegistry.get('account-record-card');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('account-record-card');
         });
 
         // Register placeholder handlers for unimplemented routes
