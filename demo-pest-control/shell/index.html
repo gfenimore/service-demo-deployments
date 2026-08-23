@@ -214,7 +214,18 @@
                     zoneEl.appendChild(host);
 
                     var instance = new Cls();
-                    instance.mount(host);
+                    var mounting = instance.mount(host);
+                    // An async mount() that rejects AFTER its first await never reaches the catch
+                    // below -- the shell counted it as mounted and showed an empty zone (s38, the
+                    // mount-contract gate's second self-test). The rejection is caught here, said
+                    // out loud, and the slug is withdrawn from ShellMounted.
+                    if (mounting && typeof mounting.then === 'function') {
+                        mounting.then(null, function (err) {
+                            console.error('[AppShell] mounting "' + m.slug + '" failed after its first await:', err);
+                            host.setAttribute('data-mount-failed', 'true');
+                            window.ShellMounted = (window.ShellMounted || []).filter(function (s) { return s !== m.slug; });
+                        });
+                    }
                     // Instances stay reachable: the blueprint:navigate bridge below hands
                     // record ids to whichever mounted component can take one.
                     (window.ShellComponents = window.ShellComponents || {})[m.slug] = instance;
