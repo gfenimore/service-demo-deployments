@@ -529,6 +529,12 @@
   "primaryKey": "account_id"
 };
 
+  // THE SKELETON (2026-08-23, his first look at the origin: "I ONLY see Deactivate"). The shell mounts
+  // every component into an EMPTY host and each one writes its own markup; this card looked for its
+  // regions before writing them, threw on the first lookup, and the shell dropped it. The markup the
+  // generator also emits as cascading-cards.html rides here and is written first.
+  var SKELETON = "<div class=\"record-card\" data-blueprint-id=\"c3000000-0000-0000-0000-000000000001\" data-root=\"account\">\n  <header class=\"record-card__head\">\n    <div class=\"record-card__title\" data-role=\"title\">\n      <h2 class=\"record-card__name\" data-role=\"name\"></h2>\n      <span class=\"record-card__tags\" data-role=\"tags\"></span>\n    </div>\n    <div class=\"record-card__actions\" data-role=\"actions\" aria-label=\"Actions\"></div>\n  </header>\n\n  <div class=\"record-card__tiles\" data-role=\"tiles\"></div>\n\n  <div class=\"record-card__columns\">\n    <section class=\"record-card__l1\" data-role=\"l1\" aria-labelledby=\"record-card-l1\">\n      <h3 class=\"record-card__cardtitle\" id=\"record-card-l1\">Account details</h3>\n      <dl class=\"record-card__kv\" data-role=\"projection\"></dl>\n      <div data-role=\"facts\"></div>\n      <ul class=\"record-card__drills\" data-role=\"drills\"></ul>\n    </section>\n\n    <section class=\"record-card__cascade\" data-role=\"cascade\" data-cascade=\"0\" data-entity=\"service_target\" aria-labelledby=\"record-card-c0\">\n      <h3 class=\"record-card__cardtitle\" id=\"record-card-c0\">Service targets <span class=\"record-card__count\" data-role=\"count\"></span></h3>\n      <ul class=\"record-card__list\" data-role=\"list\" role=\"listbox\" aria-label=\"Service targets\"></ul>\n      <div class=\"record-card__selected\" data-role=\"selected\"></div>\n      <div class=\"record-card__child\" data-role=\"child\"></div>\n    </section>\n    <section class=\"record-card__cascade\" data-role=\"cascade\" data-cascade=\"1\" data-entity=\"service_location\" aria-labelledby=\"record-card-c1\">\n      <h3 class=\"record-card__cardtitle\" id=\"record-card-c1\">Work by location <span class=\"record-card__count\" data-role=\"count\"></span></h3>\n      <ul class=\"record-card__list\" data-role=\"list\" role=\"listbox\" aria-label=\"Work by location\"></ul>\n      <div class=\"record-card__selected\" data-role=\"selected\"></div>\n      <div class=\"record-card__child\" data-role=\"child\"></div>\n    </section>\n  </div>\n\n  <p class=\"record-card__waiting\" data-role=\"waiting\">Choose a Account from the list.</p>\n  <p class=\"record-card__empty\" data-role=\"empty\" hidden>No rows for this account yet.</p>\n  <p class=\"record-card__closed\" data-role=\"closed\" hidden></p>\n  <p class=\"record-card__error\" data-role=\"error\" role=\"alert\" hidden></p>\n</div>\n";
+
 // ==== INLINE-BEGIN ====
 var RecordCardSelectors = (function () {
   'use strict';
@@ -714,6 +720,7 @@ var RecordCardSelectors = (function () {
     async mount(container) {
       if (!container) throw new Error('AccountBlueprintUI.mount: no container');
       this.container = container;
+      container.innerHTML = SKELETON;
       this.client = this._client();
       var onClick = this._onClick.bind(this);
       container.addEventListener('click', onClick);
@@ -727,6 +734,7 @@ var RecordCardSelectors = (function () {
         for (const [evt, fn] of this._handlers) this.container.removeEventListener(evt, fn);
       }
       this._handlers.clear();
+      if (this.container) this.container.innerHTML = '';
       this.container = null;
       this.client = null;
       this.record = null;
