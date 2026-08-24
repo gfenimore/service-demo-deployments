@@ -446,3 +446,28 @@
     page-break-inside: avoid;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TOOLBAR + SEARCH (s39 Q6)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.blueprint-toolbar {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.blueprint-search-input {
+  flex: 1;
+  max-width: 360px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  border: 1px solid var(--blueprint-border, #d0d0d0);
+  border-radius: 4px;
+  background: var(--blueprint-bg, #fff);
+}
+
+.blueprint-search-input:focus {
+  outline: 2px solid var(--blueprint-accent, #0f62fe);
+  outline-offset: -1px;
+}

@@ -34,7 +34,12 @@
     this.totalCount = 0;
     this.isLoading = false;
     this.supabaseClient = null;
-    
+
+    // s39 Q6/Q7: the user's search text and the filter panel's conditions. Both narrow WITHIN
+    // the persona's filters, never past them (HITL ruling 2026-08-08).
+    this.userSearch = '';
+    this.userConditions = [];
+
     // Bound event handlers (for cleanup)
     this._boundHandlers = new Map();
     
@@ -189,6 +194,17 @@
   "isInternalSchema": false,
   "requiresTenantFiltering": true,
   "primaryKey": "account_id"
+},
+      // s39 Q6: the search box's declared fields -- OR across them, ANDed with everything else.
+      search: {
+  "fields": [
+    "account_name",
+    "primary_contact_name",
+    "billing_city",
+    "phone",
+    "email"
+  ],
+  "placeholder": "Search accounts..."
 },
       // Every persona's gate for this entity. visibleFields() picks one by context.facet.
       personas: {
@@ -408,7 +424,23 @@
     if (this.context && this.supabaseClient) {
       this.loadData();
     }
-    
+
+    // THE VOID CLOSED (s39 Q7, measured 2026-08-23): the filter panel emitted filter:filter-changed
+    // since it was built and NO list ever listened. The conditions arrive ANDed and are applied
+    // UNDER the persona's filters in fetchFromSupabase -- narrowing only, never widening.
+    this._onFilterChanged = (e) => {
+      this.userConditions = (e.detail && e.detail.conditions) || [];
+      this.currentPage = 1;
+      if (this.context && this.supabaseClient) this.loadData(true);
+    };
+    this._onFilterCleared = () => {
+      this.userConditions = [];
+      this.currentPage = 1;
+      if (this.context && this.supabaseClient) this.loadData(true);
+    };
+    document.addEventListener('filter:filter-changed', this._onFilterChanged);
+    document.addEventListener('filter:filter-cleared', this._onFilterCleared);
+
     // Emit ready event
     this.emit('blueprint:ready', {});
     
@@ -427,6 +459,8 @@
       console.warn('[AccountBlueprintUI] Component not mounted, nothing to unmount');
       return;
     }
+    if (this._onFilterChanged) document.removeEventListener('filter:filter-changed', this._onFilterChanged);
+    if (this._onFilterCleared) document.removeEventListener('filter:filter-cleared', this._onFilterCleared);
     
     // Remove all event listeners
     this._boundHandlers.forEach((handler, element) => {
@@ -663,7 +697,9 @@
   /**
    * Load data from API using context configuration.
    */
-  async loadData() {
+  async loadData(quiet) {
+    // `quiet` (s39): a search keystroke or a filter change reloads WITHOUT the intermediate
+    // loading render -- one repaint per change, and the search box does not lose its focus twice.
     if (!this.context) {
       console.warn('[AccountBlueprintUI] Cannot load data: no context');
       return;
@@ -672,7 +708,7 @@
 
     this.isLoading = true;
     this.loadError = null;
-    this.render();
+    if (!quiet) this.render();
 
     // Create abort controller for cancellation
     this._abortController = new AbortController();
@@ -762,6 +798,26 @@
         continue;
       }
       query = Array.isArray(allowed) ? query.in(column, allowed) : query.eq(column, allowed);
+    }
+
+    // THE USER'S FILTERS (s39 Q7): the panel's conditions, ANDed, applied UNDER the persona's
+    // filters above -- a user filter narrows within the role's scope and can never widen past it
+    // (HITL ruling 2026-08-08). Operators: equals / in / contains (substring) / cs (array member,
+    // the geographic-areas column).
+    for (const c of this.userConditions || []) {
+      if (!c || !c.field || c.value === '' || c.value === null || c.value === undefined) continue;
+      if (c.operator === 'cs') query = query.contains(c.field, [c.value]);
+      else if (c.operator === 'in') query = query.in(c.field, Array.isArray(c.value) ? c.value : [c.value]);
+      else if (c.operator === 'contains' || c.operator === 'ilike' || c.operator === 'like') query = query.ilike(c.field, '%' + String(c.value).replace(/[%,()*]/g, ' ').trim() + '%');
+      else query = query.eq(c.field, c.value);
+    }
+
+    // THE SEARCH (s39 Q6): the declared fields, OR across them, ANDed with everything above.
+    // Commas, parens and wildcards in the typed text are neutralized -- PostgREST's .or()
+    // grammar would read them as syntax, and a search box must never be a query editor.
+    if (this.userSearch) {
+      const q = String(this.userSearch).replace(/[%,()*]/g, ' ').trim();
+      if (q) query = query.or(this.config.search.fields.map((f) => f + '.ilike.%' + q + '%').join(','));
     }
 
     const { data, error, count } = await query
@@ -883,17 +939,36 @@
    * Build the HTML structure.
    */
   buildHTML() {
+    // The toolbar (the search box) stays on the page in the empty and loading states too --
+    // a search that empties the list must still offer its own undoing (s39 Q6).
     if (!this.context) {
       return this.buildNoContextHTML();
     } else if (this.isLoading) {
-      return this.buildLoadingHTML();
+      return this.buildToolbarHTML() + this.buildLoadingHTML();
     } else if (this.loadError) {
       return this.buildErrorHTML();
     } else if (this.data.length === 0) {
-      return this.buildEmptyHTML();
+      return this.buildToolbarHTML() + this.buildEmptyHTML();
     } else {
-      return this.buildTableHTML();
+      return this.buildToolbarHTML() + this.buildTableHTML();
     }
+  }
+
+  /**
+   * The list's toolbar: today the search box alone (s39 Q6). Renders nothing when the
+   * blueprint declares no search -- another entity's list is exactly what it was.
+   */
+  buildToolbarHTML() {
+    const s = this.config.search;
+    if (!s || !Array.isArray(s.fields) || s.fields.length === 0) return '';
+    return `
+      <div class="blueprint-toolbar">
+        <input type="search" class="blueprint-search-input"
+               placeholder="${this.escapeHtml(s.placeholder || 'Search...')}"
+               value="${this.escapeHtml(this.userSearch)}"
+               aria-label="${this.escapeHtml(s.placeholder || 'Search')}">
+      </div>
+    `;
   }
 
   buildErrorHTML() {
@@ -1106,6 +1181,26 @@
    * Attach event listeners to rendered elements.
    */
   attachEventListeners() {
+    // The search box (s39 Q6): debounced, quiet reloads, focus restored across the re-render
+    // (render() rebuilds the container's markup, which would otherwise eat a keystroke's focus).
+    const search = this.container.querySelector('.blueprint-search-input');
+    if (search) {
+      if (this._searchHadFocus) {
+        search.focus();
+        search.setSelectionRange(search.value.length, search.value.length);
+        this._searchHadFocus = false;
+      }
+      search.addEventListener('input', () => {
+        this.userSearch = search.value;
+        this._searchHadFocus = true;
+        if (this._searchTimer) clearTimeout(this._searchTimer);
+        this._searchTimer = setTimeout(() => {
+          this.currentPage = 1;
+          if (this.context && this.supabaseClient) this.loadData(true);
+        }, 300);
+      });
+    }
+
     // Use event delegation on container
     const handler = (e) => {
       const target = e.target.closest('[data-action]');

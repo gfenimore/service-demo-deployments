@@ -1,0 +1,117 @@
+<!-- FILTER-PANEL-001: Composable Filter Panel Pattern -->
+<!-- Part of the Pattern Factory Language -->
+<div id="account-filters" class="filter-panel filter-panel--minimal">
+    <div class="filter-panel__header">
+        <h3 class="filter-panel__title">Account Filters</h3>
+    </div>
+    
+    <div class="filter-panel__body">
+        
+        <div class="filter-panel__controls filter-panel__controls--horizontal">
+            <div class="filter-grid filter-grid--cols-4">
+                <div class="filter-control" data-field="status">
+                    <label class="filter-label" for="filter-status">
+                        Status
+                        
+                    </label>
+                    
+                    <select 
+                        id="filter-status" 
+                        name="status"
+                        class="filter-input filter-input--select"
+                        
+                        data-operator="eq">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    
+                    
+                    
+                    
+                    
+                </div>
+                <div class="filter-control" data-field="billing_city">
+                    <label class="filter-label" for="filter-billing_city">
+                        City
+                        
+                    </label>
+                    
+                    
+                    
+                    <input 
+                        type="text"
+                        id="filter-billing_city"
+                        name="billing_city"
+                        class="filter-input filter-input--text"
+                        placeholder="Search Billing City..."
+                        
+                        data-operator="ilike">
+                    
+                    
+                    
+                </div>
+                <div class="filter-control" data-field="service_frequency">
+                    <label class="filter-label" for="filter-service_frequency">
+                        Service frequency
+                        
+                    </label>
+                    
+                    <select 
+                        id="filter-service_frequency" 
+                        name="service_frequency"
+                        class="filter-input filter-input--select"
+                        
+                        data-operator="eq">
+                        <option value="">All Service frequency</option>
+                        <option value="annual">Annual</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                    </select>
+                    
+                    
+                    
+                    
+                    
+                </div>
+                <div class="filter-control" data-field="geographic_areas">
+                    <label class="filter-label" for="filter-geographic_areas">
+                        Geographic area
+                        
+                    </label>
+                    
+                    <select 
+                        id="filter-geographic_areas" 
+                        name="geographic_areas"
+                        class="filter-input filter-input--select"
+                        
+                        data-operator="cs">
+                        <option value="">All Geographic area</option>
+                        <option value="Bree-land">Bree-land</option>
+                        <option value="The Shire">The Shire</option>
+                    </select>
+                    
+                    
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-panel__actions">
+            
+            <button class="btn btn--secondary filter-clear">
+                Clear All
+            </button>
+            
+        </div>
+    </div>
+    
+    <div class="filter-panel__status">
+        <span class="active-filter-count">No filters applied</span>
+    </div>
+</div>
+
+<!-- This is a composable pattern - it emits events for other patterns to consume -->
+<!-- Events emitted: filter-changed, filter-cleared, filter-saved, filter-loaded -->

@@ -26,6 +26,7 @@
          dropped the whole GATE 6 apparatus: emitted components were never linked, loaded or
          mounted, and the first Demo Pest Control render was an empty frame with a working nav.
          Shell CSS loads first so a component can override it. -->
+    <link rel="stylesheet" href="../account-filter-panel/filter-panel.css">
     <link rel="stylesheet" href="../account-list-view/list-view.css">
     <link rel="stylesheet" href="../account-record-card/cascading-cards.css">
     <link rel="stylesheet" href="../create-account-form/form-crud.css">
@@ -45,17 +46,22 @@
     </cds-header>
 
     <!-- ═══ SIDE NAV ═════════════════════════════════════════════════════════════════════════
-      Three levels, exactly as the resolver builds them: module -> submodule -> feature. A module
-      with children becomes a cds-side-nav-menu; one without becomes a plain link, because an
-      expandable menu that opens onto nothing is worse than no affordance at all.
+      THE HEADER DRIVES THIS NAV (s39 Q8, his red pen: "the current arrangement is irritating").
+      Until s39 the header and this nav each rendered the SAME module tree, fully and
+      independently -- two copies, no relationship. Now the header names the MODULES and this
+      nav shows ONLY the selected module's PLACES: its features with concrete routes (View
+      Accounts, New Account). A parameterized route (/accounts/:id) is a record's page --
+      reached from a list, never from a nav -- so it is not an item (the generator stamps
+      `parameterized` on the tree). One <cds-side-nav-items> group per module; syncModuleNav()
+      below shows the selected module's group and hides the rest, keyed by the hash alone.
     -->
-    <cds-side-nav is-not-child-of-header aria-label="Side navigation" collapse-mode="responsive">
-        <cds-side-nav-items>
-            <cds-side-nav-menu title="Accounts" data-module-id="a0004000-0000-0000-0000-000000000002">
-                <cds-side-nav-menu-item href="#/accounts" data-feature-id="a0004000-0000-0000-0000-000000000004">View Accounts</cds-side-nav-menu-item>
-                <cds-side-nav-menu-item href="#/accounts/new" data-feature-id="b7c5b459-bb73-4d88-9d46-9e0f0a732d01">New Account</cds-side-nav-menu-item>
-                <cds-side-nav-menu-item href="#/accounts/:id" data-feature-id="a0004000-0000-0000-0000-000000000010">Account Master View</cds-side-nav-menu-item>
-            </cds-side-nav-menu>
+    <!-- `expanded`: this nav is the module's standing navigation, not a drawer -- collapsed it
+         renders two-letter stubs ("V..", "N..") and the demo reads as broken (s39 Q8, the chair's
+         own screenshot caught it). -->
+    <cds-side-nav is-not-child-of-header expanded aria-label="Side navigation" collapse-mode="fixed">
+        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000002" hidden>
+            <cds-side-nav-link href="#/accounts" data-feature-id="a0004000-0000-0000-0000-000000000004">View Accounts</cds-side-nav-link>
+            <cds-side-nav-link href="#/accounts/new" data-feature-id="b7c5b459-bb73-4d88-9d46-9e0f0a732d01">New Account</cds-side-nav-link>
         </cds-side-nav-items>
     </cds-side-nav>
 
@@ -96,6 +102,7 @@
          put in them. One mounting system owns the page (C5, 2026-08-14) -- this IS that
          system; the wiring generator's files stay reference-only beside it.
          ================================================================== -->
+    <script src="../account-filter-panel/filter-panel.js"></script>
     <script src="../account-list-view/list-view.js"></script>
     <script src="../account-record-card/cascading-cards.js"></script>
     <script src="../create-account-form/form-crud.js"></script>
@@ -104,6 +111,17 @@
     <script>
         // GATE 6 -- what mounts where, projected from app_components.
         window.ShellMounts = [
+  {
+    "slug": "account-filter-panel",
+    "name": "Account Filter Panel",
+    "zone": "main",
+    "order": 0,
+    "blueprintId": "c4000000-0000-0000-0000-000000000001",
+    "patternId": "filter-panel-001",
+    "script": "../account-filter-panel/filter-panel.js",
+    "css": "../account-filter-panel/filter-panel.css",
+    "route": "/accounts"
+  },
   {
     "slug": "account-list-view",
     "name": "Account List View",
@@ -252,6 +270,36 @@
             }
         }
 
+        // THE HEADER DRIVES THE LEFT NAV (s39 Q8). The hash is the single source of truth: boot,
+        // a header click, a row click and a bookmarked URL all pass through here. The module that
+        // owns the current route (longest matching feature route wins) has its side-nav group
+        // shown and its header item marked current; every other group is hidden.
+        function syncModuleNav() {
+            var hash = (window.location.hash || '#').slice(1) || '/';
+            var groups = document.querySelectorAll('cds-side-nav-items[data-for-module]');
+            var best = null, bestLen = -1;
+            groups.forEach(function (g) {
+                g.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
+                    var r = (a.getAttribute('href') || '').slice(1);
+                    if (r && hash.indexOf(r) === 0 && r.length > bestLen) {
+                        best = g.getAttribute('data-for-module'); bestLen = r.length;
+                    }
+                });
+            });
+            if (!best && groups.length) best = groups[0].getAttribute('data-for-module');
+            groups.forEach(function (g) { g.hidden = g.getAttribute('data-for-module') !== best; });
+            document.querySelectorAll('cds-header-nav-item[data-module-id]').forEach(function (it) {
+                var on = it.getAttribute('data-module-id') === best;
+                if (on) { it.setAttribute('active', ''); it.setAttribute('aria-current', 'page'); }
+                else { it.removeAttribute('active'); it.removeAttribute('aria-current'); }
+            });
+            document.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
+                if ((a.getAttribute('href') || '').slice(1) === hash) a.setAttribute('active', '');
+                else a.removeAttribute('active');
+            });
+        }
+        window.addEventListener('hashchange', syncModuleNav);
+
         function wireRoutes() {
             var live = window.ShellMounted || [];
             var mounts = (window.ShellMounts || []).filter(function (m) {
@@ -358,6 +406,7 @@
             var hash = (window.location.hash || '').slice(1);
             if (hash && window.ShellNavigation._matchRoute(hash)) { start = hash; }
             window.ShellNavigation.navigate(start, false);
+            syncModuleNav();
 
             console.log('[AppShell] ' + routes.length + ' route(s) registered, ' +
                         pinned.length + ' component(s) pinned; opening at ' + start);

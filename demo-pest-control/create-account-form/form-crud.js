@@ -605,6 +605,17 @@
       .join(', ');
     if (!query) return;
 
+    // A suggestion the user PICKED already carries its coordinates (s39 Q1, the type-ahead).
+    // If the address fields still read exactly as they did at the pick, the pick's center is
+    // the answer and no second geocode is spent. Any edit after the pick voids it.
+    if (this._picked && this._picked.query === query && this._picked.center) {
+      formData[gc.longitude_field] = this._picked.center[0];
+      formData[gc.latitude_field] = this._picked.center[1];
+      console.log('[AccountFormUI] coordinates from the picked suggestion: ' +
+                  this._picked.center[1] + ', ' + this._picked.center[0]);
+      return;
+    }
+
     try {
       const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
                   encodeURIComponent(query) + '.json?limit=1&access_token=' +
@@ -630,6 +641,116 @@
       console.warn('[AccountFormUI] geocoding failed (' + err.message + ') -- saving ' +
                    'without coordinates.');
     }
+  }
+
+  /**
+   * THE ADDRESS TYPES AHEAD (s39 Q1; s31 INPUT #1 -- his words: "the real map requirement was
+   * TYPE-AHEAD address validation while the user types"; geocode-on-save above was its
+   * component-layer shadow and stays as the fallback for a hand-typed address).
+   *
+   * Driven by the SAME blueprint key (geocode_on_save.address_fields, ordered street / city /
+   * state / zip) -- no new schema. Suggestions come from the blueprint's provider (Mapbox forward
+   * geocoding with autocomplete) using the deployment-seam token; no token, no type-ahead, and the
+   * save-path warning above still says why coordinates are absent. A picked suggestion fills all
+   * four fields, stages the feature's coordinates for save, and fires input events so the dirty
+   * state is honest.
+   */
+  initAddressTypeahead(form) {
+    const gc = this.config.geocodeOnSave;
+    if (!gc || !Array.isArray(gc.address_fields) || gc.address_fields.length < 2) return;
+    const ctx = window.AppContext || {};
+    const token = ctx.integrations && ctx.integrations.mapboxToken;
+    if (!token || /^__[A-Z_]+__$/.test(token)) return;
+
+    const street = form.querySelector('[name="' + gc.address_fields[0] + '"]');
+    if (!street || street.tagName !== 'INPUT') return;
+
+    const list = document.createElement('ul');
+    list.className = 'blueprint-suggest';
+    list.setAttribute('role', 'listbox');
+    list.hidden = true;
+    street.setAttribute('autocomplete', 'off');
+    street.parentNode.style.position = 'relative';
+    street.parentNode.appendChild(list);
+
+    let timer = null;
+    let active = -1;
+    let features = [];
+
+    const hide = () => { list.hidden = true; list.innerHTML = ''; active = -1; features = []; };
+
+    const renderList = () => {
+      list.innerHTML = features.map((f, i) =>
+        '<li role="option" data-i="' + i + '"' + (i === active ? ' aria-selected="true"' : '') + '>' +
+        this.escapeHtml(f.place_name || f.text || '') + '</li>').join('');
+      list.hidden = features.length === 0;
+    };
+
+    const pick = (i) => {
+      const f = features[i];
+      if (!f) return;
+      const parts = { street: (f.address ? f.address + ' ' : '') + (f.text || ''), city: '', state: '', zip: '' };
+      for (const c of f.context || []) {
+        const kind = String(c.id || '').split('.')[0];
+        if (kind === 'place') parts.city = c.text || '';
+        else if (kind === 'region') parts.state = (c.short_code || '').split('-').pop().toUpperCase() || c.text || '';
+        else if (kind === 'postcode') parts.zip = c.text || '';
+      }
+      const order = ['street', 'city', 'state', 'zip'];
+      gc.address_fields.forEach((name, idx) => {
+        const input = form.querySelector('[name="' + name + '"]');
+        if (!input) return;
+        input.value = parts[order[idx]] || '';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      this._picked = {
+        center: f.center,
+        query: gc.address_fields
+          .map((name) => { const el = form.querySelector('[name="' + name + '"]'); return el ? el.value : ''; })
+          .filter((v) => v != null && String(v).trim() !== '')
+          .join(', ')
+      };
+      console.log('[AccountFormUI] address picked from suggestion: "' + (f.place_name || '') + '"');
+      hide();
+    };
+
+    const inputHandler = () => {
+      this._picked = null;                      // typing after a pick voids it -- save re-geocodes
+      if (timer) clearTimeout(timer);
+      const q = street.value.trim();
+      if (q.length < 3) { hide(); return; }
+      timer = setTimeout(async () => {
+        try {
+          const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+                      encodeURIComponent(q) + '.json?autocomplete=true&country=us&types=address' +
+                      '&limit=5&access_token=' + encodeURIComponent(token);
+          const res = await fetch(url);
+          if (!res.ok) { hide(); return; }
+          const body = await res.json();
+          features = (body.features || []).filter((f) => Array.isArray(f.center));
+          active = -1;
+          renderList();
+        } catch (err) { hide(); }               // a suggest outage is silence, never a block
+      }, 300);
+    };
+
+    const keyHandler = (e) => {
+      if (list.hidden) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, features.length - 1); renderList(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); renderList(); }
+      else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); pick(active); }
+      else if (e.key === 'Escape') hide();
+    };
+
+    // mousedown beats the input's blur, so a click on a suggestion is never lost to the hide
+    list.addEventListener('mousedown', (e) => {
+      const li = e.target.closest('li[data-i]');
+      if (li) { e.preventDefault(); pick(parseInt(li.dataset.i, 10)); }
+    });
+    street.addEventListener('input', inputHandler);
+    street.addEventListener('keydown', keyHandler);
+    street.addEventListener('blur', () => setTimeout(hide, 150));
+    this._boundHandlers.set(street, inputHandler);
   }
 
   /**
@@ -1330,7 +1451,10 @@
     };
     form.addEventListener('input', changeHandler);
     form.addEventListener('change', changeHandler);
-    
+
+    // The address types ahead when the blueprint declares address fields (s39 Q1)
+    this.initAddressTypeahead(form);
+
     // Button actions
     const clickHandler = (e) => {
       const target = e.target.closest('[data-action]');
