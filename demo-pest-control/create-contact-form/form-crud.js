@@ -145,13 +145,30 @@
   {
     "name": "communication_preference",
     "label": "Prefers",
-    "type": "text",
+    "type": "select",
     "required": false,
     "readOnly": false,
     "hidden": false,
     "placeholder": "Enter Prefers",
     "helpText": "",
-    "options": [],
+    "options": [
+      {
+        "value": "",
+        "label": "(none)"
+      },
+      {
+        "value": "voice",
+        "label": "voice"
+      },
+      {
+        "value": "text",
+        "label": "text"
+      },
+      {
+        "value": "email",
+        "label": "email"
+      }
+    ],
     "section": null
   }
 ],
