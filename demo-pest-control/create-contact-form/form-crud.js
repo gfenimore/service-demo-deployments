@@ -1,8 +1,8 @@
 /**
- * Account - Generated Blueprint UI (Form)
- * Blueprint ID: d0000001-0001-0001-0002-000000000001
+ * Contact - Generated Blueprint UI (Form)
+ * Blueprint ID: c5000000-0000-0000-0000-000000000001
  * Pattern: FORM-CRUD-SIMPLE
- * Entity: account
+ * Entity: contact
  * 
  * Implements Pattern Interface Contract (JBA-003)
  * - mount(container): Render into container
@@ -22,7 +22,7 @@
    * Blueprint UI Class - Contract Compliant (Form)
    * Can be mounted into ANY application shell
    */
-  class AccountFormUI {
+  class ContactFormUI {
   
   // ═══════════════════════════════════════════════════════════════════════
   // CONSTRUCTOR
@@ -52,21 +52,21 @@
     
     // Metadata (from Blueprint definition)
     this.metadata = {
-      blueprint_id: 'd0000001-0001-0001-0002-000000000001',
-      title: 'Account',
+      blueprint_id: 'c5000000-0000-0000-0000-000000000001',
+      title: 'Contact',
       pattern_type: 'FORM-CRUD-SIMPLE',
-      entity: 'account',
+      entity: 'contact',
       icon: 'edit',
-      route: '/account/form',
-      permissions_required: ['account:write'],
+      route: '/contact/form',
+      permissions_required: ['contact:write'],
       sopf_node: 'unknown',
       role_context_id: '',
-      description: 'Create and edit account records'
+      description: 'Create and edit contact records'
     };
     
     // Configuration
     this.config = {
-      entity: 'account',
+      entity: 'contact',
       // Where this form WRITES. Same key and same shape as list-view: the schema is a fact about
       // the BLUEPRINT, not about whichever app happens to be hosting the component.
       database: {
@@ -74,148 +74,89 @@
   "isInternalSchema": false,
   "requiresTenantFiltering": true
 },
-      geocodeOnSave: {"provider":"mapbox","address_fields":["billing_street_address","billing_city","billing_state","billing_zip_code"],"latitude_field":"billing_latitude","longitude_field":"billing_longitude"},
+      geocodeOnSave: null,
       // THE PARENT (s40; form-crud 1.1.0): {field} -- the column on this entity holding the
       // parent record's id. The bar's summons hands the focused record via setRecordId; the
       // form stages it, shows whose child it adds, and refuses to save unparented (s31 ban).
-      parent: null,
-      table: 'account',
-      primaryKey: 'account_id',
+      parent: {"field":"account_id"},
+      table: 'contact',
+      primaryKey: 'contact_id',
       fields: [
   {
-    "name": "account_name",
-    "label": "Account Name",
+    "name": "first_name",
+    "label": "First name",
     "type": "text",
     "required": true,
     "readOnly": false,
     "hidden": false,
-    "placeholder": "Enter Account Name",
+    "placeholder": "Enter First name",
     "helpText": "",
     "options": [],
-    "section": "identity"
+    "section": null
   },
   {
-    "name": "account_type",
-    "label": "Account Type",
-    "type": "select",
-    "required": false,
+    "name": "last_name",
+    "label": "Last name",
+    "type": "text",
+    "required": true,
     "readOnly": false,
     "hidden": false,
-    "placeholder": "Enter Account Type",
+    "placeholder": "Enter Last name",
     "helpText": "",
-    "options": [
-      {
-        "value": "residential",
-        "label": "residential"
-      },
-      {
-        "value": "commercial",
-        "label": "commercial"
-      }
-    ],
-    "section": "identity"
+    "options": [],
+    "section": null
   },
   {
-    "name": "billing_street_address",
-    "label": "Street",
+    "name": "phone_number",
+    "label": "Phone",
     "type": "text",
     "required": false,
     "readOnly": false,
     "hidden": false,
-    "placeholder": "Enter Street",
+    "placeholder": "Enter Phone",
     "helpText": "",
     "options": [],
-    "section": "billing"
+    "section": null
   },
   {
-    "name": "billing_city",
-    "label": "City",
+    "name": "email_address",
+    "label": "Email",
     "type": "text",
     "required": false,
     "readOnly": false,
     "hidden": false,
-    "placeholder": "Enter City",
+    "placeholder": "Enter Email",
     "helpText": "",
     "options": [],
-    "section": "billing"
+    "section": null
   },
   {
-    "name": "billing_state",
-    "label": "State",
+    "name": "is_primary_contact",
+    "label": "Primary contact",
+    "type": "boolean",
+    "required": false,
+    "readOnly": false,
+    "hidden": false,
+    "placeholder": "Enter Primary contact",
+    "helpText": "",
+    "options": [],
+    "section": null
+  },
+  {
+    "name": "communication_preference",
+    "label": "Prefers",
     "type": "text",
     "required": false,
     "readOnly": false,
     "hidden": false,
-    "placeholder": "Enter State",
+    "placeholder": "Enter Prefers",
     "helpText": "",
     "options": [],
-    "section": "billing"
-  },
-  {
-    "name": "billing_zip_code",
-    "label": "ZIP",
-    "type": "text",
-    "required": false,
-    "readOnly": false,
-    "hidden": false,
-    "placeholder": "Enter ZIP",
-    "helpText": "",
-    "options": [],
-    "section": "billing"
-  },
-  {
-    "name": "status",
-    "label": "Status",
-    "type": "select",
-    "required": false,
-    "readOnly": false,
-    "hidden": false,
-    "placeholder": "Enter Status",
-    "helpText": "",
-    "options": [
-      {
-        "value": "active",
-        "label": "active"
-      },
-      {
-        "value": "inactive",
-        "label": "inactive"
-      },
-      {
-        "value": "suspended",
-        "label": "suspended"
-      }
-    ],
-    "section": "identity"
-  },
-  {
-    "name": "internal_notes",
-    "label": "Internal Notes",
-    "type": "textarea",
-    "required": false,
-    "readOnly": false,
-    "hidden": false,
-    "placeholder": "Enter Internal Notes",
-    "helpText": "",
-    "options": [],
-    "section": "notes"
+    "section": null
   }
 ],
       // Labelled dividers in render order. [] = one flat stack, the pre-2026-08-08 behaviour.
-      sections: [
-  {
-    "key": "identity",
-    "label": "Identity"
-  },
-  {
-    "key": "billing",
-    "label": "Billing address"
-  },
-  {
-    "key": "notes",
-    "label": "Notes"
-  }
-],
+      sections: [],
       validation: {
   "client": true,
   "server": false
@@ -223,24 +164,7 @@
       // Every persona's gate for this entity. visibleFields() picks one by context.facet.
       personas: {
   "ADMIN_FULL": {
-    "fields": [
-      "account_name",
-      "account_type",
-      "billing_street_address",
-      "billing_city",
-      "billing_state",
-      "billing_zip_code",
-      "status",
-      "internal_notes",
-      "phone",
-      "email",
-      "balance",
-      "last_service_date",
-      "next_service_date",
-      "service_frequency",
-      "created_at",
-      "updated_at"
-    ],
+    "fields": null,
     "readonly": [],
     "filters": null,
     "actions": [
@@ -256,20 +180,8 @@
     ]
   },
   "FIELD_TECH": {
-    "fields": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "next_service_date"
-    ],
-    "readonly": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "next_service_date"
-    ],
+    "fields": null,
+    "readonly": [],
     "filters": {
       "status": [
         "active"
@@ -281,23 +193,8 @@
     ]
   },
   "GENERIC_USER": {
-    "fields": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "billing_state",
-      "billing_zip_code",
-      "phone",
-      "email",
-      "status",
-      "balance",
-      "created_at"
-    ],
-    "readonly": [
-      "account_name",
-      "status",
-      "balance"
-    ],
+    "fields": null,
+    "readonly": [],
     "filters": null,
     "actions": [
       "view",
@@ -307,24 +204,8 @@
     ]
   },
   "OPS_MANAGER": {
-    "fields": [
-      "account_name",
-      "account_type",
-      "billing_street_address",
-      "billing_city",
-      "billing_state",
-      "billing_zip_code",
-      "status",
-      "phone",
-      "email",
-      "balance",
-      "last_service_date",
-      "next_service_date",
-      "service_frequency"
-    ],
-    "readonly": [
-      "balance"
-    ],
+    "fields": null,
+    "readonly": [],
     "filters": null,
     "actions": [
       "view",
@@ -336,20 +217,8 @@
     ]
   },
   "SERVICE_MANAGER": {
-    "fields": [
-      "account_name",
-      "billing_street_address",
-      "billing_city",
-      "phone",
-      "status",
-      "last_service_date",
-      "next_service_date",
-      "service_frequency"
-    ],
-    "readonly": [
-      "account_name",
-      "status"
-    ],
+    "fields": null,
+    "readonly": [],
     "filters": {
       "status": [
         "active"
@@ -366,26 +235,8 @@
     ]
   },
   "CUSTOMER_SERVICE": {
-    "fields": [
-      "account_name",
-      "account_type",
-      "status",
-      "billing_street_address",
-      "billing_city",
-      "billing_state",
-      "billing_zip_code",
-      "internal_notes",
-      "created_at",
-      "phone",
-      "email"
-    ],
-    "readonly": [
-      "account_name",
-      "status",
-      "balance",
-      "last_service_date",
-      "next_service_date"
-    ],
+    "fields": null,
+    "readonly": [],
     "filters": {
       "status": [
         "active"
@@ -430,7 +281,7 @@
     this.container = container;
     
     // Add scoped CSS class
-    this.container.classList.add('blueprint-account-form');
+    this.container.classList.add('blueprint-contact-form');
     
     // Store recordId if provided for edit mode
     if (options.recordId) {
@@ -444,7 +295,7 @@
     // Emit ready event
     this.emit('blueprint:ready', {});
     
-    console.log('[AccountFormUI] Mounted successfully');
+    console.log('[ContactFormUI] Mounted successfully');
   }
   
   // ═══════════════════════════════════════════════════════════════════════
@@ -456,13 +307,13 @@
    */
   unmount() {
     if (!this.container) {
-      console.warn('[AccountFormUI] Component not mounted, nothing to unmount');
+      console.warn('[ContactFormUI] Component not mounted, nothing to unmount');
       return;
     }
     
     // Warn about unsaved changes
     if (this._isDirty) {
-      console.warn('[AccountFormUI] Unmounting with unsaved changes');
+      console.warn('[ContactFormUI] Unmounting with unsaved changes');
     }
     
     // Remove all event listeners
@@ -482,7 +333,7 @@
     
     // Clear container content
     this.container.innerHTML = '';
-    this.container.classList.remove('blueprint-account-form');
+    this.container.classList.remove('blueprint-contact-form');
     
     // Reset state
     this.container = null;
@@ -499,7 +350,7 @@
     // A Supabase client is not a DOM resource; the handlers, abort controller and markup that are
     // are all released above.
 
-    console.log('[AccountFormUI] Unmounted and cleaned up');
+    console.log('[ContactFormUI] Unmounted and cleaned up');
   }
   
   // ═══════════════════════════════════════════════════════════════════════
@@ -549,7 +400,7 @@
     // rather than silently doing nothing, which is what a list-view did until it was caught by
     // driving the switcher for real.
     if (previousContext && previousContext.facet !== context.facet && this.container) {
-      console.log('[AccountFormUI] Persona changed, re-rendering:', context.facet || '(none)');
+      console.log('[ContactFormUI] Persona changed, re-rendering:', context.facet || '(none)');
       this.render();
     }
 
@@ -561,7 +412,7 @@
       this.render();
     }
     
-    console.log('[AccountFormUI] Context received:', {
+    console.log('[ContactFormUI] Context received:', {
       tenant_id: context.tenant_id,
       role: context.role
     });
@@ -605,7 +456,7 @@
     const ctx = window.AppContext || {};
     const token = ctx.integrations && ctx.integrations.mapboxToken;
     if (!token || /^__[A-Z_]+__$/.test(token)) {
-      console.warn('[AccountFormUI] geocode_on_save declared but no Mapbox token is ' +
+      console.warn('[ContactFormUI] geocode_on_save declared but no Mapbox token is ' +
                    'substituted (app-config.js integrations.mapboxToken) -- saving ' +
                    'without coordinates.');
       return;
@@ -623,7 +474,7 @@
     if (this._picked && this._picked.query === query && this._picked.center) {
       formData[gc.longitude_field] = this._picked.center[0];
       formData[gc.latitude_field] = this._picked.center[1];
-      console.log('[AccountFormUI] coordinates from the picked suggestion: ' +
+      console.log('[ContactFormUI] coordinates from the picked suggestion: ' +
                   this._picked.center[1] + ', ' + this._picked.center[0]);
       return;
     }
@@ -637,7 +488,7 @@
       const body = await res.json();
       const feature = body.features && body.features[0];
       if (!feature || !feature.center) {
-        console.warn('[AccountFormUI] address did not geocode: "' + query + '" -- ' +
+        console.warn('[ContactFormUI] address did not geocode: "' + query + '" -- ' +
                      'saving without coordinates.');
         this.emit('blueprint:notify', {
           message: 'Address could not be verified on the map -- saved without coordinates',
@@ -647,10 +498,10 @@
       }
       formData[gc.longitude_field] = feature.center[0];
       formData[gc.latitude_field] = feature.center[1];
-      console.log('[AccountFormUI] geocoded "' + query + '" -> ' +
+      console.log('[ContactFormUI] geocoded "' + query + '" -> ' +
                   feature.center[1] + ', ' + feature.center[0]);
     } catch (err) {
-      console.warn('[AccountFormUI] geocoding failed (' + err.message + ') -- saving ' +
+      console.warn('[ContactFormUI] geocoding failed (' + err.message + ') -- saving ' +
                    'without coordinates.');
     }
   }
@@ -722,7 +573,7 @@
           .filter((v) => v != null && String(v).trim() !== '')
           .join(', ')
       };
-      console.log('[AccountFormUI] address picked from suggestion: "' + (f.place_name || '') + '"');
+      console.log('[ContactFormUI] address picked from suggestion: "' + (f.place_name || '') + '"');
       hide();
     };
 
@@ -771,7 +622,7 @@
    */
   async save() {
     if (!this.container) {
-      console.warn('[AccountFormUI] Cannot save: not mounted');
+      console.warn('[ContactFormUI] Cannot save: not mounted');
       return false;
     }
     
@@ -795,7 +646,7 @@
       if (!this.parentId) {
         this.emit('blueprint:error', {
           code: 'PARENT_REQUIRED',
-          message: 'This form adds a account to a parent record and none is staged -- ' +
+          message: 'This form adds a contact to a parent record and none is staged -- ' +
                    'open it from that record (' + this.config.parent.field + ' is required).'
         });
         return false;
@@ -900,7 +751,7 @@
    */
   emit(eventName, detail) {
     if (!this.container) {
-      console.warn(`[AccountFormUI] Cannot emit ${eventName}: not mounted`);
+      console.warn(`[ContactFormUI] Cannot emit ${eventName}: not mounted`);
       return;
     }
     
@@ -948,7 +799,7 @@
    */
   initSupabase(supabaseConfig) {
     if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
-      console.warn('[AccountFormUI] Supabase client library not loaded');
+      console.warn('[ContactFormUI] Supabase client library not loaded');
       return;
     }
 
@@ -961,7 +812,7 @@
                          window.AppContext.supabase.schema) || 'public';
     if (window.ShellData && (this.config.database.schema || 'public') === shellSchema) {
       this.supabaseClient = window.ShellData;
-      console.log('[AccountFormUI] using the shell data client');
+      console.log('[ContactFormUI] using the shell data client');
       return;
     }
 
@@ -979,9 +830,9 @@
           // queries. Empty when the app declares no auth -- anon behavior unchanged.
           global: { headers: (window.AppContext && window.AppContext.authHeaders) || {} } }
       );
-      console.log('[AccountFormUI] Supabase client initialized');
+      console.log('[ContactFormUI] Supabase client initialized');
     } catch (error) {
-      console.error('[AccountFormUI] Failed to initialize Supabase:', error);
+      console.error('[ContactFormUI] Failed to initialize Supabase:', error);
     }
   }
   
@@ -994,7 +845,7 @@
    */
   async loadRecord(id) {
     if (!this.context) {
-      console.warn('[AccountFormUI] Cannot load record: no context');
+      console.warn('[ContactFormUI] Cannot load record: no context');
       return;
     }
     
@@ -1027,7 +878,7 @@
       
       this.emit('blueprint:error', {
         code: 'DATA_LOAD_FAILED',
-        message: `Failed to load account: ${error.message}`
+        message: `Failed to load contact: ${error.message}`
       });
     }
   }
@@ -1037,9 +888,9 @@
    */
   async fetchRecordFromSupabase(id) {
     const { data, error } = await this.supabaseClient
-      .from('account')
+      .from('contact')
       .select('*')
-      .eq('account_id', id)
+      .eq('contact_id', id)
       .eq('tenant_id', this.context.tenant_id)
       .single();
       
@@ -1064,7 +915,7 @@
       headers['Authorization'] = `Bearer ${authToken}`;
     }
     
-    const response = await fetch(`${apiBaseUrl}/account/${id}`, {
+    const response = await fetch(`${apiBaseUrl}/contact/${id}`, {
       headers,
       signal: this._abortController.signal
     });
@@ -1089,7 +940,7 @@
     
     if (this.supabaseClient) {
       const { data: result, error } = await this.supabaseClient
-        .from('account')
+        .from('contact')
         .insert(data)
         .select()
         .single();
@@ -1097,7 +948,7 @@
       if (error) throw error;
       
       this.currentRecord = result;
-      this.recordId = result['account_id'];
+      this.recordId = result['contact_id'];
       this.mode = 'edit';
       this.render();
       
@@ -1116,7 +967,7 @@
         headers['Authorization'] = `Bearer ${authToken}`;
       }
       
-      const response = await fetch(`${apiBaseUrl}/account`, {
+      const response = await fetch(`${apiBaseUrl}/contact`, {
         method: 'POST',
         headers,
         body: JSON.stringify(data)
@@ -1128,7 +979,7 @@
       
       const result = await response.json();
       this.currentRecord = result;
-      this.recordId = result['account_id'];
+      this.recordId = result['contact_id'];
       this.mode = 'edit';
       this.render();
       
@@ -1148,9 +999,9 @@
     
     if (this.supabaseClient) {
       const { data: result, error } = await this.supabaseClient
-        .from('account')
+        .from('contact')
         .update(data)
-        .eq('account_id', this.recordId)
+        .eq('contact_id', this.recordId)
         .eq('tenant_id', this.context.tenant_id)
         .select()
         .single();
@@ -1173,7 +1024,7 @@
         headers['Authorization'] = `Bearer ${authToken}`;
       }
       
-      const response = await fetch(`${apiBaseUrl}/account/${this.recordId}`, {
+      const response = await fetch(`${apiBaseUrl}/contact/${this.recordId}`, {
         method: 'PUT',
         headers,
         body: JSON.stringify(data)
@@ -1201,9 +1052,9 @@
     
     if (this.supabaseClient) {
       const { error } = await this.supabaseClient
-        .from('account')
+        .from('contact')
         .delete()
-        .eq('account_id', this.recordId)
+        .eq('contact_id', this.recordId)
         .eq('tenant_id', this.context.tenant_id);
         
       if (error) throw error;
@@ -1220,7 +1071,7 @@
         headers['Authorization'] = `Bearer ${authToken}`;
       }
       
-      const response = await fetch(`${apiBaseUrl}/account/${this.recordId}`, {
+      const response = await fetch(`${apiBaseUrl}/contact/${this.recordId}`, {
         method: 'DELETE',
         headers
       });
@@ -1238,7 +1089,7 @@
     });
     
     this.emit('blueprint:navigate', {
-      route: '/account'
+      route: '/contact'
     });
   }
   
@@ -1322,7 +1173,7 @@
 
     // Reported, never widened back to everything: falling back to `all` would invert the gate.
     if (visible.length === 0) {
-      console.warn(`[AccountFormUI] persona '${code}' permits none of this form's fields`);
+      console.warn(`[ContactFormUI] persona '${code}' permits none of this form's fields`);
     }
     return visible;
   }
@@ -1406,7 +1257,7 @@
     const placed = new Set(groups.flatMap(g => g.fields).map(f => f.name));
     const orphans = visible.filter(f => !placed.has(f.name));
     if (orphans.length) {
-      console.warn(`[AccountFormUI] field(s) name an undeclared section and were ` +
+      console.warn(`[ContactFormUI] field(s) name an undeclared section and were ` +
                    `appended ungrouped: ${orphans.map(f => f.name).join(', ')}`);
       groups.push({ label: null, fields: orphans });
     }
@@ -1587,12 +1438,12 @@
     if (this._isDirty) {
       // Emit navigation with warning about unsaved changes
       this.emit('blueprint:navigate', {
-        route: '/account',
+        route: '/contact',
         hasUnsavedChanges: true
       });
     } else {
       this.emit('blueprint:navigate', {
-        route: '/account'
+        route: '/contact'
       });
     }
   }
@@ -1729,12 +1580,12 @@
   
   // Export for module systems
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AccountFormUI;
+    module.exports = ContactFormUI;
   }
   
   // Export to window for browser (replaces any existing instance)
   if (typeof window !== 'undefined') {
-    window.AccountFormUI = AccountFormUI;
+    window.ContactFormUI = ContactFormUI;
   }
 })();
 
@@ -1746,5 +1597,5 @@
   // ═══════════════════════════════════════════════════════════════════════
   if (typeof window !== 'undefined') {
     window.PatternRegistry = window.PatternRegistry || {};
-    window.PatternRegistry['d0000001-0001-0001-0002-000000000001'] = window.AccountFormUI;
+    window.PatternRegistry['c5000000-0000-0000-0000-000000000001'] = window.ContactFormUI;
   }

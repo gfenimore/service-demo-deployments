@@ -340,6 +340,12 @@
         "goal": "ACCOUNT.DEACTIVATE",
         "family": null,
         "how": "deactivate-account-gate"
+      },
+      {
+        "label": "Add contact",
+        "goal": "CONTACT.ADD",
+        "family": null,
+        "how": "create-contact-form"
       }
     ]
   },

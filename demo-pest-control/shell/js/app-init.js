@@ -234,6 +234,7 @@
         ComponentRegistry.init(window.AccountFormUI, 'create-account-form');
         ComponentRegistry.init(window.AccountBlueprintUI, 'account-record-card');
         ComponentRegistry.init(window.AccountGateUI, 'deactivate-account-gate');
+        ComponentRegistry.init(window.ContactFormUI, 'create-contact-form');
         
         // Step 3: Register routes
         console.log('[App] Registering routes...');

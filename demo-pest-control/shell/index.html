@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="../account-record-card/cascading-cards.css">
     <link rel="stylesheet" href="../create-account-form/form-crud.css">
     <link rel="stylesheet" href="../deactivate-account-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../create-contact-form/form-crud.css">
 </head>
 <body data-app-id="a0004000-0000-0000-0000-000000000001" data-shell-type="carbon-hybrid">
 
@@ -107,6 +108,7 @@
     <script src="../account-record-card/cascading-cards.js"></script>
     <script src="../create-account-form/form-crud.js"></script>
     <script src="../deactivate-account-gate/guarded-gate.js"></script>
+    <script src="../create-contact-form/form-crud.js"></script>
 
     <script>
         // GATE 6 -- what mounts where, projected from app_components.
@@ -164,7 +166,20 @@
     "patternId": "guarded-gate-001",
     "script": "../deactivate-account-gate/guarded-gate.js",
     "css": "../deactivate-account-gate/guarded-gate.css",
-    "route": "/accounts/:id"
+    "route": "/accounts/:id",
+    "verbCalled": true
+  },
+  {
+    "slug": "create-contact-form",
+    "name": "Create Contact Form",
+    "zone": "main",
+    "order": 3,
+    "blueprintId": "c5000000-0000-0000-0000-000000000001",
+    "patternId": "form-crud-simple-001",
+    "script": "../create-contact-form/form-crud.js",
+    "css": "../create-contact-form/form-crud.css",
+    "route": "/accounts/:id",
+    "verbCalled": true
   }
 ];
 
@@ -307,8 +322,16 @@
             });
             var routed = {};
             var pinned = [];
+            // THE STAND-DOWN RULE (SJ s40, his red pen 2026-08-24). A component the manifest marks
+            // verbCalled belongs to its verb's scenario, not to the route: the record route shows
+            // the card ALONE, and the gate and the form appear only when the bar's verb summons
+            // them (record-card _act un-hides the host) -- then stand down again at the next
+            // route showing. Ends the s37 always-visible behavior at his words. The host is still
+            // MOUNTED and furnished (the mount-contract gate stays green); display is the shell's.
+            var verbCalled = {};
 
             mounts.forEach(function (m) {
+                if (m.verbCalled) { verbCalled[m.slug] = true; }
                 if (m.route) { (routed[m.route] = routed[m.route] || []).push(m.slug); }
                 else { pinned.push(m.slug); }
             });
@@ -329,9 +352,12 @@
             function show(route) {
                 var wanted = routed[route] || [];
                 var shown = [];
+                var standing = [];
                 document.querySelectorAll('.mounted-component').forEach(function (el) {
                     var slug = el.getAttribute('data-component');
                     var visible = wanted.indexOf(slug) !== -1 || pinned.indexOf(slug) !== -1;
+                    // Verb-called: on its route but standing down until the bar summons it.
+                    if (visible && verbCalled[slug]) { visible = false; standing.push(slug); }
                     el.style.display = visible ? '' : 'none';
                     if (visible) shown.push(slug);
                 });
@@ -344,7 +370,8 @@
                     else { a.removeAttribute('aria-current'); a.removeAttribute('active'); }
                 });
                 console.log('[AppShell] route ' + route + ' -> showing ' +
-                            (shown.length ? shown.join(', ') : '(nothing mounted at this route)'));
+                            (shown.length ? shown.join(', ') : '(nothing mounted at this route)') +
+                            (standing.length ? '; standing down until summoned: ' + standing.join(', ') : ''));
             }
 
             // THE ROUTE'S PARAMETER IS A RECORD (s37, 2026-08-22). ShellNavigation matched `:id` and
@@ -445,6 +472,10 @@
                     var here = window.ShellNavigation.getCurrentRoute();
                     var rec = window.ShellRecordRouteUnder ? window.ShellRecordRouteUnder(here) : null;
                     if (rec) { window.ShellNavigation.navigate(rec.replace(/:[^/]+/, encodeURIComponent(id))); }
+                    // Already ON the record's page (the parented form's post-save/cancel emit lands
+                    // here): re-run the current route's showing so verb-called components STAND
+                    // DOWN again (s40) -- their work is done until the bar's next summons.
+                    else { window.ShellNavigation.navigate(here, false); }
                     return;
                 }
             }
