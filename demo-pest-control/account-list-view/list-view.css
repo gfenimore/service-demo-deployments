@@ -161,12 +161,14 @@
   table-layout: auto;
 }
 
-/* Table Header */
+/* Table Header -- THE COAT (SJ s41 3b': the two tables read as one app). The face's
+   idiom: a quiet light header, sentence case, no bars -- color only ever means ACT
+   (screen-grammar concept 37), and a header is never an act. */
 .blueprint-data-table thead {
   position: sticky;
   top: 0;
-  background: var(--blueprint-primary);
-  color: var(--blueprint-primary-text);
+  background: var(--blueprint-hover-bg);
+  color: var(--blueprint-text-secondary);
   z-index: 10;
 }
 
@@ -175,15 +177,8 @@
   padding: var(--blueprint-spacing-md) var(--blueprint-spacing-lg);
   text-align: left;
   font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-right: 1px solid var(--blueprint-primary-text);
+  font-size: 12px;
   white-space: nowrap;
-}
-
-.blueprint-table-header:last-child {
-  border-right: none;
 }
 
 .blueprint-table-header[data-align="center"] {
@@ -230,25 +225,23 @@
    STATUS BADGE
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* THE COAT: status is a CHIP in the face's idiom -- Carbon's status palette verbatim
+   (concept 37: green = good; gray = quiet), never a bar. */
 .blueprint-status-badge {
   display: inline-block;
-  padding: var(--blueprint-spacing-xs) var(--blueprint-spacing-md);
+  padding: 2px 10px;
   font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: var(--blueprint-border-radius);
+  border-radius: 999px;
 }
 
 .blueprint-status-badge.active {
-  background: var(--blueprint-primary);
-  color: var(--blueprint-primary-text);
+  background: #defbe6;
+  color: #0e6027;
 }
 
 .blueprint-status-badge.inactive {
-  background: var(--blueprint-surface);
-  color: var(--blueprint-text);
-  border: 1px solid var(--blueprint-border);
+  background: #f4f4f4;
+  color: #525252;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════

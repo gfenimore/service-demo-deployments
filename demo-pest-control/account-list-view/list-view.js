@@ -67,18 +67,6 @@
   {
     "name": "account_name",
     "label": "Account Name",
-    "type": "number",
-    "width": "120px",
-    "align": "right",
-    "sortable": true,
-    "filterable": true,
-    "tag": false,
-    "tagColors": null,
-    "tagDefaultColor": null
-  },
-  {
-    "name": "billing_street_address",
-    "label": "Billing Street Address",
     "type": "text",
     "width": "auto",
     "align": "left",
@@ -113,18 +101,6 @@
     "tagDefaultColor": null
   },
   {
-    "name": "email",
-    "label": "Email",
-    "type": "text",
-    "width": "auto",
-    "align": "left",
-    "sortable": true,
-    "filterable": true,
-    "tag": false,
-    "tagColors": null,
-    "tagDefaultColor": null
-  },
-  {
     "name": "status",
     "label": "Status",
     "type": "enum",
@@ -149,34 +125,10 @@
     "tagDefaultColor": null
   },
   {
-    "name": "last_service_date",
-    "label": "Last Service Date",
-    "type": "date",
-    "width": "140px",
-    "align": "left",
-    "sortable": true,
-    "filterable": true,
-    "tag": false,
-    "tagColors": null,
-    "tagDefaultColor": null
-  },
-  {
     "name": "next_service_date",
     "label": "Next Service Date",
     "type": "date",
     "width": "140px",
-    "align": "left",
-    "sortable": true,
-    "filterable": true,
-    "tag": false,
-    "tagColors": null,
-    "tagDefaultColor": null
-  },
-  {
-    "name": "internal_notes",
-    "label": "Internal Notes",
-    "type": "text",
-    "width": "auto",
     "align": "left",
     "sortable": true,
     "filterable": true,
@@ -878,28 +830,19 @@
     const data = [];
     for (let i = 1; i <= 50; i++) {
       const record = { id: i };
-
-      record.account_name = Math.floor(Math.random() * 1000);
-
-      record.billing_street_address = `Billing Street Address ${i}`;
+      record.account_name = `Account Name ${i}`;
       
       record.billing_city = `Billing City ${i}`;
       
 
       record.phone = `(555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`;
       
-      record.email = `Email ${i}`;
-      
 
       record.status = Math.random() > 0.5 ? 'Active' : 'Inactive';
       
       record.balance = `Balance ${i}`;
       
-      record.last_service_date = `Last Service Date ${i}`;
-      
       record.next_service_date = `Next Service Date ${i}`;
-      
-      record.internal_notes = `Internal Notes ${i}`;
       
       data.push(record);
     }
@@ -1121,6 +1064,11 @@
           </td>`;
         }
         
+        // THE COAT (SJ s41 3b'): a timestamp is a DATE to a human; the raw ISO form is
+        // the machine's word, not the row's face.
+        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+          return `<td data-align="${align}">${this.escapeHtml(value.slice(0, 10))}</td>`;
+        }
         return `<td data-align="${align}">${this.escapeHtml(String(value))}</td>`;
       }).join('');
       

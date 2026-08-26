@@ -116,12 +116,12 @@
     gap: var(--filter-control-gap);
 }
 
+/* THE COAT (SJ s41 3b'): the panel speaks the face's idiom -- quiet, sentence case,
+   no shouting; a label is never an act. */
 .filter-label {
-    font-size: var(--filter-panel-label-font-size);
-    font-weight: bold;
-    color: var(--filter-panel-label);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #525252;
 }
 
 .filter-label .required {
@@ -222,16 +222,14 @@
 }
 
 .btn {
-    padding: 8px 16px;
-    border: 2px solid var(--filter-panel-border);
-    background: var(--filter-panel-bg);
-    color: var(--filter-panel-text);
-    font-weight: bold;
+    padding: 6px 14px;
+    border: 1px solid #c6c6c6;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #161616;
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    transition: background-color 0.15s ease;
+    font-size: 13px;
 }
 
 .btn--primary {
