@@ -231,8 +231,8 @@
         console.log('[App] Initializing components...');
         ComponentRegistry.init(window.AccountFilterPanelUI, 'account-filter-panel');
         ComponentRegistry.init(window.AccountBlueprintUI, 'account-list-view');
-        ComponentRegistry.init(window.AccountFormUI, 'create-account-form');
         ComponentRegistry.init(window.AccountFocusPageBlueprintUI, 'account-record-card');
+        ComponentRegistry.init(window.AccountTearsheetBlueprintUI, 'account-intake-tearsheet');
         
         // Step 3: Register routes
         console.log('[App] Registering routes...');
@@ -244,11 +244,11 @@
             ComponentRegistry.mount('account-filter-panel');
         });
         window.ShellNavigation.registerRoute('/accounts/new', function(params) {
-            const instance = ComponentRegistry.get('create-account-form');
+            const instance = ComponentRegistry.get('account-intake-tearsheet');
             if (instance && instance.setRecordId && params.id) {
                 instance.setRecordId(params.id);
             }
-            ComponentRegistry.mount('create-account-form');
+            ComponentRegistry.mount('account-intake-tearsheet');
         });
         window.ShellNavigation.registerRoute('/accounts/:id', function(params) {
             const instance = ComponentRegistry.get('account-record-card');

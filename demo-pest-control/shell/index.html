@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="../account-filter-panel/filter-panel.css">
     <link rel="stylesheet" href="../account-list-view/list-view.css">
     <link rel="stylesheet" href="../account-record-card/focus-page.css">
-    <link rel="stylesheet" href="../create-account-form/form-crud.css">
+    <link rel="stylesheet" href="../account-intake-tearsheet/tearsheet.css">
 </head>
 <body data-app-id="a0004000-0000-0000-0000-000000000001" data-shell-type="carbon-hybrid">
 
@@ -104,7 +104,7 @@
     <script src="../account-filter-panel/filter-panel.js"></script>
     <script src="../account-list-view/list-view.js"></script>
     <script src="../account-record-card/focus-page.js"></script>
-    <script src="../create-account-form/form-crud.js"></script>
+    <script src="../account-intake-tearsheet/tearsheet.js"></script>
 
     <script>
         // GATE 6 -- what mounts where, projected from app_components.
@@ -143,14 +143,14 @@
     "route": "/accounts/:id"
   },
   {
-    "slug": "create-account-form",
-    "name": "Create Account Form",
+    "slug": "account-intake-tearsheet",
+    "name": "Account Intake Tearsheet",
     "zone": "main",
-    "order": 1,
-    "blueprintId": "d0000001-0001-0001-0002-000000000001",
-    "patternId": "form-crud-simple-001",
-    "script": "../create-account-form/form-crud.js",
-    "css": "../create-account-form/form-crud.css",
+    "order": 2,
+    "blueprintId": "c6000000-0000-0000-0000-000000000001",
+    "patternId": "tearsheet-001",
+    "script": "../account-intake-tearsheet/tearsheet.js",
+    "css": "../account-intake-tearsheet/tearsheet.css",
     "route": "/accounts/new"
   }
 ];

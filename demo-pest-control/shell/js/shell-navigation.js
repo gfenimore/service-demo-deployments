@@ -27,6 +27,19 @@
                     this.navigate(event.state.route, false);
                 }
             });
+
+            // THE HASH IS THE TRUTH (R1 sweep, 2026-08-28 -- the s37 bookmarked-URL fix's
+            // missing half): back/forward onto an entry this router did not create (the
+            // initial load, a typed hash, a raw location.hash write) traversed with NO
+            // routing -- the page kept the previous screen's mounts and the face kept the
+            // previous record, or never received one at all (his "blank on load"). Any
+            // hash change the router did not make itself now routes; navigate()'s own
+            // pushState never fires hashchange, so there is no loop.
+            window.addEventListener('hashchange', () => {
+                const path = (window.location.hash || '').slice(1);
+                if (!path || path === this._currentRoute) return;
+                this.navigate(path, false);
+            });
         },
         
         /**

@@ -160,39 +160,6 @@
 },
       // Every persona's gate for this entity. visibleFields() picks one by context.facet.
       personas: {
-  "ADMIN_FULL": {
-    "fields": [
-      "account_name",
-      "account_type",
-      "billing_street_address",
-      "billing_city",
-      "billing_state",
-      "billing_zip_code",
-      "status",
-      "internal_notes",
-      "phone",
-      "email",
-      "balance",
-      "last_service_date",
-      "next_service_date",
-      "service_frequency",
-      "created_at",
-      "updated_at"
-    ],
-    "readonly": [],
-    "filters": null,
-    "actions": [
-      "view",
-      "search",
-      "sort",
-      "filter",
-      "edit",
-      "delete",
-      "export",
-      "bulk_actions",
-      "create"
-    ]
-  },
   "FIELD_TECH": {
     "fields": [
       "account_name",
@@ -337,6 +304,39 @@
       "edit",
       "log_call",
       "schedule"
+    ]
+  },
+  "ADMIN_FULL": {
+    "fields": [
+      "account_name",
+      "account_type",
+      "billing_street_address",
+      "billing_city",
+      "billing_state",
+      "billing_zip_code",
+      "status",
+      "internal_notes",
+      "phone",
+      "email",
+      "balance",
+      "last_service_date",
+      "next_service_date",
+      "service_frequency",
+      "created_at",
+      "updated_at"
+    ],
+    "readonly": [],
+    "filters": null,
+    "actions": [
+      "view",
+      "search",
+      "sort",
+      "filter",
+      "edit",
+      "delete",
+      "export",
+      "bulk_actions",
+      "create"
     ]
   }
 }
