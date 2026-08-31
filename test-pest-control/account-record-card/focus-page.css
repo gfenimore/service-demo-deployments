@@ -1,0 +1,44 @@
+/* Account Focus Page -- THE ONE PAGE (focus-page-001). Carbon-adjacent, quiet; color only ever
+   means ACT (concept 37: Carbon's status palette verbatim). Generated; do not edit. */
+.fp { max-width: 68rem; margin: 0 auto; padding: 1rem 1.5rem; }
+.fp-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.fp-title { font-size: 1.5rem; font-weight: 400; margin: 0; display: inline; }
+.fp-chip { display: inline-block; background: #e0e0e0; color: #161616; border-radius: 999px;
+           padding: 0.05rem 0.65rem; font-size: 0.8125rem; margin-left: 0.35rem; }
+.fp-chip--ok { background: #defbe6; color: #0e6027; }
+.fp-tray { margin-top: 1rem; }
+.fp-tray-label { font-size: 0.75rem; color: #525252; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.35rem; }
+.fp-quiet { background: #f4f4f4; border-radius: 6px; padding: 0.6rem 0.9rem; color: #525252; font-size: 0.875rem; }
+.fp-card { border: 1px solid #f1c21b; border-left: 4px solid #f1c21b; background: #fff;
+           padding: 0.5rem 0.9rem; margin: 0.4rem 0; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+.fp-card-kind { font-size: 0.75rem; background: #f4f4f4; color: #525252; border-radius: 999px; padding: 0.1rem 0.6rem; }
+.fp-card-h { font-weight: 600; font-size: 0.875rem; flex: 1; min-width: 12rem; }
+.fp-card-who { color: #525252; font-size: 0.8125rem; }
+.fp-btn { font: inherit; font-size: 0.8125rem; padding: 0.3rem 0.8rem; border: 1px solid #c6c6c6;
+          background: #fff; border-radius: 4px; cursor: pointer; }
+.fp-btn:hover:not(:disabled) { background: #f4f4f4; }
+.fp-btn:disabled { color: #8d8d8d; cursor: not-allowed; }
+.fp-future { font-size: 0.75rem; background: #e8daff; color: #6929c4; border-radius: 999px; padding: 0.1rem 0.6rem; }
+.fp-selectors { display: flex; gap: 0.6rem; margin: 1.25rem 0 0.75rem; }
+.fp-selector { flex: 1; font: inherit; font-size: 0.875rem; text-align: center; border: 1px solid #c6c6c6;
+               border-radius: 8px; padding: 0.55rem 0; background: #fff; cursor: pointer; }
+.fp-selector:hover { background: #f4f4f4; }
+.fp-selector--on { border-color: #0f62fe; color: #0f62fe; font-weight: 600; }
+.fp-caption { font-size: 0.8125rem; color: #525252; margin: 0 0 0.4rem; }
+.fp-radios { display: flex; gap: 0.9rem; flex-wrap: wrap; font-size: 0.8125rem; margin: 0 0 0.4rem; }
+.fp-radios label { cursor: pointer; }
+.fp-siteline { background: #edf5ff; border-radius: 6px; padding: 0.45rem 0.75rem; font-size: 0.8125rem; margin: 0 0 0.5rem; }
+.fp-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: #fff; }
+.fp-table th { text-align: left; font-size: 0.75rem; color: #525252; background: #f4f4f4; padding: 0.5rem 0.75rem; }
+.fp-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #e0e0e0; }
+.fp-row--openable { cursor: pointer; }
+.fp-row--openable:hover td { background: #f4f4f4; }
+.fp-expand td { background: #edf5ff; }
+.fp-log { list-style: none; margin: 0.4rem 0 0; padding: 0; font-size: 0.8125rem; }
+.fp-log li { padding: 0.25rem 0; border-bottom: 1px solid #d0e2ff; }
+.fp-muted { color: #8d8d8d; font-size: 0.8125rem; }
+.fp-error { background: #fff1f1; border-left: 4px solid #da1e28; padding: 0.6rem 0.9rem; margin: 0.4rem 0; font-size: 0.875rem; }
+.fp-seg { font-size: 0.75rem; border-radius: 999px; padding: 0.1rem 0.6rem; }
+.fp-seg--done { background: #defbe6; color: #0e6027; }
+.fp-seg--warn { background: #fcf4d6; color: #8a6a00; }
+.fp-seg--blue { background: #edf5ff; color: #0f62fe; }

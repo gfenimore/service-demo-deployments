@@ -1,0 +1,1099 @@
+/**
+ * Account Intake Tearsheet - Generated Blueprint UI (THE WALK FROM THE SPINE, tearsheet-001 3.0.0)
+ * Blueprint ID: c6000000-0000-0000-0000-000000000001
+ * Pattern: TEARSHEET (s42 intake requirements sitting; his stamp 2026-08-31:
+ * "IN-1 thru IN-15 approved as written")
+ *
+ * Implements Pattern Interface Contract (JBA-003)
+ * - mount(container) / unmount() / onContext(context) / getMetadata()
+ *
+ * 3.0.0: THE SPINE IS DECLARED CONFIGURATION (Q-N stamped (a)) -- the walk's steps
+ * come from TS.spine, not from this file: account_facts (the account -> the ACCOUNT
+ * ROSTER -> the triage -> the term MODES; Q-M (a)) -> place (repeating: the place ->
+ * its people -> its services + specs) -> summary (EVERY fact of the act, editable in
+ * place with the SAME devices (IN-8/IN-9); the term VALUES; Create). rosters_separate
+ * (IN-15): the account roster and place people stay separate LISTS; the ALREADY-picker
+ * and dup-check span the whole act. What stays TEMPLATE LAW (the Q-N line): one Next
+ * one advance, the block NAMED (IN-3) - the triage never traps (F1/F7) - the F14
+ * shortcut - ALREADY-first, one primary per place demoting quietly (F5/F17/F21) -
+ * services wait for done-with-people (F20) - the item row in HIS order, Item last,
+ * blank = the whole place (F26) - live rows (F25) - the live name check (F15) - the
+ * rail is the walk's map wearing the door's gaps (F12/Q3) - no Save Draft, nothing
+ * prefills (T8/T9) - End blank unless requested (Q11) - the field-kind law (dates =
+ * calendar, addresses = Mapbox, phone = masked, email = validated, price = decimal) -
+ * a selection never moves the reader - the hash is the truth. An admitted act lands
+ * on the FACE, born ACTIVE.
+ */
+
+(function() {
+  'use strict';
+
+  var TS = {"schema":"services_template","function":"intake_create_account","spine":{"steps":[{"key":"account_facts","label":"Account facts","contains":["account","people.roster","triage","term_modes"]},{"key":"place","repeats":true,"contains":["places","people.at_place","items"],"label_from":"location_name"},{"key":"summary","label":"Summary","contains":["account.edit","agreement.terms","people.roster.edit","places.edit","items.edit","create"]}],"version":"3.0.0","terms_placement":"modes_up_front_values_at_summary","rosters_separate":true},"entity":"account","sections":[{"key":"account","title":"The account","fields":[{"field":"account_name","input":"text","label":"Account name","required":true},{"field":"account_type","input":"select","label":"Kind","options":["residential","commercial"],"required":true},{"field":"billing_street_address","input":"text","label":"Billing street","required":true},{"field":"billing_city","input":"text","label":"City","required":true},{"field":"billing_state","input":"text","label":"State","required":true},{"field":"billing_zip_code","input":"text","label":"ZIP","required":true}],"writes":"services_template.account"},{"key":"people","title":"The people","fields":[{"field":"first_name","input":"text","label":"First name"},{"field":"last_name","input":"text","label":"Last name"},{"field":"phone_number","input":"text","label":"Phone"},{"field":"email_address","input":"text","label":"Email"},{"field":"communication_preference","input":"select","label":"Reach","options":["voice","text","email"]},{"field":"is_primary_contact","input":"checkbox","label":"Primary"}],"writes":"services_template.contact"},{"key":"places","title":"The places","fields":[{"field":"location_name","input":"text","label":"Place name"},{"field":"street_address","input":"text","label":"Street"},{"field":"city","input":"text","label":"City"},{"field":"state","input":"text","label":"State"},{"field":"postal_code","input":"text","label":"ZIP"},{"field":"access_information","input":"text","label":"Access information","placeholder":"gate codes, keys, hours..."},{"field":"notes","input":"text","label":"Notes"}],"writes":"services_template.service_location"},{"key":"items","title":"The service items","fields":[{"field":"item_name","input":"text","label":"Item","placeholder":"blank = the whole place"},{"field":"item_type","input":"select","label":"Kind","options":["general pest","rodent control","commercial kitchen","industrial"]}],"writes":"services_template.service_target"},{"key":"agreement","title":"The agreement","fields":[{"field":"description","input":"text","label":"Description"},{"field":"frequency","input":"select","label":"Service cadence","options":["weekly","bi_weekly","monthly","bi_monthly","quarterly","biannual","annual","on_request"]},{"field":"billing_frequency","input":"select","label":"Billed","options":["upfront","monthly","bi_monthly","quarterly","biannual","annual","on_completion"]},{"field":"start_date","input":"date","label":"Start"},{"field":"end_date","input":"date","label":"End (blank unless requested)"}],"writes":"services_template.service_agreement + agreement_item"},{"key":"ties","title":"Site ties","fields":[{"field":"role","input":"select","label":"Role","options":["primary","gatekeeper","billing","technical"]},{"field":"notes","input":"text","label":"Notes"}],"writes":"services_template.contact_location"}],"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"]},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"]},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create"]},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create"]},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule"]},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create"]}}};
+  var SKELETON = "<!-- Account Intake Tearsheet -- THE WALK (tearsheet-001 2.0.0; s42 flow sitting, his stamp F1-F28).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton\n     lesson): this markup is written by tearsheet.js FIRST, then filled. The rail is\n     the walk's map (F12) and wears the door's gaps in place (Q3); no Save Draft (T8). -->\n<div class=\"ts\" data-blueprint=\"c6000000-0000-0000-0000-000000000001\">\n  <header class=\"ts-head\">\n    <h2 class=\"ts-title\" data-ts=\"title\"></h2>\n    <p class=\"ts-sub\" data-ts=\"sub\"></p>\n  </header>\n  <div class=\"ts-banner\" data-ts=\"banner\" hidden></div>\n  <div class=\"ts-body\">\n    <nav class=\"ts-rail\" data-ts=\"rail\" aria-label=\"The walk\"></nav>\n    <div class=\"ts-content\" data-ts=\"content\"></div>\n  </div>\n  <footer class=\"ts-foot\">\n    <span class=\"ts-footnote\" data-ts=\"note\"></span>\n    <button type=\"button\" class=\"ts-btn ts-btn--ghost\" data-ts=\"cancel\">Cancel</button>\n    <button type=\"button\" class=\"ts-btn ts-btn--primary\" data-ts=\"submit\">Create account</button>\n  </footer>\n</div>\n";
+  var SPINE = TS.spine;
+  var ROSTERS_SEPARATE = SPINE && SPINE.rosters_separate === true;
+  var TERM_MODES_UP_FRONT = SPINE && SPINE.terms_placement === 'modes_up_front_values_at_summary';
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined && text !== null) e.textContent = String(text);
+    return e;
+  }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+  function fam(key) {
+    for (var i = 0; i < TS.sections.length; i++) if (TS.sections[i].key === key) return TS.sections[i];
+    return null;
+  }
+  function fld(famKey, name) {
+    var s = fam(famKey);
+    if (!s) return null;
+    for (var i = 0; i < s.fields.length; i++) if (s.fields[i].field === name) return s.fields[i];
+    return null;
+  }
+  function personName(p) {
+    return (((p.first_name || '') + ' ' + (p.last_name || '')).trim());
+  }
+
+  // FIELD-KIND LAW (R1; the stamp's build notes generalized): the kind DERIVES from
+  // the declared field name -- no new config, the declaration already says it.
+  function fieldKind(f) {
+    if (f.input === 'select' || f.input === 'checkbox' || f.input === 'date') return f.input;
+    if (/phone/i.test(f.field || '')) return 'phone';
+    if (/email/i.test(f.field || '')) return 'email';
+    if (/price|amount|rate/i.test(f.field || '')) return 'price';
+    return 'text';
+  }
+  function maskPhone(v) {
+    var d = String(v).replace(/\D/g, '').slice(0, 10);
+    if (d.length <= 3) return d;
+    if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+    return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+  }
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  class AccountTearsheetBlueprintUI {
+
+    constructor() {
+      this.container = null;
+      this.context = null;
+      this.client = null;
+      // the act's state: nothing prefills (T9)
+      this.acct = {};
+      this.agree = {};              // identity: description/start_date/end_date; values: frequency/billing_frequency
+      this.roster = [];             // EVERY person in the act (one pool); _org marks roster vs place (IN-15 display split)
+      this.places = [];             // each: {vals:{}, ties:[{pi,role,notes,is_primary}], items:[], sub, done}
+      this.triage = '';             // '' | 'one' | 'many'  (F1 -- writes nothing)
+      this.useBilling = '';         // '' | 'yes' | 'no'    (F14)
+      this.cadMode = '';            // Q-M (a): the MODE is asked up front, '' until answered
+      this.billMode = '';
+      this.view = 'front';          // 'front' | 'walk' | 'summ'
+      this.cursor = 0;
+      this.gaps = null;             // the door's refusal, worn by the rail (Q3)
+      this.catalog = null;          // service rows (F22); null = not yet loaded
+      this.nameTaken = false;       // F15 live check
+      this._nameTimer = null;
+    }
+
+    getMetadata() {
+      return { blueprintId: 'c6000000-0000-0000-0000-000000000001', pattern: 'TEARSHEET', entity: TS.entity };
+    }
+
+    newPlace() { return { vals: {}, ties: [], items: [], sub: 'place', done: false }; }
+    simple() { return this.triage === 'one'; }
+    rosterVisible() {
+      var self = this;
+      return this.roster.filter(function (p) { return !(ROSTERS_SEPARATE && p._org === 'place'); });
+    }
+
+    mount(container) {
+      this.container = container;
+      container.innerHTML = SKELETON;
+      this.$ = function (k) { return container.querySelector('[data-ts="' + k + '"]'); };
+      this.$('title').textContent = 'New ' + TS.entity + ' -- from the service agreement';
+      this.$('sub').textContent = 'THE WALK: say where service happens and it drives the flow; ' +
+        'a multi-place ' + TS.entity + ' is captured place by place. One whole act -- ' +
+        'nothing is saved until Create, and a refused act keeps everything you entered.';
+      var self = this;
+      this.$('cancel').addEventListener('click', function () {
+        if (window.ShellNavigation && window.ShellNavigation.navigate) window.ShellNavigation.navigate('/' + TS.entity + 's');
+        else window.location.hash = '#/' + TS.entity + 's';
+      });
+      this.$('submit').addEventListener('click', function () { self.submit(); });
+      this.loadCatalog();
+      this.renderAll();
+    }
+
+    unmount() {
+      if (this.container) clear(this.container);
+      this.container = null;
+    }
+
+    onContext(context) {
+      this.context = context || {};
+      this.applyRoleGate();
+    }
+
+    dataClient() {
+      var ctx = window.AppContext || {};
+      var sb = ctx.supabase || {};
+      if (window.supabase && window.supabase.createClient && sb.url && sb.anonKey) {
+        return window.supabase.createClient(sb.url, sb.anonKey, {
+          db: { schema: TS.schema },
+          global: sb.accessToken ? { headers: { Authorization: 'Bearer ' + sb.accessToken } } : {}
+        });
+      }
+      return null;
+    }
+
+    // F22: the Service picker loads the schema's catalog AS THE ROLE.
+    async loadCatalog() {
+      this.client = this.client || this.dataClient();
+      if (!this.client) { this.catalog = []; return; }
+      try {
+        var r = await this.client.from('service')
+          .select('service_id,service_name,service_category')
+          .order('service_category', { ascending: true })
+          .order('service_name', { ascending: true });
+        this.catalog = r.error ? [] : (r.data || []);
+      } catch (e) { this.catalog = []; }
+      if (this.view !== 'front') this.renderAll();
+    }
+
+    // the ROLE gate (`personas` = the engine's identifier)
+    applyRoleGate() {
+      var facet = this.context && this.context.facet;
+      var gate = (facet && TS.personas) ? TS.personas[facet] : null;
+      if (!this.container) return;
+      var btn = this.$('submit');
+      if (gate && Array.isArray(gate.actions) && gate.actions.indexOf('create') === -1) {
+        btn.disabled = true;
+        this.$('note').textContent = 'creating is closed to your role';
+      }
+    }
+
+    // F15: the live name check, as the role, debounced; the DOOR is still the law.
+    checkName() {
+      var self = this;
+      if (this._nameTimer) clearTimeout(this._nameTimer);
+      var v = (this.acct.account_name || '').trim();
+      var out = this.container.querySelector('[data-ts="namedup"]');
+      if (!v) { this.nameTaken = false; if (out) out.textContent = ''; return; }
+      this._nameTimer = setTimeout(async function () {
+        self.client = self.client || self.dataClient();
+        if (!self.client) return;
+        try {
+          var r = await self.client.from(TS.entity).select(TS.entity + '_id').ilike(TS.entity + '_name', v).limit(1);
+          self.nameTaken = !r.error && (r.data || []).length > 0;
+        } catch (e) { self.nameTaken = false; }
+        if (out) out.textContent = self.nameTaken
+          ? 'an ' + TS.entity + ' named "' + v + '" already stands -- names are unique (the door will refuse it too)'
+          : '';
+      }, 350);
+    }
+
+    // ---- F16: every address rides the s39 Mapbox type-ahead (deployment-seam token) --
+    attachTypeahead(streetInput, targets) {
+      var self = this;
+      var ctx = window.AppContext || {};
+      var token = ctx.integrations && ctx.integrations.mapboxToken;
+      if (!token || /^__[A-Z_]+__$/.test(token)) return;   // no token, no type-ahead -- never a block
+      var list = el('ul', 'ts-suggest');
+      list.setAttribute('role', 'listbox');
+      list.hidden = true;
+      streetInput.setAttribute('autocomplete', 'off');
+      streetInput.parentNode.style.position = 'relative';
+      streetInput.parentNode.appendChild(list);
+      var timer = null, active = -1, features = [];
+      var hide = function () { list.hidden = true; list.innerHTML = ''; active = -1; features = []; };
+      var renderList = function () {
+        clear(list);
+        features.forEach(function (f, i) {
+          var li = el('li', null, f.place_name || f.text || '');
+          li.setAttribute('role', 'option');
+          if (i === active) li.setAttribute('aria-selected', 'true');
+          li.dataset.i = String(i);
+          list.appendChild(li);
+        });
+        list.hidden = features.length === 0;
+      };
+      var pick = function (i) {
+        var f = features[i];
+        if (!f) return;
+        var parts = { street: (f.address ? f.address + ' ' : '') + (f.text || ''), city: '', state: '', zip: '' };
+        (f.context || []).forEach(function (c) {
+          var kind = String(c.id || '').split('.')[0];
+          if (kind === 'place') parts.city = c.text || '';
+          else if (kind === 'region') parts.state = (String(c.short_code || '').split('-').pop() || '').toUpperCase() || c.text || '';
+          else if (kind === 'postcode') parts.zip = c.text || '';
+        });
+        ['street', 'city', 'state', 'zip'].forEach(function (k) {
+          var input = targets[k];
+          if (!input) return;
+          input.value = parts[k] || '';
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        hide();
+      };
+      streetInput.addEventListener('input', function () {
+        if (timer) clearTimeout(timer);
+        var q = streetInput.value.trim();
+        if (q.length < 3) { hide(); return; }
+        timer = setTimeout(async function () {
+          try {
+            var url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+              encodeURIComponent(q) + '.json?autocomplete=true&country=us&types=address&limit=5&access_token=' +
+              encodeURIComponent(token);
+            var res = await fetch(url);
+            if (!res.ok) { hide(); return; }
+            var body = await res.json();
+            features = (body.features || []).filter(function (f) { return Array.isArray(f.center); });
+            active = -1; renderList();
+          } catch (e) { hide(); }
+        }, 300);
+      });
+      streetInput.addEventListener('keydown', function (e) {
+        if (list.hidden) return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, features.length - 1); renderList(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); renderList(); }
+        else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); pick(active); }
+        else if (e.key === 'Escape') hide();
+      });
+      list.addEventListener('mousedown', function (e) {
+        var li = e.target.closest('li[data-i]');
+        if (li) { e.preventDefault(); pick(parseInt(li.dataset.i, 10)); }
+      });
+      streetInput.addEventListener('blur', function () { setTimeout(hide, 150); });
+    }
+
+    // ---- shared input builders (bound live; typing never re-renders -- F25) ----------
+    input(f, obj, opts) {
+      opts = opts || {};
+      var self = this;
+      var inp;
+      if (f.input === 'select') {
+        inp = document.createElement('select');
+        inp.appendChild(el('option', null, ''));
+        (f.options || []).forEach(function (o) {
+          var op = el('option', null, o); op.value = o; inp.appendChild(op);
+        });
+        inp.value = obj[f.field] || '';
+        inp.addEventListener('change', function () { obj[f.field] = inp.value; if (opts.onChange) opts.onChange(); });
+      } else if (f.input === 'checkbox') {
+        inp = document.createElement('input'); inp.type = 'checkbox';
+        inp.checked = !!obj[f.field];
+        inp.addEventListener('change', function () { obj[f.field] = inp.checked; if (opts.onChange) opts.onChange(); });
+      } else {
+        inp = document.createElement('input');
+        // the stamp's note: every date is a CALENDAR widget, never a keyed entry
+        var kind = fieldKind(f);
+        inp.type = kind === 'date' ? 'date' : kind === 'email' ? 'email' : kind === 'phone' ? 'tel' : 'text';
+        if (f.placeholder) inp.placeholder = f.placeholder;
+        if (kind === 'phone') {
+          inp.setAttribute('inputmode', 'tel');
+          inp.addEventListener('input', function () {
+            var m = maskPhone(inp.value);
+            if (m !== inp.value) inp.value = m;
+          });
+        }
+        if (kind === 'price') inp.setAttribute('inputmode', 'decimal');
+        var validateEmail = null;
+        if (kind === 'email') {
+          validateEmail = function () {
+            var bad = inp.value.trim() !== '' && !EMAIL_RE.test(inp.value.trim());
+            inp.classList.toggle('ts-invalid', bad);
+            inp.title = bad ? 'not a valid email address' : '';
+          };
+          inp.addEventListener('input', validateEmail);
+          inp.addEventListener('blur', validateEmail);
+        }
+        inp.value = obj[f.field] || '';
+        if (validateEmail) validateEmail();
+        inp.addEventListener('input', function () { obj[f.field] = inp.value; if (opts.onInput) opts.onInput(); });
+      }
+      inp.dataset.wf = f.field;
+      return inp;
+    }
+
+    labeled(f, obj, opts) {
+      var wrap = el('div', 'ts-f');
+      wrap.appendChild(el('label', null, f.label));
+      wrap.appendChild(this.input(f, obj, opts));
+      return wrap;
+    }
+
+    secHead(title, note) {
+      var h = el('h3', 'ts-sec-head');
+      h.appendChild(el('span', null, title));
+      if (note) h.appendChild(el('span', 'ts-rail-state', note));
+      return h;
+    }
+
+    radioLine(lead, name, choices, current, onPick) {
+      var line = el('div', 'ts-radio-line');
+      line.appendChild(el('span', 'ts-radio-lead', lead));
+      choices.forEach(function (c) {
+        var lab = el('label');
+        var r = document.createElement('input');
+        r.type = 'radio'; r.name = name; r.value = c.value;
+        r.checked = current === c.value;
+        r.addEventListener('change', function () { onPick(c.value); });
+        lab.appendChild(r);
+        lab.appendChild(document.createTextNode(' ' + c.label));
+        line.appendChild(lab);
+      });
+      return line;
+    }
+
+    // ---- the rail: the walk's map (F12) FROM THE SPINE; wears the door's gaps (Q3) ----
+    gapRows() {
+      // the door speaks section numbers 1-5; the walk maps them to its own rows
+      var map = { front: [], place0: [], summ: [] };
+      if (this.gaps) {
+        for (var g = 0; g < this.gaps.length; g++) {
+          var n = this.gaps[g].section_number;
+          var msg = this.gaps[g].gap_message;
+          if (n <= 2) map.front.push(msg);
+          else if (n <= 4) map.place0.push(msg);
+          else map.summ.push(msg);
+        }
+      }
+      return map;
+    }
+
+    renderRail() {
+      var self = this;
+      var host = this.$('rail'); clear(host);
+      var g = this.gapRows();
+      var step0 = SPINE.steps[0], stepP = SPINE.steps[1], stepS = SPINE.steps[2];
+      var rows = [{ key: 'front', name: step0.label, sub: 'account - people - where - the terms', msgs: g.front }];
+      this.places.forEach(function (p, i) {
+        rows.push({ key: 'p' + i,
+          name: p.vals[stepP.label_from] || (self.simple() ? 'The place' : 'Place ' + (i + 1)),
+          sub: p.done ? '' : ({ place: 'the place', people: 'its people', services: 'its services + specs' })[p.sub],
+          msgs: i === 0 ? g.place0 : [] });
+      });
+      rows.push({ key: 'summ', name: stepS.label, sub: 'every fact, editable - create', msgs: g.summ });
+      rows.forEach(function (r, idx) {
+        var current = (r.key === 'front' && self.view === 'front') ||
+                      (r.key === 'summ' && self.view === 'summ') ||
+                      (self.view === 'walk' && r.key === 'p' + self.cursor);
+        var cls = 'ts-rail-item' + (r.msgs.length ? ' ts-rail-item--gap' : '') + (current ? ' ts-rail-item--current' : '');
+        var item = el('div', cls);
+        var row = el('div', 'ts-rail-row');
+        row.appendChild(el('span', 'ts-rail-num', r.key === 'summ' ? '*' : String(idx)));
+        row.appendChild(el('span', 'ts-rail-name', r.name));
+        row.appendChild(el('span', 'ts-rail-state', r.msgs.length ? 'incomplete' : ''));
+        item.appendChild(row);
+        if (r.sub) item.appendChild(el('div', 'ts-rail-sub', r.sub));
+        r.msgs.forEach(function (m) { item.appendChild(el('div', 'ts-rail-gapmsg', m)); });
+        item.addEventListener('click', function () { self.railGo(r.key); });
+        host.appendChild(item);
+      });
+    }
+
+    railGo(key) {
+      if (key === 'front') { this.view = 'front'; }
+      else if (key === 'summ') { this.view = 'summ'; }
+      else {
+        var i = parseInt(key.slice(1), 10);
+        if (i < this.places.length) { this.view = 'walk'; this.cursor = i; }
+      }
+      this.renderAll();
+    }
+
+    renderBanner() {
+      var b = this.$('banner');
+      if (!this.gaps) { b.hidden = true; return; }
+      b.hidden = false;
+      b.className = 'ts-banner';
+      b.textContent = 'The act was refused -- ' + this.gaps.length + ' gap(s), worn on the rail where the fix lives. ' +
+        'Nothing was created; everything you entered is still here.';
+    }
+
+    // ---- rendering -------------------------------------------------------------------
+    renderAll() {
+      // R1-3/R1-4: an in-page selection never moves the reader; reset only on a page turn
+      var pageKey = this.view + (this.view === 'walk' ? ':' + this.cursor : '');
+      var samePage = this._pageKey === pageKey;
+      var keepY = window.scrollY;
+      this.renderRail();
+      this.renderBanner();
+      var host = this.$('content'); clear(host);
+      if (this.view === 'front') this.renderFront(host);
+      else if (this.view === 'walk') this.renderPlace(host, this.cursor);
+      else this.renderSummary(host);
+      // Create lives at the Summary only (F19: the one final verb)
+      var submit = this.$('submit');
+      submit.style.display = this.view === 'summ' ? '' : 'none';
+      this.$('note').textContent = this.view === 'summ'
+        ? 'one payload through ' + TS.function + ' -- born whole, or refused with the gaps on the rail'
+        : 'the act is ONE whole -- Create lives at the Summary; no Save Draft, deliberately';
+      this.applyRoleGate();
+      if (samePage) window.scrollTo(0, keepY); else window.scrollTo(0, 0);
+      this._pageKey = pageKey;
+    }
+
+    nextBtn(label, onclick) {
+      var b = el('button', 'ts-btn ts-btn--primary', label || 'Next');
+      b.type = 'button'; b.dataset.walkNext = '1';
+      b.addEventListener('click', onclick);
+      return b;
+    }
+    ghostBtn(label, onclick) {
+      var b = el('button', 'ts-btn ts-btn--ghost', label);
+      b.type = 'button';
+      b.addEventListener('click', onclick);
+      return b;
+    }
+
+    // ---- step 0: ACCOUNT FACTS (the spine's first step) ------------------------------
+    renderFront(host) {
+      var self = this;
+      var A = fam('account');
+
+      var secA = el('div', 'ts-sec');
+      secA.appendChild(this.secHead(A.title));
+      var grid = el('div', 'ts-fields');
+      A.fields.forEach(function (f) {
+        var opts = f.field === TS.entity + '_name' ? { onInput: function () { self.checkName(); } } : {};
+        grid.appendChild(self.labeled(f, self.acct, opts));
+      });
+      secA.appendChild(grid);
+      var dup = el('div', 'ts-dup'); dup.dataset.ts = 'namedup';
+      secA.appendChild(dup);
+      host.appendChild(secA);
+      // F16: the billing address types ahead
+      var bs = grid.querySelector('[data-wf="billing_street_address"]');
+      if (bs) this.attachTypeahead(bs, {
+        street: bs, city: grid.querySelector('[data-wf="billing_city"]'),
+        state: grid.querySelector('[data-wf="billing_state"]'), zip: grid.querySelector('[data-wf="billing_zip_code"]')
+      });
+
+      var secP = el('div', 'ts-sec');
+      secP.appendChild(this.secHead(fam('people').title,
+        ROSTERS_SEPARATE ? 'the account roster -- people at a place are entered at the place (IN-15)' : ''));
+      secP.appendChild(this.rosterTable());
+      var add = el('button', 'ts-add', '+ add a person');
+      add.type = 'button';
+      add.addEventListener('click', function () { self.roster.push({ _org: 'roster' }); self.renderAll(); });
+      secP.appendChild(add);
+      host.appendChild(secP);
+
+      var secW = el('div', 'ts-sec');
+      secW.appendChild(this.secHead('Where does service happen?'));
+      var triageLine = this.radioLine('', 'ts-triage', [
+        { value: 'one', label: 'at ONE place' },
+        { value: 'many', label: 'at MORE THAN ONE place -- place by place' }
+      ], this.triage, function (v) { self.triage = v; self.renderAll(); });
+      if (!this.triage) triageLine.className += ' ts-radio-line--todo';
+      secW.appendChild(triageLine);
+      host.appendChild(secW);
+      if (this.simple()) {
+        // its OWN section head -- an inline lead reads as fine print (his 2026-08-28 catch)
+        var secB = el('div', 'ts-sec');
+        secB.appendChild(this.secHead('Is the service at the billing address?'));
+        var billLine = this.radioLine('', 'ts-usebill', [
+          { value: 'yes', label: 'Yes -- service happens at the billing address' },
+          { value: 'no', label: 'No -- the place is somewhere else' }
+        ], this.useBilling, function (v) { self.useBilling = v; self.renderAll(); });
+        if (!this.useBilling) billLine.className += ' ts-radio-line--todo';
+        secB.appendChild(billLine);
+        host.appendChild(secB);
+      }
+
+      // Q-M (a): the two MODE questions only; the VALUES wait at the Summary
+      if (TERM_MODES_UP_FRONT) {
+        var secT = el('div', 'ts-sec');
+        secT.appendChild(this.secHead('The terms', 'the values are set at the Summary'));
+        var cadLine = this.radioLine('Service cadence:', 'ts-cadmode', [
+          { value: 'all', label: 'apply ONE cadence to all services' },
+          { value: 'per', label: 'cadence set on each service' }
+        ], this.cadMode, function (v) { self.cadMode = v; self.renderAll(); });
+        if (!this.cadMode) cadLine.className += ' ts-radio-line--todo';
+        secT.appendChild(cadLine);
+        var bilLine = this.radioLine('Billing preference:', 'ts-billmode', [
+          { value: 'together', label: 'bill all services TOGETHER' },
+          { value: 'separate', label: 'bill each service SEPARATELY' }
+        ], this.billMode, function (v) { self.billMode = v; self.renderAll(); });
+        if (!this.billMode) bilLine.className += ' ts-radio-line--todo';
+        secT.appendChild(bilLine);
+        host.appendChild(secT);
+      }
+
+      // IN-3: one Next, one advance; a blocked advance NAMES every missing answer
+      var nav = el('div', 'ts-stepnav');
+      var missing = [];
+      if (!this.triage) missing.push('"Where does service happen?"');
+      if (this.triage === 'one' && !this.useBilling) missing.push('"Is the service at the billing address?"');
+      if (TERM_MODES_UP_FRONT) {
+        if (!this.cadMode) missing.push('the cadence mode');
+        if (!this.billMode) missing.push('the billing preference');
+      }
+      var next = this.nextBtn('Next', function () { self.beginWalk(); });
+      next.disabled = missing.length > 0;
+      nav.appendChild(next);
+      if (missing.length) {
+        nav.appendChild(el('span', 'ts-note ts-note--block', 'to go: ' + missing.join(' and ') + ' -- marked above'));
+      }
+      host.appendChild(nav);
+    }
+
+    // the account roster: LIVE rows (F25); ONE primary, a new one demotes (F17);
+    // IN-15: place-born people do not display here (the pool stays one)
+    rosterTable() {
+      var self = this;
+      var visible = this.rosterVisible();
+      if (visible.length === 0) return el('p', 'ts-quiet', 'no one entered yet -- add the first');
+      var P = fam('people');
+      var table = el('table', 'ts-table');
+      table.dataset.ts = 'roster';
+      var trh = document.createElement('tr');
+      P.fields.forEach(function (f) { trh.appendChild(el('th', null, f.label)); });
+      trh.appendChild(el('th', null, ''));
+      table.appendChild(trh);
+      this.roster.forEach(function (person, ri) {
+        if (ROSTERS_SEPARATE && person._org === 'place') return;
+        var tr = document.createElement('tr');
+        P.fields.forEach(function (f) {
+          var td = document.createElement('td');
+          td.className = 'ts-col-' + fieldKind(f);
+          var opts = {};
+          if (f.field === 'is_primary_contact') {
+            opts.onChange = function () {
+              if (person.is_primary_contact) {
+                self.roster.forEach(function (o) { if (o !== person) o.is_primary_contact = false; });
+              }
+              self.renderAll();
+            };
+          }
+          td.appendChild(self.input(f, person, opts));
+          tr.appendChild(td);
+        });
+        var tdx = document.createElement('td');
+        var rm = el('button', 'ts-remove', 'remove');
+        rm.type = 'button';
+        rm.addEventListener('click', function () { self.removePerson(ri); });
+        tdx.appendChild(rm); tr.appendChild(tdx);
+        table.appendChild(tr);
+      });
+      return table;
+    }
+
+    removePerson(ri) {
+      this.roster.splice(ri, 1);
+      // the ties go with the person; higher indexes shift down (F25)
+      this.places.forEach(function (p) {
+        p.ties = p.ties.filter(function (t) { return t.pi !== ri; });
+        p.ties.forEach(function (t) { if (t.pi > ri) t.pi--; });
+      });
+      this.renderAll();
+    }
+
+    beginWalk() {
+      this.gaps = null;
+      if (this.places.length === 0) {
+        var p = this.newPlace();
+        if (this.simple() && this.useBilling === 'yes') {
+          // F14: YOUR yes copies the billing address as THE place -- an act, not a prefill
+          p.vals.location_name = this.acct.account_name || '';
+          p.vals.street_address = this.acct.billing_street_address || '';
+          p.vals.city = this.acct.billing_city || '';
+          p.vals.state = this.acct.billing_state || '';
+          p.vals.postal_code = this.acct.billing_zip_code || '';
+          p.sub = 'people';   // F20: services still wait for done-with-people
+        }
+        this.places.push(p);
+      }
+      this.view = 'walk'; this.cursor = 0;
+      this.renderAll();
+    }
+
+    // ---- the place step (the spine's repeating step) ---------------------------------
+    renderPlace(host, i) {
+      var self = this;
+      var p = this.places[i];
+      var L = fam('places');
+      var name = p.vals.location_name || (this.simple() ? 'The place' : 'Place ' + (i + 1));
+
+      var secL = el('div', 'ts-sec');
+      secL.appendChild(this.secHead(name + ': the place'));
+      var grid = el('div', 'ts-fields');
+      L.fields.forEach(function (f) { grid.appendChild(self.labeled(f, p.vals)); });
+      secL.appendChild(grid);
+      var st = grid.querySelector('[data-wf="street_address"]');
+      if (st) this.attachTypeahead(st, {
+        street: st, city: grid.querySelector('[data-wf="city"]'),
+        state: grid.querySelector('[data-wf="state"]'), zip: grid.querySelector('[data-wf="postal_code"]')
+      });
+      if (!p.done && p.sub === 'place') {
+        var nav1 = el('div', 'ts-stepnav');
+        nav1.appendChild(this.nextBtn('Next', function () { p.sub = 'people'; self.renderAll(); }));
+        secL.appendChild(nav1);
+        host.appendChild(secL);
+        return;
+      }
+      host.appendChild(secL);
+
+      // its people -- THE ONE DEVICE (IN-5); on the one-place path there is NO tie machinery (F20)
+      var secP = el('div', 'ts-sec');
+      secP.appendChild(this.secHead(name + ': its people',
+        this.simple() ? '' : 'ALREADY-first; a NEW person here stays a place person (IN-15)'));
+      if (this.simple()) {
+        secP.appendChild(el('p', 'ts-quiet', "the account's people keep this place -- nothing to wire; the tie is implied"));
+        secP.appendChild(this.rosterTable());
+        var addS = el('button', 'ts-add', '+ add a person');
+        addS.type = 'button';
+        addS.addEventListener('click', function () { self.roster.push({ _org: 'roster' }); self.renderAll(); });
+        secP.appendChild(addS);
+      } else {
+        secP.appendChild(this.tieTable(p, i));
+        // F5: ALREADY-first -- the picker spans the WHOLE act (IN-15's rider)
+        var pickLine = el('div', 'ts-stepnav');
+        var sel = document.createElement('select');
+        sel.dataset.ts = 'tie-pick';
+        sel.appendChild(el('option', null, 'Someone ALREADY entered...'));
+        this.roster.forEach(function (person, pi) {
+          if (p.ties.some(function (t) { return t.pi === pi; })) return;
+          var op = el('option', null, personName(person) || ('person ' + (pi + 1)));
+          op.value = String(pi); sel.appendChild(op);
+        });
+        sel.addEventListener('change', function () {
+          if (sel.value === '') return;
+          p.ties.push({ pi: Number(sel.value), role: '', notes: '', is_primary: p.ties.length === 0 });
+          self.renderAll();
+        });
+        pickLine.appendChild(sel);
+        var addNew = el('button', 'ts-add', '+ someone NEW at this place');
+        addNew.type = 'button';
+        addNew.addEventListener('click', function () {
+          self.roster.push({ _org: 'place' });
+          p.ties.push({ pi: self.roster.length - 1, role: '', notes: '', is_primary: p.ties.length === 0 });
+          self.renderAll();
+        });
+        pickLine.appendChild(addNew);
+        secP.appendChild(pickLine);
+      }
+      if (!p.done && p.sub === 'people') {
+        var nav2 = el('div', 'ts-stepnav');
+        nav2.appendChild(this.nextBtn('Next', function () { p.sub = 'services'; self.renderAll(); }));
+        nav2.appendChild(el('span', 'ts-note', 'done with people -- the services come next'));
+        secP.appendChild(nav2);
+        host.appendChild(secP);
+        return;
+      }
+      host.appendChild(secP);
+
+      // its services + specs (F26: his field order; Q-M: term columns only when they vary)
+      var secS = el('div', 'ts-sec');
+      secS.appendChild(this.secHead(name + ': its services + agreement specs'));
+      secS.appendChild(this.itemTable(p, i));
+      var addI = el('button', 'ts-add', '+ add a service item');
+      addI.type = 'button';
+      addI.addEventListener('click', function () { p.items.push({ covered: true }); self.renderAll(); });
+      secS.appendChild(addI);
+      // THE FORK NEVER DISAPPEARS (his catch, round 3: a DONE place revisited from the
+      // rail showed no way forward and no way to add a place -- the !p.done guard was
+      // the regression; the stamped paper never had it). F7: the triage never traps.
+      var nav3 = el('div', 'ts-stepnav');
+      nav3.appendChild(this.ghostBtn('Add another place', function () {
+        p.done = true; p.sub = 'done';
+        if (self.triage === 'one') self.triage = 'many';
+        self.places.push(self.newPlace());
+        self.cursor = self.places.length - 1;
+        self.renderAll();
+      }));
+      nav3.appendChild(this.nextBtn('Next', function () {
+        p.done = true; p.sub = 'done';
+        self.view = 'summ'; self.renderAll();
+      }));
+      nav3.appendChild(el('span', 'ts-note', 'Next = the Summary, the whole act on one page'));
+      secS.appendChild(nav3);
+      host.appendChild(secS);
+    }
+
+    // the ties at a place -- THE ONE DEVICE's at-place face: the person's own fields +
+    // role/notes from the ties family + primary-here; LIVE rows; one primary per place
+    // demoting quietly (F21). R2-6: the columns get ROOM (ts-col-* widths).
+    tieTable(p, placeIdx) {
+      var self = this;
+      if (p.ties.length === 0) return el('p', 'ts-quiet', 'no one named at this place yet');
+      var P = fam('people');
+      var roleF = fld('ties', 'role');
+      var notesF = fld('ties', 'notes');
+      var table = el('table', 'ts-table');
+      table.dataset.ts = 'ties';
+      var trh = document.createElement('tr');
+      P.fields.forEach(function (f) { if (f.field !== 'is_primary_contact') trh.appendChild(el('th', null, f.label)); });
+      trh.appendChild(el('th', null, roleF ? roleF.label + ' at this place' : 'Role'));
+      trh.appendChild(el('th', null, notesF ? notesF.label : 'Notes'));
+      trh.appendChild(el('th', null, 'Primary here'));
+      trh.appendChild(el('th', null, ''));
+      table.appendChild(trh);
+      p.ties.forEach(function (tie, ti) {
+        var person = self.roster[tie.pi] || {};
+        var tr = document.createElement('tr');
+        P.fields.forEach(function (f) {
+          if (f.field === 'is_primary_contact') return;
+          var td = document.createElement('td');
+          td.className = 'ts-col-' + fieldKind(f);
+          td.appendChild(self.input(f, person));
+          tr.appendChild(td);
+        });
+        var tdR = document.createElement('td');
+        tdR.className = 'ts-col-role';
+        tdR.appendChild(self.input(roleF || { field: 'role', label: 'Role', input: 'text' }, tie));
+        tr.appendChild(tdR);
+        var tdN = document.createElement('td');
+        tdN.className = 'ts-col-notes';
+        tdN.appendChild(self.input(notesF || { field: 'notes', label: 'Notes', input: 'text' }, tie));
+        tr.appendChild(tdN);
+        var tdP = document.createElement('td');
+        var cb = document.createElement('input'); cb.type = 'checkbox';
+        cb.checked = !!tie.is_primary;
+        cb.dataset.wf = 'is_primary';
+        cb.addEventListener('change', function () {
+          tie.is_primary = cb.checked;
+          if (cb.checked) p.ties.forEach(function (o) { if (o !== tie) o.is_primary = false; });
+          self.renderAll();
+        });
+        tdP.appendChild(cb); tr.appendChild(tdP);
+        var tdx = document.createElement('td');
+        var rm = el('button', 'ts-remove', 'remove');
+        rm.type = 'button';
+        rm.addEventListener('click', function () { p.ties.splice(ti, 1); self.renderAll(); });
+        tdx.appendChild(rm); tr.appendChild(tdx);
+        table.appendChild(tr);
+      });
+      return table;
+    }
+
+    // the items at a place: LIVE rows in HIS order (F26); the catalog picker (F22)
+    itemTable(p, placeIdx) {
+      var self = this;
+      if (p.items.length === 0) return el('p', 'ts-quiet', 'no service items entered at this place');
+      var kindF = fld('items', 'item_type');
+      var nameF = fld('items', 'item_name');
+      var cadF = fld('agreement', 'frequency');
+      var bilF = fld('agreement', 'billing_frequency');
+      var vc = this.cadMode === 'per', vb = this.billMode === 'separate';
+      var table = el('table', 'ts-table');
+      table.dataset.ts = 'items';
+      var trh = document.createElement('tr');
+      trh.appendChild(el('th', null, kindF ? kindF.label : 'Kind'));
+      trh.appendChild(el('th', null, 'Service (from the catalog)'));
+      if (vc) trh.appendChild(el('th', null, 'Cadence'));
+      if (vb) trh.appendChild(el('th', null, 'Billed'));
+      trh.appendChild(el('th', null, 'On the agreement'));
+      trh.appendChild(el('th', null, 'Price'));
+      trh.appendChild(el('th', null, (nameF ? nameF.label : 'Item') + ' (blank = the whole place)'));
+      trh.appendChild(el('th', null, ''));
+      table.appendChild(trh);
+      p.items.forEach(function (item, ii) {
+        var tr = document.createElement('tr');
+        var tdK = document.createElement('td');
+        tdK.appendChild(self.input(kindF || { field: 'item_type', label: 'Kind', input: 'text' }, item));
+        tr.appendChild(tdK);
+        var tdS = document.createElement('td');
+        var svc = document.createElement('select');
+        svc.dataset.wf = 'service_id';
+        // R3-2: an option with no value attribute answers with its TEXT -- the
+        // placeholder's label once rode the payload into the door as a "uuid".
+        // The placeholder's value is EXPLICITLY empty, always.
+        var ph = el('option', null, self.catalog && self.catalog.length ? '' : '(none in the catalog yet)');
+        ph.value = '';
+        svc.appendChild(ph);
+        var lastCat = null, group = null;
+        (self.catalog || []).forEach(function (row) {
+          if (row.service_category !== lastCat) {
+            lastCat = row.service_category;
+            group = document.createElement('optgroup');
+            group.label = row.service_category || 'Services';
+            svc.appendChild(group);
+          }
+          var op = el('option', null, row.service_name);
+          op.value = row.service_id;
+          (group || svc).appendChild(op);
+        });
+        svc.value = item.service_id || '';
+        svc.addEventListener('change', function () { item.service_id = svc.value; });
+        tdS.appendChild(svc); tr.appendChild(tdS);
+        if (vc) {
+          var tdC = document.createElement('td');
+          tdC.appendChild(self.input({ field: 'frequency', label: 'Cadence', input: 'select', options: (cadF && cadF.options) || [] }, item));
+          tr.appendChild(tdC);
+        }
+        if (vb) {
+          var tdB = document.createElement('td');
+          tdB.appendChild(self.input({ field: 'billing_frequency', label: 'Billed', input: 'select', options: (bilF && bilF.options) || [] }, item));
+          tr.appendChild(tdB);
+        }
+        var tdA = document.createElement('td');
+        var cb = document.createElement('input'); cb.type = 'checkbox';
+        cb.checked = item.covered !== false;
+        cb.dataset.wf = 'covered';
+        cb.addEventListener('change', function () { item.covered = cb.checked; self.renderAll(); });
+        tdA.appendChild(cb);
+        tdA.appendChild(el('span', 'ts-chip' + (item.covered !== false ? '' : ' ts-chip--off'),
+          item.covered !== false ? ' on the agreement' : ' on file only'));
+        tr.appendChild(tdA);
+        var tdPr = document.createElement('td');
+        var pr = self.input({ field: 'price', label: 'Price', input: 'text' }, item);
+        pr.disabled = item.covered === false;
+        tdPr.appendChild(pr); tr.appendChild(tdPr);
+        var tdN = document.createElement('td');
+        tdN.appendChild(self.input({ field: 'item_name', label: 'Item', input: 'text',
+          placeholder: 'blank = the whole place' }, item));
+        tr.appendChild(tdN);
+        var tdx = document.createElement('td');
+        var rm = el('button', 'ts-remove', 'remove');
+        rm.type = 'button';
+        rm.addEventListener('click', function () { p.items.splice(ii, 1); self.renderAll(); });
+        tdx.appendChild(rm); tr.appendChild(tdx);
+        table.appendChild(tr);
+      });
+      return table;
+    }
+
+    // ---- THE SUMMARY (the spine's last step): every fact, editable in place ----------
+    ro(label, value) {
+      var wrap = el('div', 'ts-f');
+      wrap.appendChild(el('label', null, label));
+      wrap.appendChild(el('div', 'ts-ro' + (value ? '' : ' ts-ro--empty'), value || 'empty'));
+      return wrap;
+    }
+
+    renderSummary(host) {
+      var self = this;
+      var A = fam('account');
+
+      var head = el('div', 'ts-sec');
+      head.appendChild(this.secHead('The Summary -- every fact of the act, editable in place',
+        'the same devices that entered it (IN-8/IN-9)'));
+      host.appendChild(head);
+
+      // the account, editable (IN-9)
+      var secA = el('div', 'ts-sec');
+      secA.appendChild(this.secHead(A.title));
+      var gridA = el('div', 'ts-fields');
+      A.fields.forEach(function (f) {
+        var opts = f.field === TS.entity + '_name' ? { onInput: function () { self.checkName(); } } : {};
+        gridA.appendChild(self.labeled(f, self.acct, opts));
+      });
+      secA.appendChild(gridA);
+      var dup = el('div', 'ts-dup'); dup.dataset.ts = 'namedup';
+      secA.appendChild(dup);
+      host.appendChild(secA);
+      var bs2 = gridA.querySelector('[data-wf="billing_street_address"]');
+      if (bs2) this.attachTypeahead(bs2, {
+        street: bs2, city: gridA.querySelector('[data-wf="billing_city"]'),
+        state: gridA.querySelector('[data-wf="billing_state"]'), zip: gridA.querySelector('[data-wf="billing_zip_code"]')
+      });
+
+      // the agreement: identity + THE TERM VALUES (Q-M a -- the modes were set up front)
+      var descF = fld('agreement', 'description');
+      var startF = fld('agreement', 'start_date');
+      var endF = fld('agreement', 'end_date');
+      var cadF = fld('agreement', 'frequency');
+      var bilF = fld('agreement', 'billing_frequency');
+      var sec = el('div', 'ts-sec');
+      sec.appendChild(this.secHead('The agreement -- identity + terms'));
+      var grid = el('div', 'ts-fields');
+      if (descF) grid.appendChild(this.labeled(descF, this.agree));
+      if (startF) grid.appendChild(this.labeled(startF, this.agree));
+      if (endF) grid.appendChild(this.labeled(endF, this.agree));
+      if (this.cadMode === 'per') grid.appendChild(this.ro(cadF.label, 'set on each service (rows below)'));
+      else if (cadF) grid.appendChild(this.labeled({ field: 'frequency', label: cadF.label + ' (all services)', input: 'select', options: cadF.options }, this.agree));
+      if (this.billMode === 'separate') grid.appendChild(this.ro(bilF.label, 'each service billed separately (rows below)'));
+      else if (bilF) grid.appendChild(this.labeled({ field: 'billing_frequency', label: bilF.label + ' (one bill)', input: 'select', options: bilF.options }, this.agree));
+      sec.appendChild(grid);
+      var covered = 0, total = 0;
+      this.places.forEach(function (p) { p.items.forEach(function (it) { total++; if (it.covered !== false) covered++; }); });
+      sec.appendChild(el('div', 'ts-note', covered + ' of ' + total + ' item(s) ON THE AGREEMENT across ' +
+        this.places.length + ' place(s)'));
+      host.appendChild(sec);
+
+      // the account roster, editable -- IN-15: place people live on their place cards
+      var secE = el('div', 'ts-sec');
+      secE.appendChild(this.secHead('The account roster',
+        ROSTERS_SEPARATE ? 'place people are on their place cards below (IN-15)' : ''));
+      secE.appendChild(this.rosterTable());
+      var addR = el('button', 'ts-add', '+ add a person');
+      addR.type = 'button';
+      addR.addEventListener('click', function () { self.roster.push({ _org: 'roster' }); self.renderAll(); });
+      secE.appendChild(addR);
+      host.appendChild(secE);
+
+      // every place, grouped the way the account will read in the app (F13) --
+      // FULL address, editable (R2-8/IN-9), its people, its items
+      var L = fam('places');
+      this.places.forEach(function (p, i) {
+        if (self.placeIsEmpty(p)) return;
+        var s = el('div', 'ts-sec ts-place-card');
+        var pc = 0; p.items.forEach(function (it) { if (it.covered !== false) pc++; });
+        s.appendChild(self.secHead(p.vals.location_name || 'Place ' + (i + 1),
+          pc + ' of ' + p.items.length + ' on the agreement at this site'));
+        var gridP = el('div', 'ts-fields');
+        L.fields.forEach(function (f) { gridP.appendChild(self.labeled(f, p.vals)); });
+        s.appendChild(gridP);
+        var stp = gridP.querySelector('[data-wf="street_address"]');
+        if (stp) self.attachTypeahead(stp, {
+          street: stp, city: gridP.querySelector('[data-wf="city"]'),
+          state: gridP.querySelector('[data-wf="state"]'), zip: gridP.querySelector('[data-wf="postal_code"]')
+        });
+        if (self.simple()) {
+          s.appendChild(el('p', 'ts-quiet', "the account's people keep this place -- the tie is implied"));
+        } else {
+          s.appendChild(self.tieTable(p, i));
+        }
+        s.appendChild(self.itemTable(p, i));
+        var addI = el('button', 'ts-add', '+ add a service item');
+        addI.type = 'button';
+        addI.addEventListener('click', function () { p.items.push({ covered: true }); self.renderAll(); });
+        s.appendChild(addI);
+        host.appendChild(s);
+      });
+
+      var back = el('div', 'ts-stepnav');
+      back.appendChild(this.ghostBtn('Back into the walk', function () {
+        for (var i = 0; i < self.places.length; i++) {
+          if (!self.places[i].done) { self.view = 'walk'; self.cursor = i; self.renderAll(); return; }
+        }
+        self.view = 'walk'; self.cursor = Math.max(0, self.places.length - 1); self.renderAll();
+      }));
+      // the fork rides the Summary too -- the whole-act view can grow the act (F7/IN-9)
+      back.appendChild(this.ghostBtn('+ Add another place', function () {
+        if (self.triage === 'one') self.triage = 'many';
+        self.places.push(self.newPlace());
+        self.cursor = self.places.length - 1;
+        self.view = 'walk';
+        self.renderAll();
+      }));
+      host.appendChild(back);
+    }
+
+    // ---- the act (T8: born whole or refused; the DOOR decides, never the form) -------
+    placeIsEmpty(p) {
+      return !p.vals.location_name && !p.vals.street_address && p.items.length === 0 && p.ties.length === 0;
+    }
+
+    buildPayload() {
+      var self = this;
+      var live = this.places.filter(function (p) { return !self.placeIsEmpty(p); });
+      var places = live.map(function (p) {
+        return {
+          location_name: p.vals.location_name || null,
+          street_address: p.vals.street_address || '',
+          city: p.vals.city || '', state: p.vals.state || '', postal_code: p.vals.postal_code || '',
+          access_information: p.vals.access_information || null,
+          notes: p.vals.notes || null
+        };
+      });
+      var items = [], agreeItems = [];
+      live.forEach(function (p, placeIdx) {
+        p.items.forEach(function (it) {
+          var idx = items.length;
+          items.push({
+            item_name: it.item_name || p.vals.location_name || 'the whole place',   // F26
+            item_type: it.item_type || null,
+            place_index: placeIdx
+          });
+          if (it.covered !== false) {
+            // R3-2's belt AND braces: only a uuid-shaped service_id enters the payload
+            var sid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(it.service_id || '')
+              ? it.service_id : null;
+            agreeItems.push({
+              item_index: idx,
+              price: it.price || null,
+              frequency: self.cadMode === 'per' ? (it.frequency || null) : null,
+              billing_frequency: self.billMode === 'separate' ? (it.billing_frequency || null) : null,
+              service_id: sid
+            });
+          }
+        });
+      });
+      var ties = [];
+      live.forEach(function (p, placeIdx) {
+        p.ties.forEach(function (t) {
+          if (t.pi === undefined || !self.roster[t.pi]) return;
+          ties.push({ person_index: t.pi, place_index: placeIdx,
+                      role: t.role || 'primary', notes: t.notes || null,
+                      is_primary: !!t.is_primary });
+        });
+      });
+      // T7 carries: one person, one place, nothing declared -- the tie is implied
+      if (ties.length === 0 && this.roster.length === 1 && places.length === 1) {
+        ties = [{ person_index: 0, place_index: 0, role: 'primary', notes: null, is_primary: true }];
+      }
+      // the door's vocabulary only -- _org is the display split's, never the payload's
+      var P = fam('people');
+      var people = this.roster.map(function (person) {
+        var row = {};
+        P.fields.forEach(function (f) { if (person[f.field] !== undefined) row[f.field] = person[f.field]; });
+        return row;
+      });
+      var agreement = {
+        description: this.agree.description || null,
+        start_date: this.agree.start_date || null,
+        end_date: this.agree.end_date || null,   // Q11: blank unless requested
+        frequency: this.cadMode === 'per' ? null : (this.agree.frequency || null),
+        billing_frequency: this.billMode === 'separate' ? null : (this.agree.billing_frequency || null),
+        items: agreeItems
+      };
+      return {
+        tenant_id: this.context && this.context.tenant_id,
+        account: this.acct,
+        people: people,
+        places: places,
+        items: items,
+        agreement: agreement,
+        ties: ties
+      };
+    }
+
+    async submit() {
+      var btn = this.$('submit');
+      btn.disabled = true;
+      this.client = this.client || this.dataClient();
+      if (!this.client) {
+        btn.disabled = false;
+        return this.failNote('no data client -- the shell did not provide supabase context');
+      }
+      var r = await this.client.schema(TS.schema).rpc(TS.function, { payload: this.buildPayload() });
+      btn.disabled = false;
+      if (r.error) return this.failNote(TS.function + ': ' + r.error.message);
+      var verdict = r.data;
+      if (verdict && verdict.admitted === false) {
+        this.gaps = verdict.gaps || [];
+        this.renderRail();
+        this.renderBanner();
+        return;
+      }
+      if (verdict && verdict.admitted === true && verdict.account_id) {
+        // born whole = born active -- land on the face THROUGH THE SHELL'S OWN ROUTER
+        var route = '/' + TS.entity + 's/' + verdict.account_id;
+        if (window.ShellNavigation && window.ShellNavigation.navigate) {
+          window.ShellNavigation.navigate(route);
+        } else {
+          window.location.hash = '#' + route;
+        }
+        return;
+      }
+      this.failNote(TS.function + ': unexpected answer ' + JSON.stringify(verdict));
+    }
+
+    failNote(message) {
+      var b = this.$('banner');
+      b.hidden = false;
+      b.className = 'ts-banner';
+      b.textContent = message;
+    }
+  }
+
+  // Export to window for the shell's mounting system
+  if (typeof window !== 'undefined') {
+    window.AccountTearsheetBlueprintUI = AccountTearsheetBlueprintUI;
+    window.PatternRegistry = window.PatternRegistry || {};
+    window.PatternRegistry['c6000000-0000-0000-0000-000000000001'] = window.AccountTearsheetBlueprintUI;
+  }
+})();

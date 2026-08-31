@@ -1,0 +1,355 @@
+/* FILTER-PANEL-001: Composable Filter Panel Styles */
+/* BLACK & WHITE Theme with CSS Variables */
+/* Part of the Pattern Factory Language */
+
+:root {
+    /* Filter Panel Theming Variables */
+    --filter-panel-bg: #FFFFFF;
+    --filter-panel-border: #000000;
+    --filter-panel-text: #000000;
+    --filter-panel-label: #000000;
+    --filter-panel-input-bg: #FFFFFF;
+    --filter-panel-input-border: #000000;
+    --filter-panel-input-text: #000000;
+    --filter-panel-placeholder: #666666;
+    --filter-panel-focus: #000000;
+    --filter-panel-hover-bg: #F0F0F0;
+    --filter-panel-active-bg: #000000;
+    --filter-panel-active-text: #FFFFFF;
+    --filter-panel-shadow: rgba(0, 0, 0, 0.1);
+    
+    /* Spacing */
+    --filter-panel-padding: 20px;
+    --filter-panel-gap: 15px;
+    --filter-control-gap: 10px;
+    
+    /* Borders */
+    --filter-panel-border-width: 2px;
+    --filter-panel-border-radius: 0px;
+    
+    /* Typography */
+    --filter-panel-font-size: 14px;
+    --filter-panel-label-font-size: 12px;
+    --filter-panel-title-font-size: 16px;
+}
+
+/* Base Panel Styles */
+.filter-panel {
+    background: var(--filter-panel-bg);
+    border: var(--filter-panel-border-width) solid var(--filter-panel-border);
+    padding: var(--filter-panel-padding);
+    margin-bottom: 20px;
+}
+
+.filter-panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--filter-panel-gap);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--filter-panel-border);
+}
+
+.filter-panel__title {
+    font-size: var(--filter-panel-title-font-size);
+    font-weight: bold;
+    color: var(--filter-panel-text);
+    margin: 0;
+}
+
+.filter-panel__toggle {
+    background: none;
+    border: 1px solid var(--filter-panel-border);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-panel__toggle:hover {
+    background: var(--filter-panel-hover-bg);
+}
+
+/* Quick Filters */
+.filter-panel__quick-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: var(--filter-panel-gap);
+    flex-wrap: wrap;
+}
+
+.quick-filter-chip {
+    padding: 5px 12px;
+    border: 1px solid var(--filter-panel-border);
+    background: var(--filter-panel-bg);
+    color: var(--filter-panel-text);
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.quick-filter-chip:hover {
+    background: var(--filter-panel-hover-bg);
+}
+
+.quick-filter-chip.active {
+    background: var(--filter-panel-active-bg);
+    color: var(--filter-panel-active-text);
+}
+
+/* Filter Controls Grid */
+.filter-grid {
+    display: grid;
+    gap: var(--filter-panel-gap);
+}
+
+.filter-grid--cols-1 { grid-template-columns: 1fr; }
+.filter-grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.filter-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.filter-grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
+.filter-grid--cols-5 { grid-template-columns: repeat(5, 1fr); }
+.filter-grid--cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* Individual Filter Control */
+.filter-control {
+    display: flex;
+    flex-direction: column;
+    gap: var(--filter-control-gap);
+}
+
+/* THE COAT (SJ s41 3b'): the panel speaks the face's idiom -- quiet, sentence case,
+   no shouting; a label is never an act. */
+.filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #525252;
+}
+
+.filter-label .required {
+    color: #FF0000;
+}
+
+/* Input Styles */
+.filter-input {
+    padding: 8px 10px;
+    border: 1px solid var(--filter-panel-input-border);
+    background: var(--filter-panel-input-bg);
+    color: var(--filter-panel-input-text);
+    font-size: var(--filter-panel-font-size);
+    transition: all 0.2s ease;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: var(--filter-panel-focus);
+    box-shadow: 0 0 0 2px var(--filter-panel-shadow);
+}
+
+.filter-input--select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 9L2 5h8z' fill='%23000000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+/* Multi-Select Styles */
+.filter-input--multi-select {
+    position: relative;
+}
+
+.multi-select-trigger {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--filter-panel-input-border);
+    background: var(--filter-panel-input-bg);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.multi-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--filter-panel-bg);
+    border: 1px solid var(--filter-panel-border);
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.checkbox-option:hover {
+    background: var(--filter-panel-hover-bg);
+}
+
+.checkbox-option input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Date Range */
+.date-range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-separator {
+    font-weight: bold;
+}
+
+/* Action Buttons */
+.filter-panel__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: var(--filter-panel-gap);
+    padding-top: var(--filter-panel-gap);
+    border-top: 1px solid var(--filter-panel-border);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 6px 14px;
+    border: 1px solid #c6c6c6;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #161616;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    font-size: 13px;
+}
+
+.btn--primary {
+    background: var(--filter-panel-active-bg);
+    color: var(--filter-panel-active-text);
+}
+
+.btn--primary:hover {
+    background: var(--filter-panel-text);
+}
+
+.btn--secondary {
+    background: var(--filter-panel-bg);
+    color: var(--filter-panel-text);
+}
+
+.btn--secondary:hover {
+    background: var(--filter-panel-hover-bg);
+}
+
+.btn--ghost {
+    border: none;
+    background: none;
+    text-decoration: underline;
+}
+
+/* Status Bar */
+.filter-panel__status {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #E0E0E0;
+    font-size: 12px;
+    color: #666666;
+}
+
+.active-filter-count {
+    font-weight: bold;
+}
+
+/* Saved Filters */
+.saved-filters {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.saved-filter-select {
+    padding: 8px 10px;
+    border: 1px solid var(--filter-panel-input-border);
+    background: var(--filter-panel-input-bg);
+    cursor: pointer;
+}
+
+/* Layout Variations */
+.filter-panel__controls--vertical .filter-grid {
+    grid-template-columns: 1fr !important;
+}
+
+.filter-panel__controls--horizontal {
+    /* Default grid layout */
+}
+
+/* Theme Variants */
+.filter-panel--bordered {
+    border-width: 3px;
+    box-shadow: 3px 3px 0 var(--filter-panel-shadow);
+}
+
+.filter-panel--filled {
+    background: #F5F5F5;
+    border: none;
+}
+
+.filter-panel--minimal {
+    border: none;
+    padding: 10px 0;
+    background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filter-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .filter-panel__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .filter-panel {
+        display: none;
+    }
+}
+
+/* Animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-panel__body {
+    animation: slideDown 0.3s ease;
+}
+
+/* Accessibility */
+.filter-panel:focus-within {
+    outline: 2px solid var(--filter-panel-focus);
+    outline-offset: 2px;
+}
