@@ -7,6 +7,29 @@
  * Implements Pattern Interface Contract (JBA-003)
  * - mount(container) / unmount() / onContext(context) / getMetadata()
  *
+ * 3.1.2: THE SET'S PRICE (SJ s45, THE POUR SITTING; Q-AM). When billing is TOGETHER
+ * the agreement carries the price OF THE SET (declared field `price` on the
+ * agreement section; the field-kind law gives it the decimal device by name): the
+ * edit walk loads it from the row, the Summary shows it beside the one-bill term,
+ * and the payload sends it -- billed separate it stays NULL and each item row
+ * carries its own. Never both by arithmetic split.
+ *
+ * 3.1.1: THE LIVE TOKEN (SJ s45, THE POUR SITTING; RI-909). The data client is the
+ * shell's ShellData when the shell publishes one -- its token read fresh per request,
+ * so a refreshed session is simply used; the self-built client stays only for shells
+ * without ShellData. And the catalog read fails LOUD: the banner wears it and
+ * blueprint:error DATA_LOAD_FAILED lets the shell answer session death with the
+ * sign-in gate. Never a silent empty.
+ *
+ * 3.1.0: THE EDIT MODE (SJ s44, THE DOCKET SITTING; his stamps Q-AA/Q-AD/Q-AE
+ * 2026-08-31). mode 'edit' re-enters the walk's Summary on a STANDING record: the
+ * whole tree loads from the rows AS THE ROLE (ids ride the state), every device is
+ * the create walk's own, and Save calls the declared door (intake_update_account)
+ * with the same six-family payload plus account_id -- the arrays are the act's
+ * whole truth (a missing row is removed; Q-AD). The shell hands the record by
+ * setRecordId (route /accounts/:id/edit); every hand-off RELOADS from the rows.
+ * mode absent or 'create' = the walk unchanged.
+ *
  * 3.0.0: THE SPINE IS DECLARED CONFIGURATION (Q-N stamped (a)) -- the walk's steps
  * come from TS.spine, not from this file: account_facts (the account -> the ACCOUNT
  * ROSTER -> the triage -> the term MODES; Q-M (a)) -> place (repeating: the place ->
@@ -28,11 +51,12 @@
 (function() {
   'use strict';
 
-  var TS = {"schema":"services_template","function":"intake_create_account","spine":{"steps":[{"key":"account_facts","label":"Account facts","contains":["account","people.roster","triage","term_modes"]},{"key":"place","repeats":true,"contains":["places","people.at_place","items"],"label_from":"location_name"},{"key":"summary","label":"Summary","contains":["account.edit","agreement.terms","people.roster.edit","places.edit","items.edit","create"]}],"version":"3.0.0","terms_placement":"modes_up_front_values_at_summary","rosters_separate":true},"entity":"account","sections":[{"key":"account","title":"The account","fields":[{"field":"account_name","input":"text","label":"Account name","required":true},{"field":"account_type","input":"select","label":"Kind","options":["residential","commercial"],"required":true},{"field":"billing_street_address","input":"text","label":"Billing street","required":true},{"field":"billing_city","input":"text","label":"City","required":true},{"field":"billing_state","input":"text","label":"State","required":true},{"field":"billing_zip_code","input":"text","label":"ZIP","required":true}],"writes":"services_template.account"},{"key":"people","title":"The people","fields":[{"field":"first_name","input":"text","label":"First name"},{"field":"last_name","input":"text","label":"Last name"},{"field":"phone_number","input":"text","label":"Phone"},{"field":"email_address","input":"text","label":"Email"},{"field":"communication_preference","input":"select","label":"Reach","options":["voice","text","email"]},{"field":"is_primary_contact","input":"checkbox","label":"Primary"}],"writes":"services_template.contact"},{"key":"places","title":"The places","fields":[{"field":"location_name","input":"text","label":"Place name"},{"field":"street_address","input":"text","label":"Street"},{"field":"city","input":"text","label":"City"},{"field":"state","input":"text","label":"State"},{"field":"postal_code","input":"text","label":"ZIP"},{"field":"access_information","input":"text","label":"Access information","placeholder":"gate codes, keys, hours..."},{"field":"notes","input":"text","label":"Notes"}],"writes":"services_template.service_location"},{"key":"items","title":"The service items","fields":[{"field":"item_name","input":"text","label":"Item","placeholder":"blank = the whole place"},{"field":"item_type","input":"select","label":"Kind","options":["general pest","rodent control","commercial kitchen","industrial"]}],"writes":"services_template.service_target"},{"key":"agreement","title":"The agreement","fields":[{"field":"description","input":"text","label":"Description"},{"field":"frequency","input":"select","label":"Service cadence","options":["weekly","bi_weekly","monthly","bi_monthly","quarterly","biannual","annual","on_request"]},{"field":"billing_frequency","input":"select","label":"Billed","options":["upfront","monthly","bi_monthly","quarterly","biannual","annual","on_completion"]},{"field":"start_date","input":"date","label":"Start"},{"field":"end_date","input":"date","label":"End (blank unless requested)"}],"writes":"services_template.service_agreement + agreement_item"},{"key":"ties","title":"Site ties","fields":[{"field":"role","input":"select","label":"Role","options":["primary","gatekeeper","billing","technical"]},{"field":"notes","input":"text","label":"Notes"}],"writes":"services_template.contact_location"}],"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"]},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"]},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create"]},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create"]},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule"]},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create"]}}};
-  var SKELETON = "<!-- Account Intake Tearsheet -- THE WALK (tearsheet-001 2.0.0; s42 flow sitting, his stamp F1-F28).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton\n     lesson): this markup is written by tearsheet.js FIRST, then filled. The rail is\n     the walk's map (F12) and wears the door's gaps in place (Q3); no Save Draft (T8). -->\n<div class=\"ts\" data-blueprint=\"c6000000-0000-0000-0000-000000000001\">\n  <header class=\"ts-head\">\n    <h2 class=\"ts-title\" data-ts=\"title\"></h2>\n    <p class=\"ts-sub\" data-ts=\"sub\"></p>\n  </header>\n  <div class=\"ts-banner\" data-ts=\"banner\" hidden></div>\n  <div class=\"ts-body\">\n    <nav class=\"ts-rail\" data-ts=\"rail\" aria-label=\"The walk\"></nav>\n    <div class=\"ts-content\" data-ts=\"content\"></div>\n  </div>\n  <footer class=\"ts-foot\">\n    <span class=\"ts-footnote\" data-ts=\"note\"></span>\n    <button type=\"button\" class=\"ts-btn ts-btn--ghost\" data-ts=\"cancel\">Cancel</button>\n    <button type=\"button\" class=\"ts-btn ts-btn--primary\" data-ts=\"submit\">Create account</button>\n  </footer>\n</div>\n";
+  var TS = {"schema":"services_template","function":"intake_create_account","spine":{"steps":[{"key":"account_facts","label":"Account facts","contains":["account","people.roster","triage","term_modes"]},{"key":"place","repeats":true,"contains":["places","people.at_place","items"],"label_from":"location_name"},{"key":"summary","label":"Summary","contains":["account.edit","agreement.terms","people.roster.edit","places.edit","items.edit","create"]}],"version":"3.0.0","terms_placement":"modes_up_front_values_at_summary","rosters_separate":true},"entity":"account","sections":[{"key":"account","title":"The account","fields":[{"field":"account_name","input":"text","label":"Account name","required":true},{"field":"account_type","input":"select","label":"Kind","options":["residential","commercial"],"required":true},{"field":"billing_street_address","input":"text","label":"Billing street","required":true},{"field":"billing_city","input":"text","label":"City","required":true},{"field":"billing_state","input":"text","label":"State","required":true},{"field":"billing_zip_code","input":"text","label":"ZIP","required":true}],"writes":"services_template.account"},{"key":"people","title":"The people","fields":[{"field":"first_name","input":"text","label":"First name"},{"field":"last_name","input":"text","label":"Last name"},{"field":"phone_number","input":"text","label":"Phone"},{"field":"email_address","input":"text","label":"Email"},{"field":"communication_preference","input":"select","label":"Reach","options":["voice","text","email"]},{"field":"is_primary_contact","input":"checkbox","label":"Primary"}],"writes":"services_template.contact"},{"key":"places","title":"The places","fields":[{"field":"location_name","input":"text","label":"Place name"},{"field":"street_address","input":"text","label":"Street"},{"field":"city","input":"text","label":"City"},{"field":"state","input":"text","label":"State"},{"field":"postal_code","input":"text","label":"ZIP"},{"field":"access_information","input":"text","label":"Access information","placeholder":"gate codes, keys, hours..."},{"field":"notes","input":"text","label":"Notes"}],"writes":"services_template.service_location"},{"key":"items","title":"The service items","fields":[{"field":"item_name","input":"text","label":"Item","placeholder":"blank = the whole place"},{"field":"item_type","input":"select","label":"Kind","options":["general pest","rodent control","commercial kitchen","industrial"]}],"writes":"services_template.service_target"},{"key":"agreement","title":"The agreement","fields":[{"field":"description","input":"text","label":"Description"},{"field":"frequency","input":"select","label":"Service cadence","options":["weekly","bi_weekly","monthly","bi_monthly","quarterly","biannual","annual","on_request"]},{"field":"billing_frequency","input":"select","label":"Billed","options":["upfront","monthly","bi_monthly","quarterly","biannual","annual","on_completion"]},{"field":"start_date","input":"date","label":"Start"},{"field":"end_date","input":"date","label":"End (blank unless requested)"},{"field":"price","input":"text","label":"Price for the set (one bill)"}],"writes":"services_template.service_agreement + agreement_item"},{"key":"ties","title":"Site ties","fields":[{"field":"role","input":"select","label":"Role","options":["primary","gatekeeper","billing","technical","owner","tenant"]},{"field":"notes","input":"text","label":"Notes"}],"writes":"services_template.contact_location"}],"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"]},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"]},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create"]},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create"]},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule"]},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create"]}}};
+  var SKELETON = "<!-- Account Intake Tearsheet -- THE WALK (tearsheet-001 3.1.0; s42 flow sitting, his stamp F1-F28; s44 the edit mode).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton\n     lesson): this markup is written by tearsheet.js FIRST, then filled. The rail is\n     the walk's map (F12) and wears the door's gaps in place (Q3); no Save Draft (T8). -->\n<div class=\"ts\" data-blueprint=\"c6000000-0000-0000-0000-000000000001\">\n  <header class=\"ts-head\">\n    <h2 class=\"ts-title\" data-ts=\"title\"></h2>\n    <p class=\"ts-sub\" data-ts=\"sub\"></p>\n  </header>\n  <div class=\"ts-banner\" data-ts=\"banner\" hidden></div>\n  <div class=\"ts-body\">\n    <nav class=\"ts-rail\" data-ts=\"rail\" aria-label=\"The walk\"></nav>\n    <div class=\"ts-content\" data-ts=\"content\"></div>\n  </div>\n  <footer class=\"ts-foot\">\n    <span class=\"ts-footnote\" data-ts=\"note\"></span>\n    <button type=\"button\" class=\"ts-btn ts-btn--ghost\" data-ts=\"cancel\">Cancel</button>\n    <button type=\"button\" class=\"ts-btn ts-btn--primary\" data-ts=\"submit\">Create account</button>\n  </footer>\n</div>\n";
   var SPINE = TS.spine;
   var ROSTERS_SEPARATE = SPINE && SPINE.rosters_separate === true;
   var TERM_MODES_UP_FRONT = SPINE && SPINE.terms_placement === 'modes_up_front_values_at_summary';
+  var EDIT = TS.mode === 'edit';   // 3.1.0: the edit act (s44); absent = the create walk
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -93,6 +117,8 @@
       this.catalog = null;          // service rows (F22); null = not yet loaded
       this.nameTaken = false;       // F15 live check
       this._nameTimer = null;
+      this.recordId = null;         // edit mode: the standing record (shell hands it)
+      this._loading = false;
     }
 
     getMetadata() {
@@ -110,18 +136,147 @@
       this.container = container;
       container.innerHTML = SKELETON;
       this.$ = function (k) { return container.querySelector('[data-ts="' + k + '"]'); };
-      this.$('title').textContent = 'New ' + TS.entity + ' -- from the service agreement';
-      this.$('sub').textContent = 'THE WALK: say where service happens and it drives the flow; ' +
-        'a multi-place ' + TS.entity + ' is captured place by place. One whole act -- ' +
-        'nothing is saved until Create, and a refused act keeps everything you entered.';
+      if (EDIT) {
+        this.$('title').textContent = 'Edit ' + TS.entity;
+        this.$('sub').textContent = 'THE EDIT ACT: the whole record, loaded; change any fact with ' +
+          'the walk\'s own devices. One whole act -- nothing is saved until Save changes, a removed ' +
+          'row falls with the act, and a refused act keeps everything as you left it.';
+        this.$('submit').textContent = 'Save changes';
+      } else {
+        this.$('title').textContent = 'New ' + TS.entity + ' -- from the service agreement';
+        this.$('sub').textContent = 'THE WALK: say where service happens and it drives the flow; ' +
+          'a multi-place ' + TS.entity + ' is captured place by place. One whole act -- ' +
+          'nothing is saved until Create, and a refused act keeps everything you entered.';
+      }
       var self = this;
       this.$('cancel').addEventListener('click', function () {
-        if (window.ShellNavigation && window.ShellNavigation.navigate) window.ShellNavigation.navigate('/' + TS.entity + 's');
-        else window.location.hash = '#/' + TS.entity + 's';
+        var back = (EDIT && self.recordId) ? '/' + TS.entity + 's/' + self.recordId : '/' + TS.entity + 's';
+        if (window.ShellNavigation && window.ShellNavigation.navigate) window.ShellNavigation.navigate(back);
+        else window.location.hash = '#' + back;
       });
       this.$('submit').addEventListener('click', function () { self.submit(); });
       this.loadCatalog();
-      this.renderAll();
+      if (EDIT && this.recordId) this.load();
+      else this.renderAll();
+    }
+
+    // edit mode: the shell hands the record on /accounts/:id/edit -- EVERY hand-off
+    // reloads from the rows (the standing rows are the truth, never a kept state).
+    // The record BRIDGE broadcasts to every component (a list row click included);
+    // handed while HIDDEN, the walk keeps the id and loads when its route shows it
+    // (s44, his chair's find: no background reads on every list click).
+    setRecordId(id) {
+      if (!EDIT) return;
+      this.recordId = id;
+      var host = this.container && this.container.closest('.mounted-component');
+      if (host && host.style.display === 'none') return;
+      if (this.container) this.load();
+    }
+
+    // edit mode: the whole tree, read AS THE ROLE, ids riding the state.
+    async load() {
+      if (this._loading || !this.recordId) return;
+      this._loading = true;
+      this.client = this.client || this.dataClient();
+      if (!this.client) { this._loading = false; return this.failNote('no data client -- the shell did not provide supabase context'); }
+      var id = this.recordId, self = this;
+      var pk = TS.entity + '_id';
+      try {
+        var rA = await this.client.from(TS.entity).select('*').eq(pk, id).limit(1);
+        if (rA.error || !(rA.data || []).length) throw new Error('the ' + TS.entity + ' could not be read' + (rA.error ? ': ' + rA.error.message : ''));
+        var A = rA.data[0];
+        var rC = await this.client.from('contact').select('*').eq('account_id', id).order('contact_id');
+        var rL = await this.client.from('service_location').select('*').eq('account_id', id).order('service_location_id');
+        var rT = await this.client.from('service_target').select('*').eq('account_id', id).order('service_target_id');
+        var rG = await this.client.from('service_agreement').select('*').eq('account_id', id).order('created_at', { ascending: false }).limit(1);
+        if (rC.error || rL.error || rT.error || rG.error) throw new Error('the record\'s rows could not be read');
+        var contacts = rC.data || [], places = rL.data || [], targets = rT.data || [];
+        var agreement = (rG.data || [])[0] || null;
+        var items = [];
+        if (agreement) {
+          var rI = await this.client.from('agreement_item').select('*').eq('agreement_id', agreement.agreement_id);
+          items = rI.error ? [] : (rI.data || []);
+        }
+        var ties = [];
+        if (contacts.length) {
+          var rX = await this.client.from('contact_location').select('*')
+            .in('contact_id', contacts.map(function (c) { return c.contact_id; }));
+          ties = rX.error ? [] : (rX.data || []);
+        }
+
+        // -> the walk's state, ids riding
+        this.acct = {};
+        fam('account').fields.forEach(function (f) { if (A[f.field] !== undefined && A[f.field] !== null) self.acct[f.field] = A[f.field]; });
+        if (A.internal_notes) this.acct.internal_notes = A.internal_notes;
+        var P = fam('people');
+        this.roster = contacts.map(function (c) {
+          var row = { contact_id: c.contact_id, _org: 'acct' };
+          P.fields.forEach(function (f) { if (c[f.field] !== undefined && c[f.field] !== null) row[f.field] = c[f.field]; });
+          return row;
+        });
+        var placeIndexById = {};
+        this.places = places.map(function (l, i) {
+          placeIndexById[l.service_location_id] = i;
+          var vals = {};
+          fam('places').fields.forEach(function (f) { if (l[f.field] !== undefined && l[f.field] !== null) vals[f.field] = l[f.field]; });
+          return { id: l.service_location_id, vals: vals, ties: [], items: [], sub: 'place', done: true };
+        });
+        var itemByTarget = {};
+        items.forEach(function (ai) { itemByTarget[ai.service_target_id] = ai; });
+        targets.forEach(function (t) {
+          var pi = placeIndexById[t.primary_service_location_id];
+          if (pi === undefined) return;   // a target off every place has no seat in the walk
+          var ai = itemByTarget[t.service_target_id];
+          self.places[pi].items.push({
+            service_target_id: t.service_target_id,
+            item_name: t.item_name || '', item_type: t.item_type || '',
+            covered: !!ai,
+            price: ai && ai.price !== null && ai.price !== undefined ? String(ai.price) : '',
+            frequency: (ai && ai.frequency) || '',
+            billing_frequency: (ai && ai.billing_frequency) || '',
+            service_id: (ai && ai.service_id) || ''
+          });
+        });
+        var rosterIndexById = {};
+        this.roster.forEach(function (p, i) { rosterIndexById[p.contact_id] = i; });
+        ties.forEach(function (t) {
+          var pi = rosterIndexById[t.contact_id];
+          var li = placeIndexById[t.service_location_id];
+          if (pi === undefined || li === undefined) return;
+          self.places[li].ties.push({ pi: pi, role: t.role || 'primary', notes: t.notes || '', is_primary: !!t.is_primary });
+        });
+        this.agree = agreement ? {
+          description: agreement.description || '',
+          start_date: agreement.start_date || '', end_date: agreement.end_date || '',
+          frequency: agreement.frequency || '', billing_frequency: agreement.billing_frequency || '',
+          price: agreement.price !== null && agreement.price !== undefined ? String(agreement.price) : ''
+        } : {};
+        var anyItemCad = this.places.some(function (p) { return p.items.some(function (it) { return !!it.frequency; }); });
+        var anyItemBill = this.places.some(function (p) { return p.items.some(function (it) { return !!it.billing_frequency; }); });
+        this.cadMode = this.agree.frequency ? 'all' : (anyItemCad ? 'per' : 'all');
+        this.billMode = this.agree.billing_frequency ? 'together' : (anyItemBill ? 'separate' : 'together');
+        this.triage = this.places.length > 1 ? 'many' : 'one';
+        if (this.triage === 'one' && this.places.length === 1) {
+          this.useBilling = (this.places[0].vals.street_address || '') === (this.acct.billing_street_address || '') ? 'yes' : 'no';
+        }
+        this.gaps = null;
+        this.view = 'summ';        // the edit act ENTERS at the Summary (Q-AA)
+        this.cursor = 0;
+        if (this.$('title')) this.$('title').textContent = 'Edit ' + (this.acct[TS.entity + '_name'] || TS.entity);
+        this.renderAll();
+      } catch (e) {
+        var lm = (e && e.message) ? e.message : String(e);
+        this.failNote('the edit act could not load the record: ' + lm);
+        // RI-909: the shell must HEAR a role-loaded read fall -- session dead -> the
+        // sign-in gate; session live -> this note stands (a grants problem, visible).
+        if (this.container) {
+          this.container.dispatchEvent(new CustomEvent('blueprint:error', {
+            bubbles: true,
+            detail: { code: 'DATA_LOAD_FAILED', blueprintId: 'c6000000-0000-0000-0000-000000000001', message: lm }
+          }));
+        }
+      }
+      this._loading = false;
     }
 
     unmount() {
@@ -134,9 +289,14 @@
       this.applyRoleGate();
     }
 
+    // window.ShellData -- one client for the page, its auth token read fresh per
+    // request (RI-909: a self-built client freezes its token at mount and spins a
+    // second refresh timer against the shell's); the self-built client stays only
+    // for shells that publish no ShellData.
     dataClient() {
       var ctx = window.AppContext || {};
       var sb = ctx.supabase || {};
+      if (window.ShellData && (sb.schema || 'public') === TS.schema) return window.ShellData;
       if (window.supabase && window.supabase.createClient && sb.url && sb.anonKey) {
         return window.supabase.createClient(sb.url, sb.anonKey, {
           db: { schema: TS.schema },
@@ -146,7 +306,10 @@
       return null;
     }
 
-    // F22: the Service picker loads the schema's catalog AS THE ROLE.
+    // F22: the Service picker loads the schema's catalog AS THE ROLE. A failed read
+    // is never a silent empty (RI-909): the banner wears it, and blueprint:error lets
+    // the shell answer session death with the sign-in gate (a live session's failure
+    // stays visible as this note -- that is a grants problem, not an auth one).
     async loadCatalog() {
       this.client = this.client || this.dataClient();
       if (!this.client) { this.catalog = []; return; }
@@ -155,8 +318,19 @@
           .select('service_id,service_name,service_category')
           .order('service_category', { ascending: true })
           .order('service_name', { ascending: true });
-        this.catalog = r.error ? [] : (r.data || []);
-      } catch (e) { this.catalog = []; }
+        if (r.error) throw new Error(r.error.message);
+        this.catalog = r.data || [];
+      } catch (e) {
+        this.catalog = [];
+        var msg = (e && e.message) ? e.message : String(e);
+        this.failNote('the service catalog could not be read as your role: ' + msg);
+        if (this.container) {
+          this.container.dispatchEvent(new CustomEvent('blueprint:error', {
+            bubbles: true,
+            detail: { code: 'DATA_LOAD_FAILED', blueprintId: 'c6000000-0000-0000-0000-000000000001', message: msg }
+          }));
+        }
+      }
       if (this.view !== 'front') this.renderAll();
     }
 
@@ -166,9 +340,10 @@
       var gate = (facet && TS.personas) ? TS.personas[facet] : null;
       if (!this.container) return;
       var btn = this.$('submit');
-      if (gate && Array.isArray(gate.actions) && gate.actions.indexOf('create') === -1) {
+      var need = EDIT ? 'edit' : 'create';
+      if (gate && Array.isArray(gate.actions) && gate.actions.indexOf(need) === -1) {
         btn.disabled = true;
-        this.$('note').textContent = 'creating is closed to your role';
+        this.$('note').textContent = (EDIT ? 'editing' : 'creating') + ' is closed to your role';
       }
     }
 
@@ -183,7 +358,9 @@
         self.client = self.client || self.dataClient();
         if (!self.client) return;
         try {
-          var r = await self.client.from(TS.entity).select(TS.entity + '_id').ilike(TS.entity + '_name', v).limit(1);
+          var q = self.client.from(TS.entity).select(TS.entity + '_id').ilike(TS.entity + '_name', v);
+          if (EDIT && self.recordId) q = q.neq(TS.entity + '_id', self.recordId);   // our own name never collides with itself
+          var r = await q.limit(1);
           self.nameTaken = !r.error && (r.data || []).length > 0;
         } catch (e) { self.nameTaken = false; }
         if (out) out.textContent = self.nameTaken
@@ -423,12 +600,14 @@
       if (this.view === 'front') this.renderFront(host);
       else if (this.view === 'walk') this.renderPlace(host, this.cursor);
       else this.renderSummary(host);
-      // Create lives at the Summary only (F19: the one final verb)
+      // Create lives at the Summary only (F19: the one final verb); so does Save.
       var submit = this.$('submit');
       submit.style.display = this.view === 'summ' ? '' : 'none';
       this.$('note').textContent = this.view === 'summ'
-        ? 'one payload through ' + TS.function + ' -- born whole, or refused with the gaps on the rail'
-        : 'the act is ONE whole -- Create lives at the Summary; no Save Draft, deliberately';
+        ? 'one payload through ' + TS.function + (EDIT
+            ? ' -- saved whole, or refused with the gaps on the rail'
+            : ' -- born whole, or refused with the gaps on the rail')
+        : 'the act is ONE whole -- ' + (EDIT ? 'Save changes' : 'Create') + ' lives at the Summary; no Save Draft, deliberately';
       this.applyRoleGate();
       if (samePage) window.scrollTo(0, keepY); else window.scrollTo(0, 0);
       this._pageKey = pageKey;
@@ -906,6 +1085,10 @@
       else if (cadF) grid.appendChild(this.labeled({ field: 'frequency', label: cadF.label + ' (all services)', input: 'select', options: cadF.options }, this.agree));
       if (this.billMode === 'separate') grid.appendChild(this.ro(bilF.label, 'each service billed separately (rows below)'));
       else if (bilF) grid.appendChild(this.labeled({ field: 'billing_frequency', label: bilF.label + ' (one bill)', input: 'select', options: bilF.options }, this.agree));
+      // Q-AM (s45): the SET's price rides the header only when billed TOGETHER --
+      // billed separate, each item row carries its own (never both).
+      var priceF = fld('agreement', 'price');
+      if (this.billMode === 'together' && priceF) grid.appendChild(this.labeled(priceF, this.agree));
       sec.appendChild(grid);
       var covered = 0, total = 0;
       this.places.forEach(function (p) { p.items.forEach(function (it) { total++; if (it.covered !== false) covered++; }); });
@@ -981,23 +1164,27 @@
       var self = this;
       var live = this.places.filter(function (p) { return !self.placeIsEmpty(p); });
       var places = live.map(function (p) {
-        return {
+        var row = {
           location_name: p.vals.location_name || null,
           street_address: p.vals.street_address || '',
           city: p.vals.city || '', state: p.vals.state || '', postal_code: p.vals.postal_code || '',
           access_information: p.vals.access_information || null,
           notes: p.vals.notes || null
         };
+        if (EDIT && p.id) row.service_location_id = p.id;   // the row persists; absent = born by the act
+        return row;
       });
       var items = [], agreeItems = [];
       live.forEach(function (p, placeIdx) {
         p.items.forEach(function (it) {
           var idx = items.length;
-          items.push({
+          var itemRow = {
             item_name: it.item_name || p.vals.location_name || 'the whole place',   // F26
             item_type: it.item_type || null,
             place_index: placeIdx
-          });
+          };
+          if (EDIT && it.service_target_id) itemRow.service_target_id = it.service_target_id;
+          items.push(itemRow);
           if (it.covered !== false) {
             // R3-2's belt AND braces: only a uuid-shaped service_id enters the payload
             var sid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(it.service_id || '')
@@ -1030,6 +1217,7 @@
       var people = this.roster.map(function (person) {
         var row = {};
         P.fields.forEach(function (f) { if (person[f.field] !== undefined) row[f.field] = person[f.field]; });
+        if (EDIT && person.contact_id) row.contact_id = person.contact_id;
         return row;
       });
       var agreement = {
@@ -1038,9 +1226,10 @@
         end_date: this.agree.end_date || null,   // Q11: blank unless requested
         frequency: this.cadMode === 'per' ? null : (this.agree.frequency || null),
         billing_frequency: this.billMode === 'separate' ? null : (this.agree.billing_frequency || null),
+        price: this.billMode === 'together' ? (this.agree.price || null) : null,
         items: agreeItems
       };
-      return {
+      var payload = {
         tenant_id: this.context && this.context.tenant_id,
         account: this.acct,
         people: people,
@@ -1049,6 +1238,8 @@
         agreement: agreement,
         ties: ties
       };
+      if (EDIT) payload.account_id = this.recordId;   // the edit door's one extra key
+      return payload;
     }
 
     async submit() {

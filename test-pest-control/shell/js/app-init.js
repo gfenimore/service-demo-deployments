@@ -232,6 +232,7 @@
         ComponentRegistry.init(window.AccountFilterPanelUI, 'account-filter-panel');
         ComponentRegistry.init(window.AccountBlueprintUI, 'account-list-view');
         ComponentRegistry.init(window.AccountFocusPageBlueprintUI, 'account-record-card');
+        ComponentRegistry.init(window.AccountTearsheetBlueprintUI, 'account-edit-tearsheet');
         ComponentRegistry.init(window.AccountTearsheetBlueprintUI, 'account-intake-tearsheet');
         
         // Step 3: Register routes
@@ -256,6 +257,13 @@
                 instance.setRecordId(params.id);
             }
             ComponentRegistry.mount('account-record-card');
+        });
+        window.ShellNavigation.registerRoute('/accounts/:id/edit', function(params) {
+            const instance = ComponentRegistry.get('account-edit-tearsheet');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('account-edit-tearsheet');
         });
 
         // Register placeholder handlers for unimplemented routes

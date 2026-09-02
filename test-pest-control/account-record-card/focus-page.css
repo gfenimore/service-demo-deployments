@@ -42,3 +42,8 @@
 .fp-seg--done { background: #defbe6; color: #0e6027; }
 .fp-seg--warn { background: #fcf4d6; color: #8a6a00; }
 .fp-seg--blue { background: #edf5ff; color: #0f62fe; }
+/* 1.1.0 (s44 Q-AF): the earned header seats -- quiet, at the header's edge */
+.fp-verbs { margin-left: auto; }
+.fp-verb { background: transparent; border: 1px solid #c6c6c6; color: #161616; border-radius: 4px;
+           padding: 0.25rem 0.85rem; font-size: 0.875rem; cursor: pointer; margin-left: 0.35rem; }
+.fp-verb:hover { background: #e8e8e8; }

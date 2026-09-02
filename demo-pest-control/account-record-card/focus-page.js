@@ -1,5 +1,13 @@
 /**
- * Account Focus Page - Generated Blueprint UI (THE ONE PAGE, focus-page-001 1.0.0)
+ * Account Focus Page - Generated Blueprint UI (THE ONE PAGE, focus-page-001 1.1.0)
+ *
+ * 1.1.0 (SJ s44 Q-AF, 2026-08-31): THE EARNED HEADER SEAT -- concept 41's own
+ * clause: a verb "earns a header seat back only by a DECLARED SCENARIO, never
+ * parked". FACE.verbs (optional) declares each seat: verb + title + route +
+ * scenario (the schema refuses a seatless declaration); rendered quiet at the
+ * header's edge, role-gated (the verb must sit in the gate's actions where a
+ * gate narrows), the route's :id filled with the standing record. The header
+ * stays identity-first: no verbs declared = 1.0.0 byte-for-byte.
  * Blueprint ID: c3000000-0000-0000-0000-000000000001
  * Pattern: FOCUS-PAGE (screen-grammar concepts 42-46, HIS layout, s41 3b)
  *
@@ -21,8 +29,8 @@
 (function() {
   'use strict';
 
-  var FACE = {"schema":"services_template","tray":{"kinds":{"open_touch":{"button":{"title":"Resolve","status":"live"}},"coverage_gap":{"button":{"title":"Resolve","status":"future"}},"site_out_of_rhythm":{"button":{"title":"Schedule service","status":"future"}}},"source":"v_account_tray"},"entity":"account","header":{"chips":["status","account_type","billing_city"],"title_field":"account_name"},"selectors":[{"key":"contact","list":{"source":"v_account_people","columns":[{"field":"person","header":"person"},{"field":"role","header":"role"},{"field":"reach","header":"reach"},{"field":"prefers","header":"prefers"},{"field":"site","header":"site"}],"order_by":"rank","row_expansion":{"kind":"touch_log","source":"v_contact_touch_log"}},"label":"Contact"},{"key":"coverage","list":{"source":"v_account_coverage","columns":[{"field":"site","header":"site"},{"field":"target","header":"target"},{"field":"item_type","header":"type"},{"field":"plan","header":"plan"},{"field":"status","header":"status"}],"order_by":"site","site_leads":true},"label":"Service Coverage"},{"key":"work_orders","list":{"source":"v_account_work","columns":[{"field":"site","header":"site"},{"field":"work_date","header":"date"},{"field":"work_type","header":"type"},{"field":"summary","header":"summary"},{"field":"status","header":"status"}],"order_by":"work_date desc","site_leads":true},"label":"Work Orders"},{"key":"ledger","list":{"source":"v_account_ledger","columns":[{"field":"doc_date","header":"date"},{"field":"document","header":"document"},{"field":"site","header":"site"},{"field":"amount","header":"amount"},{"field":"status","header":"status"}],"order_by":"doc_date desc","caption_billing_address":true},"label":"Ledger"}],"primary_key":"account_id","frame_columns":5,"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"]},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"]},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create"]},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create"]},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule"]},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create"]}}};
-  var SKELETON = "<!-- Account Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46). Generated; do not edit.\n     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by\n     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c. -->\n<div class=\"fp\" data-blueprint=\"c3000000-0000-0000-0000-000000000001\">\n  <header class=\"fp-head\">\n    <h2 class=\"fp-title\" data-fp=\"title\"></h2>\n    <span class=\"fp-chips\" data-fp=\"chips\"></span>\n  </header>\n  <section class=\"fp-tray\" aria-label=\"Needs attention\">\n    <p class=\"fp-tray-label\">Needs attention</p>\n    <div data-fp=\"tray\"></div>\n  </section>\n  <nav class=\"fp-selectors\" data-fp=\"selectors\" aria-label=\"Detail selectors\"></nav>\n  <section class=\"fp-frame\" aria-label=\"Detail\">\n    <p class=\"fp-caption\" data-fp=\"caption\"></p>\n    <div class=\"fp-radios\" data-fp=\"radios\"></div>\n    <p class=\"fp-siteline\" data-fp=\"siteline\" hidden></p>\n    <div class=\"fp-list\" data-fp=\"list\"></div>\n  </section>\n</div>\n";
+  var FACE = {"schema":"services_template","tray":{"kinds":{"open_touch":{"button":{"title":"Resolve","status":"live"}},"coverage_gap":{"button":{"title":"Resolve","status":"future"}},"site_out_of_rhythm":{"button":{"title":"Schedule service","status":"future"}}},"source":"v_account_tray"},"verbs":[{"verb":"edit","route":"/accounts/:id/edit","title":"Edit","scenario":"the edit act (s44 Q-AA/Q-AF): correct the standing account whole through the edit door"}],"entity":"account","header":{"chips":["status","account_type","billing_city"],"title_field":"account_name"},"selectors":[{"key":"contact","list":{"source":"v_account_people","columns":[{"field":"person","header":"person"},{"field":"role","header":"role"},{"field":"reach","header":"reach"},{"field":"prefers","header":"prefers"},{"field":"site","header":"site"}],"order_by":"rank","row_expansion":{"kind":"touch_log","source":"v_contact_touch_log"}},"label":"Contact"},{"key":"coverage","list":{"source":"v_account_coverage","columns":[{"field":"site","header":"site"},{"field":"target","header":"target"},{"field":"item_type","header":"type"},{"field":"plan","header":"plan"},{"field":"status","header":"status"}],"order_by":"site","site_leads":true},"label":"Service Coverage"},{"key":"work_orders","list":{"source":"v_account_work","columns":[{"field":"site","header":"site"},{"field":"work_date","header":"date"},{"field":"work_type","header":"type"},{"field":"summary","header":"summary"},{"field":"status","header":"status"}],"order_by":"work_date desc","site_leads":true},"label":"Work Orders"},{"key":"ledger","list":{"source":"v_account_ledger","columns":[{"field":"doc_date","header":"date"},{"field":"document","header":"document"},{"field":"site","header":"site"},{"field":"amount","header":"amount"},{"field":"status","header":"status"}],"order_by":"doc_date desc","caption_billing_address":true},"label":"Ledger"}],"primary_key":"account_id","frame_columns":5,"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"]},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"]},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create"]},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create"]},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule"]},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create"]}}};
+  var SKELETON = "<!-- Account Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46). Generated; do not edit.\n     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by\n     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c. -->\n<div class=\"fp\" data-blueprint=\"c3000000-0000-0000-0000-000000000001\">\n  <header class=\"fp-head\">\n    <h2 class=\"fp-title\" data-fp=\"title\"></h2>\n    <span class=\"fp-chips\" data-fp=\"chips\"></span>\n    <span class=\"fp-verbs\" data-fp=\"verbs\"></span>\n  </header>\n  <section class=\"fp-tray\" aria-label=\"Needs attention\">\n    <p class=\"fp-tray-label\">Needs attention</p>\n    <div data-fp=\"tray\"></div>\n  </section>\n  <nav class=\"fp-selectors\" data-fp=\"selectors\" aria-label=\"Detail selectors\"></nav>\n  <section class=\"fp-frame\" aria-label=\"Detail\">\n    <p class=\"fp-caption\" data-fp=\"caption\"></p>\n    <div class=\"fp-radios\" data-fp=\"radios\"></div>\n    <p class=\"fp-siteline\" data-fp=\"siteline\" hidden></p>\n    <div class=\"fp-list\" data-fp=\"list\"></div>\n  </section>\n</div>\n";
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -69,7 +77,9 @@
     }
 
     setRecordId(id) {
-      if (!id || id === this.recordId) return;
+      if (!id) return;
+      // 1.1.0: the SAME id reloads too -- an edit act may have moved the rows while
+      // the face stood cached; every hand-off re-reads (the rows are the truth).
       this.recordId = id;
       this.listCache = {}; this.siteFocus = {}; this.openPerson = null;
       this.maybeLoad();
@@ -137,6 +147,27 @@
         var c = el('span', 'fp-chip' + (String(v) === 'active' ? ' fp-chip--ok' : ''), v);
         chips.appendChild(c);
       }
+      this.renderVerbs(gate);
+    }
+
+    // -- the earned seats (1.1.0, concept 41's clause): declared verbs, quiet, role-gated --
+    renderVerbs(gate) {
+      var self = this;
+      var host = this.$('verbs');
+      if (!host) return;
+      clear(host);
+      (FACE.verbs || []).forEach(function (v) {
+        if (gate && Array.isArray(gate.actions) && gate.actions.indexOf(v.verb) === -1) return;
+        var b = el('button', 'fp-verb', v.title);
+        b.type = 'button';
+        b.title = v.scenario;   // the seat is never parked: the scenario rides the control
+        b.addEventListener('click', function () {
+          var route = String(v.route).replace(':id', encodeURIComponent(self.recordId));
+          if (window.ShellNavigation && window.ShellNavigation.navigate) window.ShellNavigation.navigate(route);
+          else window.location.hash = '#' + route;
+        });
+        host.appendChild(b);
+      });
     }
 
     // -- the tray (concept 40): open touches + derived exceptions; Resolve writes -------------
