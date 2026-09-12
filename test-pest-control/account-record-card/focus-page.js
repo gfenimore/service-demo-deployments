@@ -1,5 +1,19 @@
 /**
- * Account Focus Page - Generated Blueprint UI (THE ONE PAGE, focus-page-001 1.1.0)
+ * Account Focus Page - Generated Blueprint UI (THE ONE PAGE, focus-page-001 1.2.0)
+ *
+ * 1.2.0 (SJ s51 rung 5a, the second sitting, 2026-09-08 -- his verdict on the flow paper,
+ * B + C, and his pass): THE RAIL. FACE.rail (optional) declares the page's ACTS IN ORDER
+ * the way the tearsheet's walk wears them: a source view keyed by the record whose one
+ * row carries the state; steps (a verb, a title, its gate's blueprint, its route kept as
+ * the deep link, the selector it reads, a done_when on the row, a receipt field); the done
+ * state. THE LIGHTING RULE is the rows': the first step not done is lit, the ones before
+ * it done with their receipts, the ones after greyed; all done = the done state. The lit
+ * step's body is ITS GATE MOUNTED IN THE FRAME (guarded-gate 1.2.1 inline mode): on the
+ * affirmative path the gate emits its verdict and stays; this page re-reads, the rail
+ * advances, the receipt appears, the frame turns to the next step's read. The lit selector
+ * follows the step. Header seats whose verbs are rail steps fold into the rail; a step
+ * renders only for a role whose acts carry its verb; a role with none sees no rail.
+ * No rail declared = 1.1.0 in behavior.
  *
  * 1.1.0 (SJ s44 Q-AF, 2026-08-31): THE EARNED HEADER SEAT -- concept 41's own
  * clause: a verb "earns a header seat back only by a DECLARED SCENARIO, never
@@ -29,8 +43,8 @@
 (function() {
   'use strict';
 
-  var FACE = {"schema":"services_template","tray":{"kinds":{"open_touch":{"button":{"title":"Resolve","status":"live"}},"coverage_gap":{"button":{"title":"Resolve","status":"future"}},"site_out_of_rhythm":{"button":{"title":"Schedule service","status":"future"}}},"source":"v_account_tray"},"verbs":[{"verb":"edit","route":"/accounts/:id/edit","title":"Edit","scenario":"the edit act (s44 Q-AA/Q-AF): correct the standing account whole through the edit door"}],"entity":"account","header":{"chips":["status","account_type","billing_city"],"title_field":"account_name"},"selectors":[{"key":"contact","list":{"source":"v_account_people","columns":[{"field":"person","header":"person"},{"field":"role","header":"role"},{"field":"reach","header":"reach"},{"field":"prefers","header":"prefers"},{"field":"site","header":"site"}],"order_by":"rank","row_expansion":{"kind":"touch_log","source":"v_contact_touch_log"}},"label":"Contact"},{"key":"coverage","list":{"source":"v_account_coverage","columns":[{"field":"site","header":"site"},{"field":"target","header":"target"},{"field":"item_type","header":"type"},{"field":"plan","header":"plan"},{"field":"status","header":"status"}],"order_by":"site","site_leads":true},"label":"Service Coverage"},{"key":"work_orders","list":{"source":"v_account_work","columns":[{"field":"site","header":"site"},{"field":"work_date","header":"date"},{"field":"work_type","header":"type"},{"field":"summary","header":"summary"},{"field":"status","header":"status"}],"order_by":"work_date desc","site_leads":true},"label":"Work Orders"},{"key":"ledger","list":{"source":"v_account_ledger","columns":[{"field":"doc_date","header":"date"},{"field":"document","header":"document"},{"field":"site","header":"site"},{"field":"amount","header":"amount"},{"field":"status","header":"status"}],"order_by":"doc_date desc","caption_billing_address":true},"label":"Ledger"}],"primary_key":"account_id","frame_columns":5,"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"]},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"]},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create"]},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create"]},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule"]},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create"]}}};
-  var SKELETON = "<!-- Account Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46). Generated; do not edit.\n     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by\n     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c. -->\n<div class=\"fp\" data-blueprint=\"c3000000-0000-0000-0000-000000000001\">\n  <header class=\"fp-head\">\n    <h2 class=\"fp-title\" data-fp=\"title\"></h2>\n    <span class=\"fp-chips\" data-fp=\"chips\"></span>\n    <span class=\"fp-verbs\" data-fp=\"verbs\"></span>\n  </header>\n  <section class=\"fp-tray\" aria-label=\"Needs attention\">\n    <p class=\"fp-tray-label\">Needs attention</p>\n    <div data-fp=\"tray\"></div>\n  </section>\n  <nav class=\"fp-selectors\" data-fp=\"selectors\" aria-label=\"Detail selectors\"></nav>\n  <section class=\"fp-frame\" aria-label=\"Detail\">\n    <p class=\"fp-caption\" data-fp=\"caption\"></p>\n    <div class=\"fp-radios\" data-fp=\"radios\"></div>\n    <p class=\"fp-siteline\" data-fp=\"siteline\" hidden></p>\n    <div class=\"fp-list\" data-fp=\"list\"></div>\n  </section>\n</div>\n";
+  var FACE = {"schema":"services_template","tray":{"kinds":{"open_touch":{"button":{"title":"Resolve","status":"live"}},"coverage_gap":{"button":{"title":"Resolve","status":"future"}},"site_out_of_rhythm":{"button":{"title":"Schedule service","status":"future"}}},"source":"v_account_tray"},"verbs":[{"verb":"edit","route":"/accounts/:id/edit","title":"Edit","scenario":"the edit act (s44 Q-AA/Q-AF): correct the standing account whole through the edit door"}],"entity":"account","header":{"chips":["status","account_type","billing_city"],"title_field":"account_name"},"selectors":[{"key":"contact","list":{"source":"v_account_people","columns":[{"field":"person","header":"person"},{"field":"role","header":"role"},{"field":"reach","header":"reach"},{"field":"prefers","header":"prefers"},{"field":"site","header":"site"}],"order_by":"rank","row_expansion":{"kind":"touch_log","source":"v_contact_touch_log"}},"label":"Contact"},{"key":"coverage","list":{"source":"v_account_coverage","columns":[{"field":"site","header":"site"},{"field":"target","header":"target"},{"field":"item_type","header":"type"},{"field":"plan","header":"plan"},{"field":"status","header":"status"}],"order_by":"site","site_leads":true},"label":"Service Coverage"},{"key":"work_orders","list":{"source":"v_account_work","columns":[{"field":"site","header":"site"},{"field":"work_date","header":"date"},{"field":"work_type","header":"type"},{"field":"summary","header":"summary"},{"field":"status","header":"status"}],"order_by":"work_date desc","site_leads":true},"label":"Work Orders"},{"key":"ledger","list":{"source":"v_account_ledger","columns":[{"field":"doc_date","header":"date"},{"field":"document","header":"document"},{"field":"site","header":"site"},{"field":"amount","header":"amount"},{"field":"status","header":"status"}],"order_by":"doc_date desc","caption_billing_address":true},"label":"Ledger"}],"primary_key":"account_id","frame_columns":5,"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"],"seated":false},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":true},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":false}}};
+  var SKELETON = "<!-- Account Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46; 1.2.0 THE RAIL). Generated; do not edit.\n     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by\n     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c.\n     1.2.0 (s51 rung 5a): the body splits into THE RAIL on the left (hidden unless the blueprint\n     declares one and the role holds a step) and the main column: the selectors, the frame, and\n     the lit step's body (its gate mounted in the frame). -->\n<div class=\"fp\" data-blueprint=\"c3000000-0000-0000-0000-000000000001\">\n  <header class=\"fp-head\">\n    <h2 class=\"fp-title\" data-fp=\"title\"></h2>\n    <span class=\"fp-chips\" data-fp=\"chips\"></span>\n    <span class=\"fp-verbs\" data-fp=\"verbs\"></span>\n  </header>\n  <section class=\"fp-tray\" aria-label=\"Needs attention\">\n    <p class=\"fp-tray-label\">Needs attention</p>\n    <div data-fp=\"tray\"></div>\n  </section>\n  <div class=\"fp-body fp-body--norail\" data-fp=\"body\">\n    <nav class=\"fp-rail\" data-fp=\"rail\" aria-label=\"The acts, in order\" hidden></nav>\n    <div class=\"fp-main\">\n      <nav class=\"fp-selectors\" data-fp=\"selectors\" aria-label=\"Detail selectors\"></nav>\n      <section class=\"fp-frame\" aria-label=\"Detail\">\n        <p class=\"fp-caption\" data-fp=\"caption\"></p>\n        <div class=\"fp-radios\" data-fp=\"radios\"></div>\n        <p class=\"fp-siteline\" data-fp=\"siteline\" hidden></p>\n        <div class=\"fp-list\" data-fp=\"list\"></div>\n      </section>\n      <section class=\"fp-step\" data-fp=\"step\" aria-label=\"The step\" hidden></section>\n    </div>\n  </div>\n</div>\n";
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -52,6 +66,13 @@
       this.listCache = {};
       this.siteFocus = {};
       this.openPerson = null;
+      // 1.2.0 THE RAIL
+      this.railRow = null;
+      this.railSteps = [];
+      this.litIndex = 0;
+      this.railSelected = null;
+      this.gateInstance = null;
+      this.lastVerdict = null;
     }
 
     getMetadata() {
@@ -66,8 +87,10 @@
     }
 
     unmount() {
+      this.unmountGate();
       if (this.container) clear(this.container);
       this.container = null; this.rec = null; this.listCache = {};
+      this.railRow = null; this.railSteps = []; this.railSelected = null; this.lastVerdict = null;
     }
 
     onContext(context) {
@@ -80,6 +103,7 @@
       if (!id) return;
       // 1.1.0: the SAME id reloads too -- an edit act may have moved the rows while
       // the face stood cached; every hand-off re-reads (the rows are the truth).
+      if (id !== this.recordId) { this.railSelected = null; this.lastVerdict = null; }
       this.recordId = id;
       this.listCache = {}; this.siteFocus = {}; this.openPerson = null;
       this.maybeLoad();
@@ -115,14 +139,25 @@
 
     async load() {
       var self = this;
+      // SJ s51 leg 3a (2026-09-07): two loads in flight for the same record (the route and the
+      // record bridge both hand the id) drew the tray's cards TWICE -- each load cleared the host
+      // and then both appended. A load carries its sequence; a stale one paints nothing.
+      var seq = this._loadSeq = (this._loadSeq || 0) + 1;
       var r = await this.from(FACE.entity).select('*').eq(FACE.primary_key, this.recordId).limit(1);
+      if (seq !== this._loadSeq) return;   // a newer load owns the page: this one paints nothing
       if (r.error) return this.fail(FACE.entity, r.error.message);
       this.rec = (r.data || [])[0];
       if (!this.rec) return this.fail(FACE.entity, 'no record ' + this.recordId);
+      await this.loadRail();
+      if (seq !== this._loadSeq) return;
       this.renderHeader();
       await this.renderTray();
+      if (seq !== this._loadSeq) return;
+      this.renderRail();
       this.renderSelectors();
       await this.showSelector(this.activeSelector);
+      if (seq !== this._loadSeq) return;
+      this.renderStep();
     }
 
     // -- the ROLE gate (the engine's key is `personas` -- 1.1.1's identifier; chosen at
@@ -151,6 +186,7 @@
     }
 
     // -- the earned seats (1.1.0, concept 41's clause): declared verbs, quiet, role-gated --
+    // 1.2.0: a seat whose verb is a rail step folds into the rail (the rail is the acts' own place)
     renderVerbs(gate) {
       var self = this;
       var host = this.$('verbs');
@@ -158,6 +194,7 @@
       clear(host);
       (FACE.verbs || []).forEach(function (v) {
         if (gate && Array.isArray(gate.actions) && gate.actions.indexOf(v.verb) === -1) return;
+        if (self.railSteps.some(function (s) { return s.verb === v.verb; })) return;
         var b = el('button', 'fp-verb', v.title);
         b.type = 'button';
         b.title = v.scenario;   // the seat is never parked: the scenario rides the control
@@ -173,8 +210,10 @@
     // -- the tray (concept 40): open touches + derived exceptions; Resolve writes -------------
     async renderTray() {
       var self = this;
+      var seq = this._loadSeq;
       var host = this.$('tray'); clear(host);
       var r = await this.from(FACE.tray.source).select('*').eq(FACE.primary_key, this.recordId);
+      if (seq !== this._loadSeq) return;   // a newer load owns the tray now
       if (r.error) return this.fail(FACE.tray.source, r.error.message);
       var rows = r.data || [];
       var order = Object.keys(FACE.tray.kinds);
@@ -235,6 +274,168 @@
         .eq('communication_log_id', t.item_id);
       if (r.error) { btn.disabled = false; return this.fail('Resolve', r.error.message); }
       await this.renderTray();
+    }
+
+    // -- THE RAIL (1.2.0): the acts in order, lit by the rows ---------------------------------
+    selectorIndex(key) {
+      for (var i = 0; i < FACE.selectors.length; i++) if (FACE.selectors[i].key === key) return i;
+      return -1;
+    }
+
+    stepDone(s) {
+      var row = this.railRow || {};
+      var dw = s.done_when || {};
+      var v = row[dw.field];
+      if (Object.prototype.hasOwnProperty.call(dw, 'gt')) return Number(v) > Number(dw.gt);
+      return v === dw.equals || String(v) === String(dw.equals);
+    }
+
+    async loadRail() {
+      this.railSteps = []; this.railRow = null;
+      if (!FACE.rail) return;
+      var gate = this.roleGate();
+      var steps = (FACE.rail.steps || []).filter(function (s) {
+        return !gate || !Array.isArray(gate.actions) || gate.actions.indexOf(s.verb) !== -1;
+      });
+      if (steps.length === 0) return;   // a role with none of the acts sees no rail
+      var r = await this.from(FACE.rail.source).select('*').eq(FACE.primary_key, this.recordId).limit(1);
+      if (r.error) { this.fail(FACE.rail.source, r.error.message); return; }
+      this.railRow = (r.data || [])[0] || {};
+      this.railSteps = steps;
+      var lit = steps.length;
+      for (var i = 0; i < steps.length; i++) { if (!this.stepDone(steps[i])) { lit = i; break; } }
+      this.litIndex = lit;
+      if (this.railSelected === null || this.railSelected > steps.length) this.railSelected = lit;
+      // the lit selector follows the step (his cut: the first landing is what the step reads)
+      var reads = this.railSelected < steps.length ? steps[this.railSelected].reads : FACE.rail.done.reads;
+      var idx = this.selectorIndex(reads);
+      if (idx >= 0) this.activeSelector = idx;
+    }
+
+    renderRail() {
+      var self = this;
+      var host = this.$('rail'), body = this.$('body');
+      if (!host || !body) return;
+      clear(host);
+      if (this.railSteps.length === 0) { host.hidden = true; body.classList.add('fp-body--norail'); return; }
+      host.hidden = false; body.classList.remove('fp-body--norail');
+      var lit = this.litIndex;
+      this.railSteps.forEach(function (s, i) {
+        var done = i < lit, cur = i === lit;
+        var item = el('div', 'fp-rail-item' + (cur ? ' fp-rail-item--current' : done ? ' fp-rail-item--done' : ' fp-rail-item--ahead') + (i === self.railSelected ? ' fp-rail-item--selected' : ''));
+        item.setAttribute('data-step', String(i));
+        item.setAttribute('data-state', cur ? 'current' : done ? 'done' : 'ahead');
+        var row = el('div', 'fp-rail-row');
+        row.appendChild(el('span', 'fp-rail-num', done ? '✓' : String(i + 1)));
+        row.appendChild(el('span', 'fp-rail-name', s.title));
+        row.appendChild(el('span', 'fp-rail-state', done ? 'done' : cur ? 'you are here' : ''));
+        item.appendChild(row);
+        var receipt = done && s.receipt_field ? self.railRow[s.receipt_field] : null;
+        if (done && receipt) item.appendChild(el('div', 'fp-rail-sub', receipt));
+        else if (cur) item.appendChild(el('div', 'fp-rail-sub', String(s.route).replace(':id', String(self.recordId))));
+        item.addEventListener('click', function () { self.railGo(i); });
+        host.appendChild(item);
+      });
+      if (lit >= this.railSteps.length) {
+        var doneItem = el('div', 'fp-rail-item fp-rail-item--done fp-rail-item--current' + (this.railSelected === this.railSteps.length ? ' fp-rail-item--selected' : ''));
+        doneItem.setAttribute('data-step', 'done');
+        doneItem.setAttribute('data-state', 'all-done');
+        var drow = el('div', 'fp-rail-row');
+        drow.appendChild(el('span', 'fp-rail-num', '✓'));
+        drow.appendChild(el('span', 'fp-rail-name', (FACE.rail.done && FACE.rail.done.title) || 'Done'));
+        drow.appendChild(el('span', 'fp-rail-state', 'every step done'));
+        doneItem.appendChild(drow);
+        doneItem.addEventListener('click', function () { self.railGo(self.railSteps.length); });
+        host.appendChild(doneItem);
+      }
+    }
+
+    async railGo(i) {
+      this.railSelected = i;
+      this.renderRail();
+      var reads = i < this.railSteps.length ? this.railSteps[i].reads : FACE.rail.done.reads;
+      var idx = this.selectorIndex(reads);
+      if (idx >= 0) await this.showSelector(idx);
+      this.renderStep();
+    }
+
+    unmountGate() {
+      if (this.gateInstance) { try { this.gateInstance.unmount(); } catch (ignored) { /* already gone */ } }
+      this.gateInstance = null;
+    }
+
+    // the step's body IN THE FRAME: a done step's receipt; the lit step's GATE mounted inline; an ahead step's wait
+    renderStep() {
+      var self = this;
+      var host = this.$('step');
+      if (!host) return;
+      this.unmountGate();
+      clear(host);
+      if (this.railSteps.length === 0) { host.hidden = true; return; }
+      host.hidden = false;
+      var sel = this.railSelected, lit = this.litIndex, n = this.railSteps.length;
+      var head = el('h3', 'fp-step-head');
+      if (sel >= n) {
+        head.appendChild(el('span', 'fp-step-num', '✓'));
+        head.appendChild(el('span', null, (FACE.rail.done && FACE.rail.done.title) || 'Done'));
+        host.appendChild(head);
+        if (this.lastVerdict) host.appendChild(this.receiptLine(this.lastVerdict));
+        var last = this.railSteps[n - 1];
+        var lastReceipt = last.receipt_field ? this.railRow[last.receipt_field] : null;
+        if (lastReceipt) host.appendChild(el('div', 'fp-receipt', '✓ ' + lastReceipt));
+        host.appendChild(el('p', 'fp-step-note', 'every step done; the frame reads ' + this.selectorLabel(FACE.rail.done.reads)));
+        return;
+      }
+      var s = this.railSteps[sel];
+      head.appendChild(el('span', 'fp-step-num', String(sel + 1)));
+      head.appendChild(el('span', null, s.title));
+      head.appendChild(el('span', 'fp-step-link', 'deep link ' + String(s.route).replace(':id', String(this.recordId))));
+      host.appendChild(head);
+      if (this.lastVerdict && sel === lit) host.appendChild(this.receiptLine(this.lastVerdict));
+      // THE RAIL LIGHTS, NEVER LOCKS (the chair's catch, 2026-09-08: a hand placement from the office's booking call
+      // lights Sequence by the rows, and Place the week must still be reachable from the day): a done step shows its
+      // receipt ABOVE its gate, an ahead step a note above its gate -- every step's gate stands in the frame; the
+      // door refuses what cannot be done (the human is the optimize pass).
+      if (sel < lit) {
+        var receipt = s.receipt_field ? this.railRow[s.receipt_field] : null;
+        host.appendChild(el('div', 'fp-receipt', '✓ done' + (receipt ? ': ' + receipt : '')));
+        host.appendChild(el('p', 'fp-step-note', 'done by the rows; its gate stands below to act again (the frame reads ' + this.selectorLabel(s.reads) + '; the rail is at ' + (lit < n ? this.railSteps[lit].title : 'done') + ')'));
+      } else if (sel > lit) {
+        host.appendChild(el('p', 'fp-step-note', 'ahead of the rows: the rail is at ' + this.railSteps[lit].title + '; this step\'s gate stands below all the same -- the rail lights, never locks; the door refuses what is not ready'));
+      }
+      // the selected step's gate, in the frame (guarded-gate 1.2.1 inline mode) -- every step's, not only the lit one's
+      var Cls = (window.PatternRegistry || {})[s.gate];
+      if (!Cls) { host.appendChild(el('div', 'fp-error', 'the gate ' + s.gate + ' is not registered -- was its script emitted?')); return; }
+      var gateHost = el('div', 'fp-gate');
+      gateHost.setAttribute('data-gate-blueprint', s.gate);
+      host.appendChild(gateHost);
+      gateHost.addEventListener('blueprint:verdict', function (e) { self.onVerdict(e.detail || {}); });
+      try {
+        var g = new Cls();
+        g.mount(gateHost, { inline: true });
+        if (typeof g.onContext === 'function') g.onContext(this.context);
+        if (typeof g.setRecordId === 'function') g.setRecordId(this.recordId);
+        this.gateInstance = g;
+      } catch (err) {
+        host.appendChild(el('div', 'fp-error', 'the gate could not mount in the frame: ' + err.message));
+      }
+    }
+
+    receiptLine(v) {
+      return el('div', 'fp-receipt', '✓ ' + (v.label || v.verdict || 'recorded') + ' recorded.' + (v.consequence ? ' ' + v.consequence : '') + (v.next ? ' Next: ' + v.next + '.' : ''));
+    }
+
+    selectorLabel(key) {
+      var i = this.selectorIndex(key);
+      return i >= 0 ? FACE.selectors[i].label : key;
+    }
+
+    // the affirmative path, taken in the frame: the rows moved, so the page re-reads and the rail advances
+    onVerdict(detail) {
+      this.lastVerdict = detail;
+      this.railSelected = null;
+      this.listCache = {};
+      this.load();
     }
 
     // -- four constant selectors, one shared frame (43-44) -------------------------------------

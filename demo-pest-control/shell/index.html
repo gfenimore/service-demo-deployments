@@ -30,6 +30,17 @@
     <link rel="stylesheet" href="../account-edit-tearsheet/tearsheet.css">
     <link rel="stylesheet" href="../account-list-view/list-view.css">
     <link rel="stylesheet" href="../account-record-card/focus-page.css">
+    <link rel="stylesheet" href="../cancel-work-order-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../defer-work-order-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../pending-work-orders-list/list-view.css">
+    <link rel="stylesheet" href="../place-week-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../place-work-order-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../release-schedule-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../schedule-focus-page/focus-page.css">
+    <link rel="stylesheet" href="../scheduling-board/board.css">
+    <link rel="stylesheet" href="../scheduling-days-list/list-view.css">
+    <link rel="stylesheet" href="../sequence-schedule-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../work-order-focus-page/focus-page.css">
     <link rel="stylesheet" href="../account-intake-tearsheet/tearsheet.css">
 </head>
 <body data-app-id="a0004000-0000-0000-0000-000000000001" data-shell-type="carbon-hybrid">
@@ -41,6 +52,10 @@
 
         <cds-header-nav menu-bar-label="Demo Pest Control">
             <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000002">Accounts</cds-header-nav-item>
+            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000030">Operations</cds-header-nav-item>
+            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000040">Administration</cds-header-nav-item>
+            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000050">Finance</cds-header-nav-item>
+            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000060">Performance</cds-header-nav-item>
         </cds-header-nav>
 
     </cds-header>
@@ -61,7 +76,19 @@
     <cds-side-nav is-not-child-of-header expanded aria-label="Side navigation" collapse-mode="fixed">
         <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000002" hidden>
             <cds-side-nav-link href="#/accounts" data-feature-id="a0004000-0000-0000-0000-000000000004">View Accounts</cds-side-nav-link>
-            <cds-side-nav-link href="#/accounts/new" data-feature-id="b7c5b459-bb73-4d88-9d46-9e0f0a732d01">New Account</cds-side-nav-link>
+        </cds-side-nav-items>
+        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000030" hidden>
+            <cds-side-nav-link href="#/operations/pending" data-feature-id="a0004000-0000-0000-0000-000000000032">Pending Work Orders</cds-side-nav-link>
+            <cds-side-nav-link href="#/operations/scheduling" data-feature-id="a0004000-0000-0000-0000-000000000077">Scheduling</cds-side-nav-link>
+        </cds-side-nav-items>
+        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000040" hidden>
+            <cds-side-nav-link href="#/administration" data-feature-id="a0004000-0000-0000-0000-000000000042">Policy and systems (a later leg)</cds-side-nav-link>
+        </cds-side-nav-items>
+        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000050" hidden>
+            <cds-side-nav-link href="#/finance" data-feature-id="a0004000-0000-0000-0000-000000000052">Billing and payments (a later leg)</cds-side-nav-link>
+        </cds-side-nav-items>
+        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000060" hidden>
+            <cds-side-nav-link href="#/performance" data-feature-id="a0004000-0000-0000-0000-000000000062">Dashboards and analysis (a later leg)</cds-side-nav-link>
         </cds-side-nav-items>
     </cds-side-nav>
 
@@ -78,6 +105,9 @@
       navigation. Neither needs a rebuild.
     -->
     <main id="app-content" class="app-content cds--white" role="main">
+        <!-- NO BREADCRUMB (SJ s51 leg 3b, his chair 2026-09-07): the lit module and the lit function already
+             say where you are, and the lit function is the way back (it returns to the list as it stands).
+             A breadcrumb waits for a level the blue cannot mark. -->
         <!-- data-zone says "main" because that is the zone vocabulary app_components rows
              actually declare (root, main, sidebar, header, footer, modal -- the shell
              mount-point ruling). "content" was a carbon-port drift no row ever named, so
@@ -106,6 +136,17 @@
     <script src="../account-edit-tearsheet/tearsheet.js"></script>
     <script src="../account-list-view/list-view.js"></script>
     <script src="../account-record-card/focus-page.js"></script>
+    <script src="../cancel-work-order-gate/guarded-gate.js"></script>
+    <script src="../defer-work-order-gate/guarded-gate.js"></script>
+    <script src="../pending-work-orders-list/list-view.js"></script>
+    <script src="../place-week-gate/guarded-gate.js"></script>
+    <script src="../place-work-order-gate/guarded-gate.js"></script>
+    <script src="../release-schedule-gate/guarded-gate.js"></script>
+    <script src="../schedule-focus-page/focus-page.js"></script>
+    <script src="../scheduling-board/board.js"></script>
+    <script src="../scheduling-days-list/list-view.js"></script>
+    <script src="../sequence-schedule-gate/guarded-gate.js"></script>
+    <script src="../work-order-focus-page/focus-page.js"></script>
     <script src="../account-intake-tearsheet/tearsheet.js"></script>
 
     <script>
@@ -154,6 +195,127 @@
     "script": "../account-record-card/focus-page.js",
     "css": "../account-record-card/focus-page.css",
     "route": "/accounts/:id"
+  },
+  {
+    "slug": "cancel-work-order-gate",
+    "name": "Cancel Work Order Gate",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "ca000000-0000-0000-0000-000000000001",
+    "patternId": "guarded-gate-001",
+    "script": "../cancel-work-order-gate/guarded-gate.js",
+    "css": "../cancel-work-order-gate/guarded-gate.css",
+    "route": "/operations/pending/:id/cancel"
+  },
+  {
+    "slug": "defer-work-order-gate",
+    "name": "Defer Work Order Gate",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "cb000000-0000-0000-0000-000000000001",
+    "patternId": "guarded-gate-001",
+    "script": "../defer-work-order-gate/guarded-gate.js",
+    "css": "../defer-work-order-gate/guarded-gate.css",
+    "route": "/operations/pending/:id/defer"
+  },
+  {
+    "slug": "pending-work-orders-list",
+    "name": "Pending Work Orders",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "c8000000-0000-0000-0000-000000000001",
+    "patternId": "list-view-simple-001",
+    "script": "../pending-work-orders-list/list-view.js",
+    "css": "../pending-work-orders-list/list-view.css",
+    "route": "/operations/pending"
+  },
+  {
+    "slug": "place-week-gate",
+    "name": "Place the Week Gate",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "ce000000-0000-0000-0000-000000000001",
+    "patternId": "guarded-gate-001",
+    "script": "../place-week-gate/guarded-gate.js",
+    "css": "../place-week-gate/guarded-gate.css",
+    "route": "/operations/scheduling/:id/place-week"
+  },
+  {
+    "slug": "place-work-order-gate",
+    "name": "Place Work Order Gate",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "d3000000-0000-0000-0000-000000000001",
+    "patternId": "guarded-gate-001",
+    "script": "../place-work-order-gate/guarded-gate.js",
+    "css": "../place-work-order-gate/guarded-gate.css",
+    "route": "/operations/pending/:id/place"
+  },
+  {
+    "slug": "release-schedule-gate",
+    "name": "Release Gate",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "d0000000-0000-0000-0000-000000000001",
+    "patternId": "guarded-gate-001",
+    "script": "../release-schedule-gate/guarded-gate.js",
+    "css": "../release-schedule-gate/guarded-gate.css",
+    "route": "/operations/scheduling/:id/release"
+  },
+  {
+    "slug": "schedule-focus-page",
+    "name": "The Day",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "cd000000-0000-0000-0000-000000000001",
+    "patternId": "focus-page-001",
+    "script": "../schedule-focus-page/focus-page.js",
+    "css": "../schedule-focus-page/focus-page.css",
+    "route": "/operations/scheduling/:id"
+  },
+  {
+    "slug": "scheduling-board",
+    "name": "Scheduling Board",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "d4000000-0000-0000-0000-000000000001",
+    "patternId": "board-001",
+    "script": "../scheduling-board/board.js",
+    "css": "../scheduling-board/board.css",
+    "route": "/operations/scheduling"
+  },
+  {
+    "slug": "scheduling-days-list",
+    "name": "Scheduling",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "cc000000-0000-0000-0000-000000000001",
+    "patternId": "list-view-simple-001",
+    "script": "../scheduling-days-list/list-view.js",
+    "css": "../scheduling-days-list/list-view.css",
+    "route": "/operations/scheduling/days"
+  },
+  {
+    "slug": "sequence-schedule-gate",
+    "name": "Sequence Gate",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "cf000000-0000-0000-0000-000000000001",
+    "patternId": "guarded-gate-001",
+    "script": "../sequence-schedule-gate/guarded-gate.js",
+    "css": "../sequence-schedule-gate/guarded-gate.css",
+    "route": "/operations/scheduling/:id/sequence"
+  },
+  {
+    "slug": "work-order-focus-page",
+    "name": "Work Order Focus Page",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "c9000000-0000-0000-0000-000000000001",
+    "patternId": "focus-page-001",
+    "script": "../work-order-focus-page/focus-page.js",
+    "css": "../work-order-focus-page/focus-page.css",
+    "route": "/operations/pending/:id"
   },
   {
     "slug": "account-intake-tearsheet",
@@ -288,19 +450,49 @@
             });
             if (!best && groups.length) best = groups[0].getAttribute('data-for-module');
             groups.forEach(function (g) { g.hidden = g.getAttribute('data-for-module') !== best; });
+            // THE MODULE HOLDS ITS MARK until another module is chosen (his chair, SJ s51 2026-09-07).
+            // Carbon 2.x (header-nav-item) paints the line from `is-active` AND ONLY when the host carries
+            // no aria-current="page" (`--current: isActive && ariaCurrent !== "page"`); the old `active` +
+            // `aria-current` pair painted nothing. Carbon writes aria-current on its own anchor.
             document.querySelectorAll('cds-header-nav-item[data-module-id]').forEach(function (it) {
                 var on = it.getAttribute('data-module-id') === best;
-                if (on) { it.setAttribute('active', ''); it.setAttribute('aria-current', 'page'); }
-                else { it.removeAttribute('active'); it.removeAttribute('aria-current'); }
+                it.removeAttribute('aria-current'); it.removeAttribute('active');
+                if (on) { it.setAttribute('is-active', ''); } else { it.removeAttribute('is-active'); }
+            });
+            // THE FUNCTION HOLDS ITS MARK while the focus shows its screens -- the record and its acts
+            // included (his chair, SJ s51 2026-09-07): the link whose route is the LONGEST PREFIX of the
+            // hash is current, not only an exact match. /operations/pending/<id>/cancel keeps
+            // "Pending Work Orders" lit.
+            var bestLink = null, bestLinkLen = -1;
+            document.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
+                var r = (a.getAttribute('href') || '').slice(1);
+                if (r && (hash === r || hash.indexOf(r + '/') === 0) && r.length > bestLinkLen) { bestLink = a; bestLinkLen = r.length; }
             });
             document.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
-                if ((a.getAttribute('href') || '').slice(1) === hash) a.setAttribute('active', '');
-                else a.removeAttribute('active');
+                if (a === bestLink) { a.setAttribute('active', ''); a.setAttribute('aria-current', 'page'); }
+                else { a.removeAttribute('active'); a.removeAttribute('aria-current'); }
             });
+            // The lit function IS the way back (his chair, 2026-09-07): its link returns to the list as it
+            // stands -- mounted, its filters kept -- so a record needs no breadcrumb. Nothing more here.
         }
         window.addEventListener('hashchange', syncModuleNav);
+        // ShellNavigation.navigate() writes the hash with pushState, which never fires hashchange -- so an
+        // in-app move (a row click, a seat, a crumb) never re-synced the marks; only boot and back/forward
+        // did (SJ s51 leg 3b, 2026-09-07). Every navigate now ends in a sync, with the hash already written.
+        function hookNavigate() {
+            var nav = window.ShellNavigation;
+            if (!nav || nav._syncHooked || typeof nav.navigate !== 'function') return;
+            var original = nav.navigate;
+            nav.navigate = function () {
+                var result = original.apply(this, arguments);
+                try { syncModuleNav(); } catch (ignored) { /* the marks are cosmetic; the route already moved */ }
+                return result;
+            };
+            nav._syncHooked = true;
+        }
 
         function wireRoutes() {
+            hookNavigate();   // ShellNavigation stands by now (app-init ran); every navigate ends in a sync
             var live = window.ShellMounted || [];
             var mounts = (window.ShellMounts || []).filter(function (m) {
                 return live.indexOf(m.slug) !== -1;
@@ -348,7 +540,9 @@
                 });
                 // CURRENT LOCATION -- carbon side-nav items carry href="#<route>"; aria-current
                 // carries the fact to anyone not looking at the colour.
-                document.querySelectorAll('cds-side-nav-menu-item, cds-side-nav-link, [data-route]').forEach(function (a) {
+                // The side-nav LINKS are syncModuleNav's (the longest-prefix rule, his chair 2026-09-07);
+                // an exact match here would un-light "Pending Work Orders" the moment a record opened.
+                document.querySelectorAll('cds-side-nav-menu-item, [data-route]').forEach(function (a) {
                     var r = a.getAttribute('data-route') || (a.getAttribute('href') || '').replace(/^#/, '');
                     var isHere = r === route;
                     if (isHere) { a.setAttribute('aria-current', 'page'); a.setAttribute('active', ''); }
@@ -384,6 +578,16 @@
                 var under = routes.filter(function (r) {
                     return r.indexOf('/:') !== -1 && r.slice(0, r.indexOf('/:')) === route;
                 });
+                // SJ s51 rung 5a, sitting 2 (2026-09-09): a function's DEFAULT screen sits at its root
+                // (/operations/scheduling is THE BOARD) and a list beneath it (/operations/scheduling/days)
+                // hands its record to the FUNCTION'S record route (/operations/scheduling/:id) -- the
+                // record's own screen belongs to the function, not to the list that found it.
+                if (!under.length && route.split('/').length > 3) {
+                    var parent = route.slice(0, route.lastIndexOf('/'));
+                    under = routes.filter(function (r) {
+                        return r.indexOf('/:') !== -1 && r.slice(0, r.indexOf('/:')) === parent;
+                    });
+                }
                 // s44 (his chair's find): a VERB route (/accounts/:id/edit) may stand
                 // beside the record route (/accounts/:id). The record's own screen is
                 // the one whose parameter is TERMINAL -- a verb route is entered only
@@ -426,6 +630,11 @@
             var hash = (window.location.hash || '').slice(1);
             if (hash && window.ShellNavigation._matchRoute(hash)) { start = hash; }
             window.ShellNavigation.navigate(start, false);
+            // The hash is the single source of truth: at boot with no hash the opening route is written
+            // into it (a bookmark then carries where the app opened, and the nav marks read it).
+            if (!window.location.hash || window.location.hash === '#') {
+                try { history.replaceState(null, '', '#' + start); } catch (ignored) { /* file: origins */ }
+            }
             syncModuleNav();
 
             console.log('[AppShell] ' + routes.length + ' route(s) registered, ' +

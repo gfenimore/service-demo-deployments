@@ -1,0 +1,75 @@
+/* Route Focus Page -- THE ONE PAGE (focus-page-001). Carbon-adjacent, quiet; color only ever
+   means ACT (concept 37: Carbon's status palette verbatim). Generated; do not edit. */
+.fp { max-width: 68rem; margin: 0 auto; padding: 1rem 1.5rem; }
+.fp-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.fp-title { font-size: 1.5rem; font-weight: 400; margin: 0; display: inline; }
+.fp-chip { display: inline-block; background: #e0e0e0; color: #161616; border-radius: 999px;
+           padding: 0.05rem 0.65rem; font-size: 0.8125rem; margin-left: 0.35rem; }
+.fp-chip--ok { background: #defbe6; color: #0e6027; }
+.fp-tray { margin-top: 1rem; }
+.fp-tray-label { font-size: 0.75rem; color: #525252; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.35rem; }
+.fp-quiet { background: #f4f4f4; border-radius: 6px; padding: 0.6rem 0.9rem; color: #525252; font-size: 0.875rem; }
+.fp-card { border: 1px solid #f1c21b; border-left: 4px solid #f1c21b; background: #fff;
+           padding: 0.5rem 0.9rem; margin: 0.4rem 0; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+.fp-card-kind { font-size: 0.75rem; background: #f4f4f4; color: #525252; border-radius: 999px; padding: 0.1rem 0.6rem; }
+.fp-card-h { font-weight: 600; font-size: 0.875rem; flex: 1; min-width: 12rem; }
+.fp-card-who { color: #525252; font-size: 0.8125rem; }
+.fp-btn { font: inherit; font-size: 0.8125rem; padding: 0.3rem 0.8rem; border: 1px solid #c6c6c6;
+          background: #fff; border-radius: 4px; cursor: pointer; }
+.fp-btn:hover:not(:disabled) { background: #f4f4f4; }
+.fp-btn:disabled { color: #8d8d8d; cursor: not-allowed; }
+.fp-future { font-size: 0.75rem; background: #e8daff; color: #6929c4; border-radius: 999px; padding: 0.1rem 0.6rem; }
+.fp-selectors { display: flex; gap: 0.6rem; margin: 1.25rem 0 0.75rem; }
+.fp-selector { flex: 1; font: inherit; font-size: 0.875rem; text-align: center; border: 1px solid #c6c6c6;
+               border-radius: 8px; padding: 0.55rem 0; background: #fff; cursor: pointer; }
+.fp-selector:hover { background: #f4f4f4; }
+.fp-selector--on { border-color: #0f62fe; color: #0f62fe; font-weight: 600; }
+.fp-caption { font-size: 0.8125rem; color: #525252; margin: 0 0 0.4rem; }
+.fp-radios { display: flex; gap: 0.9rem; flex-wrap: wrap; font-size: 0.8125rem; margin: 0 0 0.4rem; }
+.fp-radios label { cursor: pointer; }
+.fp-siteline { background: #edf5ff; border-radius: 6px; padding: 0.45rem 0.75rem; font-size: 0.8125rem; margin: 0 0 0.5rem; }
+.fp-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: #fff; }
+.fp-table th { text-align: left; font-size: 0.75rem; color: #525252; background: #f4f4f4; padding: 0.5rem 0.75rem; }
+.fp-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #e0e0e0; }
+.fp-row--openable { cursor: pointer; }
+.fp-row--openable:hover td { background: #f4f4f4; }
+.fp-expand td { background: #edf5ff; }
+.fp-log { list-style: none; margin: 0.4rem 0 0; padding: 0; font-size: 0.8125rem; }
+.fp-log li { padding: 0.25rem 0; border-bottom: 1px solid #d0e2ff; }
+.fp-muted { color: #8d8d8d; font-size: 0.8125rem; }
+.fp-error { background: #fff1f1; border-left: 4px solid #da1e28; padding: 0.6rem 0.9rem; margin: 0.4rem 0; font-size: 0.875rem; }
+.fp-seg { font-size: 0.75rem; border-radius: 999px; padding: 0.1rem 0.6rem; }
+.fp-seg--done { background: #defbe6; color: #0e6027; }
+.fp-seg--warn { background: #fcf4d6; color: #8a6a00; }
+.fp-seg--blue { background: #edf5ff; color: #0f62fe; }
+/* 1.1.0 (s44 Q-AF): the earned header seats -- quiet, at the header's edge */
+.fp-verbs { margin-left: auto; }
+.fp-verb { background: transparent; border: 1px solid #c6c6c6; color: #161616; border-radius: 4px;
+           padding: 0.25rem 0.85rem; font-size: 0.875rem; cursor: pointer; margin-left: 0.35rem; }
+.fp-verb:hover { background: #e8e8e8; }
+/* 1.2.0 (s51 rung 5a): THE RAIL wears the tearsheet's own values (tearsheet-001: a 260px rail on #fafafa, the
+   current step's blue left line and #edf5ff wash, the ahead steps greyed); no rail = the main column alone */
+.fp-body { display: flex; align-items: stretch; margin-top: 0.25rem; }
+.fp-body--norail .fp-rail { display: none; }
+.fp-body--norail .fp-main { padding-left: 0; }
+.fp-rail { width: 260px; flex-shrink: 0; border-right: 1px solid #e0e0e0; padding: 10px 0; margin-top: 1.25rem; background: #fafafa; align-self: flex-start; }
+.fp-main { flex: 1; min-width: 0; padding-left: 1.25rem; }
+.fp-rail-item { padding: 9px 16px 9px 13px; border-left: 3px solid transparent; cursor: pointer; }
+.fp-rail-item:hover { background: #f4f4f4; }
+.fp-rail-item--current { border-left-color: #0f62fe; background: #edf5ff; }
+.fp-rail-item--current:hover { background: #edf5ff; }
+.fp-rail-item--ahead { color: #a8a8a8; }
+.fp-rail-item--selected:not(.fp-rail-item--current) { border-left-color: #c6c6c6; }
+.fp-rail-row { display: flex; align-items: center; gap: 8px; }
+.fp-rail-num { color: #525252; font-size: 12px; width: 14px; }
+.fp-rail-name { flex: 1; }
+.fp-rail-state { font-size: 12px; color: #525252; white-space: nowrap; }
+.fp-rail-item--done .fp-rail-state { color: #0e6027; }
+.fp-rail-sub { font-size: 11px; color: #525252; margin: 2px 0 0 22px; word-break: break-word; }
+.fp-step { margin-top: 1rem; border-top: 1px solid #e0e0e0; padding-top: 0.75rem; }
+.fp-step-head { font-size: 0.9375rem; font-weight: 600; display: flex; gap: 10px; align-items: baseline; margin: 0 0 0.5rem; }
+.fp-step-num { color: #525252; font-weight: 400; }
+.fp-step-link { color: #525252; font-weight: 400; font-size: 0.75rem; margin-left: auto; }
+.fp-receipt { background: #defbe6; color: #0e6027; border-left: 4px solid #24a148; padding: 0.5rem 0.9rem; font-size: 0.875rem; margin: 0.4rem 0; }
+.fp-step-note { color: #525252; font-size: 0.8125rem; margin: 0.4rem 0; }
+.fp-gate .blueprint-gate-head { display: none; }

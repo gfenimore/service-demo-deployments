@@ -230,6 +230,17 @@ class AccountFilterPanelUI {
         if (clearBtn) {
             clearBtn.addEventListener('click', () => this.clearFilters());
         }
+
+        // the applied-filter tags' x (SJ s51 leg 3b): delegated, the tags are re-rendered on every change
+        const statusBar = panel.querySelector('.filter-panel__status');
+        if (statusBar) {
+            statusBar.addEventListener('click', (e) => {
+                const btn = e.target.closest && e.target.closest('[data-remove-field]');
+                if (!btn) return;
+                e.preventDefault();
+                this.removeFilter(btn.getAttribute('data-remove-field'));
+            });
+        }
         
         const saveBtn = panel.querySelector('.filter-save');
         if (saveBtn) {
@@ -482,19 +493,55 @@ class AccountFilterPanelUI {
         this.updateStatus();
     }
     
+    // FOLLOW THE BLUE (SJ s51 leg 3b, his law 2026-09-07): blue TEXT marks what the user set. With a
+    // filter on, the status line reads in the selection blue and NAMES each applied filter as a
+    // dismissible tag (Carbon's filtering pattern: the count, and clearing without reopening);
+    // with none, it reads quiet -- the blue only ever means something is in effect.
     updateStatus() {
         const count = this.filteredFieldCount();
         const statusEl = this.root.querySelector('.active-filter-count');
-        
-        if (statusEl) {
-            if (count === 0) {
-                statusEl.textContent = 'No filters applied';
-            } else if (count === 1) {
-                statusEl.textContent = '1 filter applied';
-            } else {
-                statusEl.textContent = `${count} filters applied`;
-            }
+        const status = this.root.querySelector('.filter-panel__status');
+        if (!statusEl) return;
+        const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+        const labelOf = (field) => {
+            const f = (this.config.filters || []).find(x => x.field === field);
+            return (f && (f.label || f.name)) || field;
+        };
+        const valueOf = (c) => {
+            const f = (this.config.filters || []).find(x => x.field === c.field);
+            const opts = (f && f.options) || [];
+            const name = (v) => { const o = opts.find(x => String(x.value) === String(v)); return o ? o.label : v; };
+            return Array.isArray(c.value) ? c.value.map(name).join(', ') : name(c.value);
+        };
+        if (count === 0) {
+            statusEl.textContent = 'No filters applied';
+            if (status) status.classList.remove('filter-panel__status--active');
+            return;
         }
+        const seen = new Set();
+        const tags = this.conditions.filter(c => { if (seen.has(c.field)) return false; seen.add(c.field); return true; })
+            .map(c => {
+                const all = this.conditions.filter(x => x.field === c.field).map(valueOf).join(' to ');
+                return `<span class="filter-tag" data-filter-field="${esc(c.field)}">` +
+                       `<span class="filter-tag__text">${esc(labelOf(c.field))} ${esc(all)}</span>` +
+                       `<button type="button" class="filter-tag__remove" data-remove-field="${esc(c.field)}" ` +
+                       `aria-label="Remove the ${esc(labelOf(c.field))} filter" title="Remove">&times;</button></span>`;
+            }).join('');
+        statusEl.innerHTML = `<span class="active-filter-count__lead">${count === 1 ? '1 filter applied:' : `${count} filters applied:`}</span> ${tags}`;
+        if (status) status.classList.add('filter-panel__status--active');
+    }
+
+    // ONE filter removed by its tag's x (the rest stand); the inputs of that field reset, the
+    // consumers refetch under the remaining conditions.
+    removeFilter(field) {
+        this.conditions = this.conditions.filter(c => c.field !== field);
+        this.root.querySelectorAll(`.filter-input[name="${field}"]`).forEach(input => {
+            if (input.type === 'checkbox') input.checked = false; else input.value = '';
+        });
+        this.root.querySelectorAll(`.multi-select-dropdown input[name="${field}"]`).forEach(cb => { cb.checked = false; });
+        if (typeof this.updateMultiSelectLabel === 'function') { try { this.updateMultiSelectLabel(field, 0); } catch (ignored) { /* not a multi-select */ } }
+        this.applyFilters();
+        this.updateStatus();
     }
     
     togglePanel() {

@@ -183,7 +183,8 @@
     "actions": [
       "view",
       "search"
-    ]
+    ],
+    "seated": false
   },
   "GENERIC_USER": {
     "fields": [
@@ -209,7 +210,8 @@
       "search",
       "sort",
       "filter"
-    ]
+    ],
+    "seated": true
   },
   "OPS_MANAGER": {
     "fields": [
@@ -237,38 +239,55 @@
       "sort",
       "filter",
       "edit",
-      "create"
-    ]
+      "create",
+      "cancel",
+      "defer",
+      "place",
+      "place_week",
+      "sequence",
+      "release"
+    ],
+    "seated": false
   },
-  "SERVICE_MANAGER": {
+  "ADMIN_FULL": {
     "fields": [
       "account_name",
+      "account_type",
       "billing_street_address",
       "billing_city",
-      "phone",
+      "billing_state",
+      "billing_zip_code",
       "status",
+      "internal_notes",
+      "phone",
+      "email",
+      "balance",
       "last_service_date",
       "next_service_date",
-      "service_frequency"
+      "service_frequency",
+      "created_at",
+      "updated_at"
     ],
-    "readonly": [
-      "account_name",
-      "status"
-    ],
-    "filters": {
-      "status": [
-        "active"
-      ]
-    },
+    "readonly": [],
+    "filters": null,
     "actions": [
       "view",
       "search",
       "sort",
       "filter",
-      "schedule",
-      "assign_tech",
-      "create"
-    ]
+      "edit",
+      "delete",
+      "export",
+      "bulk_actions",
+      "create",
+      "cancel",
+      "defer",
+      "place",
+      "place_week",
+      "sequence",
+      "release"
+    ],
+    "seated": true
   },
   "CUSTOMER_SERVICE": {
     "fields": [
@@ -303,41 +322,49 @@
       "filter",
       "edit",
       "log_call",
-      "schedule"
-    ]
+      "schedule",
+      "cancel",
+      "defer",
+      "place"
+    ],
+    "seated": true
   },
-  "ADMIN_FULL": {
+  "SERVICE_MANAGER": {
     "fields": [
       "account_name",
-      "account_type",
       "billing_street_address",
       "billing_city",
-      "billing_state",
-      "billing_zip_code",
-      "status",
-      "internal_notes",
       "phone",
-      "email",
-      "balance",
+      "status",
       "last_service_date",
       "next_service_date",
-      "service_frequency",
-      "created_at",
-      "updated_at"
+      "service_frequency"
     ],
-    "readonly": [],
-    "filters": null,
+    "readonly": [
+      "account_name",
+      "status"
+    ],
+    "filters": {
+      "status": [
+        "active"
+      ]
+    },
     "actions": [
       "view",
       "search",
       "sort",
       "filter",
-      "edit",
-      "delete",
-      "export",
-      "bulk_actions",
-      "create"
-    ]
+      "schedule",
+      "assign_tech",
+      "create",
+      "cancel",
+      "defer",
+      "place",
+      "place_week",
+      "sequence",
+      "release"
+    ],
+    "seated": true
   }
 }
     };
@@ -380,12 +407,22 @@
     // THE VOID CLOSED (s39 Q7, measured 2026-08-23): the filter panel emitted filter:filter-changed
     // since it was built and NO list ever listened. The conditions arrive ANDed and are applied
     // UNDER the persona's filters in fetchFromSupabase -- narrowing only, never widening.
+    // A LIST OFF THE ROUTE DOES NOT HEAR THE PANEL (SJ s51 leg 3b, 2026-09-07): the panel's event is
+    // document-wide, and the coat's chair caught the hidden Pending Work Orders list answering the
+    // Accounts panel's "service frequency" with a column it does not have -- an HTTP 400 nobody saw.
+    // The shell hides every component off the current route; a hidden list lets the event pass.
+    this._offRoute = () => {
+      const host = this.container && this.container.closest ? this.container.closest('.mounted-component') : null;
+      return !!(host && host.style && host.style.display === 'none');
+    };
     this._onFilterChanged = (e) => {
+      if (this._offRoute()) return;
       this.userConditions = (e.detail && e.detail.conditions) || [];
       this.currentPage = 1;
       if (this.context && this.supabaseClient) this.loadData(true);
     };
     this._onFilterCleared = () => {
+      if (this._offRoute()) return;
       this.userConditions = [];
       this.currentPage = 1;
       if (this.context && this.supabaseClient) this.loadData(true);

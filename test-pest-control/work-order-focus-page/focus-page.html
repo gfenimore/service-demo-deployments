@@ -1,0 +1,30 @@
+<!-- Work Order Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46; 1.2.0 THE RAIL). Generated; do not edit.
+     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by
+     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c.
+     1.2.0 (s51 rung 5a): the body splits into THE RAIL on the left (hidden unless the blueprint
+     declares one and the role holds a step) and the main column: the selectors, the frame, and
+     the lit step's body (its gate mounted in the frame). -->
+<div class="fp" data-blueprint="c9000000-0000-0000-0000-000000000001">
+  <header class="fp-head">
+    <h2 class="fp-title" data-fp="title"></h2>
+    <span class="fp-chips" data-fp="chips"></span>
+    <span class="fp-verbs" data-fp="verbs"></span>
+  </header>
+  <section class="fp-tray" aria-label="Needs attention">
+    <p class="fp-tray-label">Needs attention</p>
+    <div data-fp="tray"></div>
+  </section>
+  <div class="fp-body fp-body--norail" data-fp="body">
+    <nav class="fp-rail" data-fp="rail" aria-label="The acts, in order" hidden></nav>
+    <div class="fp-main">
+      <nav class="fp-selectors" data-fp="selectors" aria-label="Detail selectors"></nav>
+      <section class="fp-frame" aria-label="Detail">
+        <p class="fp-caption" data-fp="caption"></p>
+        <div class="fp-radios" data-fp="radios"></div>
+        <p class="fp-siteline" data-fp="siteline" hidden></p>
+        <div class="fp-list" data-fp="list"></div>
+      </section>
+      <section class="fp-step" data-fp="step" aria-label="The step" hidden></section>
+    </div>
+  </div>
+</div>

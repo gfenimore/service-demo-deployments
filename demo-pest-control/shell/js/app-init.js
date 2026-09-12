@@ -233,6 +233,17 @@
         ComponentRegistry.init(window.AccountBlueprintUI, 'account-list-view');
         ComponentRegistry.init(window.AccountFocusPageBlueprintUI, 'account-record-card');
         ComponentRegistry.init(window.AccountTearsheetBlueprintUI, 'account-edit-tearsheet');
+        ComponentRegistry.init(window.WorkOrderGateUI, 'cancel-work-order-gate');
+        ComponentRegistry.init(window.WorkOrderBlueprintUI, 'pending-work-orders-list');
+        ComponentRegistry.init(window.WorkOrderFocusPageBlueprintUI, 'work-order-focus-page');
+        ComponentRegistry.init(window.WorkOrderGateUI, 'defer-work-order-gate');
+        ComponentRegistry.init(window.WorkOrderGateUI, 'place-work-order-gate');
+        ComponentRegistry.init(window.RouteFocusPageBlueprintUI, 'schedule-focus-page');
+        ComponentRegistry.init(window.RouteGateUI, 'place-week-gate');
+        ComponentRegistry.init(window.RouteGateUI, 'sequence-schedule-gate');
+        ComponentRegistry.init(window.RouteGateUI, 'release-schedule-gate');
+        ComponentRegistry.init(window.RouteBlueprintUI, 'scheduling-days-list');
+        ComponentRegistry.init(window.RouteBoardBlueprintUI, 'scheduling-board');
         ComponentRegistry.init(window.AccountTearsheetBlueprintUI, 'account-intake-tearsheet');
         
         // Step 3: Register routes
@@ -265,8 +276,124 @@
             }
             ComponentRegistry.mount('account-edit-tearsheet');
         });
+        window.ShellNavigation.registerRoute('/operations/pending', function(params) {
+            const instance = ComponentRegistry.get('pending-work-orders-list');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('pending-work-orders-list');
+        });
+        window.ShellNavigation.registerRoute('/operations/pending/:id', function(params) {
+            const instance = ComponentRegistry.get('work-order-focus-page');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('work-order-focus-page');
+        });
+        window.ShellNavigation.registerRoute('/operations/pending/:id/cancel', function(params) {
+            const instance = ComponentRegistry.get('cancel-work-order-gate');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('cancel-work-order-gate');
+        });
+        window.ShellNavigation.registerRoute('/operations/pending/:id/defer', function(params) {
+            const instance = ComponentRegistry.get('defer-work-order-gate');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('defer-work-order-gate');
+        });
+        window.ShellNavigation.registerRoute('/operations/pending/:id/place', function(params) {
+            const instance = ComponentRegistry.get('place-work-order-gate');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('place-work-order-gate');
+        });
+        window.ShellNavigation.registerRoute('/operations/scheduling', function(params) {
+            const instance = ComponentRegistry.get('scheduling-board');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('scheduling-board');
+        });
+        window.ShellNavigation.registerRoute('/operations/scheduling/days', function(params) {
+            const instance = ComponentRegistry.get('scheduling-days-list');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('scheduling-days-list');
+        });
+        window.ShellNavigation.registerRoute('/operations/scheduling/:id', function(params) {
+            const instance = ComponentRegistry.get('schedule-focus-page');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('schedule-focus-page');
+        });
+        window.ShellNavigation.registerRoute('/operations/scheduling/:id/place-week', function(params) {
+            const instance = ComponentRegistry.get('place-week-gate');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('place-week-gate');
+        });
+        window.ShellNavigation.registerRoute('/operations/scheduling/:id/sequence', function(params) {
+            const instance = ComponentRegistry.get('sequence-schedule-gate');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('sequence-schedule-gate');
+        });
+        window.ShellNavigation.registerRoute('/operations/scheduling/:id/release', function(params) {
+            const instance = ComponentRegistry.get('release-schedule-gate');
+            if (instance && instance.setRecordId && params.id) {
+                instance.setRecordId(params.id);
+            }
+            ComponentRegistry.mount('release-schedule-gate');
+        });
 
         // Register placeholder handlers for unimplemented routes
+        window.ShellNavigation.registerRoute('/administration', function() {
+            console.log('[AppWiring] Route /administration not implemented');
+            const mount = document.getElementById('content-mount');
+            if (mount) {
+                mount.innerHTML = `
+                    <div class="blueprint-message blueprint-warning" style="padding: 2rem; text-align: center;">
+                        <h2>Not Yet Implemented</h2>
+                        <p>This feature is coming soon.</p>
+                        <p style="color: #666; font-size: 0.875rem;">Route: /administration</p>
+                    </div>
+                `;
+            }
+        });
+        window.ShellNavigation.registerRoute('/finance', function() {
+            console.log('[AppWiring] Route /finance not implemented');
+            const mount = document.getElementById('content-mount');
+            if (mount) {
+                mount.innerHTML = `
+                    <div class="blueprint-message blueprint-warning" style="padding: 2rem; text-align: center;">
+                        <h2>Not Yet Implemented</h2>
+                        <p>This feature is coming soon.</p>
+                        <p style="color: #666; font-size: 0.875rem;">Route: /finance</p>
+                    </div>
+                `;
+            }
+        });
+        window.ShellNavigation.registerRoute('/performance', function() {
+            console.log('[AppWiring] Route /performance not implemented');
+            const mount = document.getElementById('content-mount');
+            if (mount) {
+                mount.innerHTML = `
+                    <div class="blueprint-message blueprint-warning" style="padding: 2rem; text-align: center;">
+                        <h2>Not Yet Implemented</h2>
+                        <p>This feature is coming soon.</p>
+                        <p style="color: #666; font-size: 0.875rem;">Route: /performance</p>
+                    </div>
+                `;
+            }
+        });
 
         // Step 4: Set up navigation click handler
         document.addEventListener('click', function(e) {

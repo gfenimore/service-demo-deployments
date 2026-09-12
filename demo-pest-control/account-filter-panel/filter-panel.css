@@ -269,6 +269,44 @@
     font-weight: bold;
 }
 
+/* FOLLOW THE BLUE (SJ s51 leg 3b): blue text marks what the user set -- the same blue as the
+   module's line and the function's bar (Carbon's interactive token); quiet grey when nothing is set.
+   A blue OUTLINE is never used here: that is Carbon's focus ring. */
+.filter-panel__status--active {
+    color: var(--cds-link-primary, #0f62fe);
+    border-top-color: var(--cds-border-interactive, #0f62fe);
+}
+.filter-panel__status--active .active-filter-count {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px 2px 8px;
+    border-radius: 12px;
+    background: var(--cds-tag-background-blue, #d0e2ff);
+    color: var(--cds-tag-color-blue, #0043ce);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.filter-tag__remove {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0 4px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.filter-tag__remove:hover { background: var(--cds-tag-hover-blue, #a6c8ff); }
+.filter-tag__remove:focus-visible { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: 1px; }
+
 /* Saved Filters */
 .saved-filters {
     display: flex;

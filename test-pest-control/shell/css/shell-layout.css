@@ -18,6 +18,16 @@
    document flow, so the content region is positioned around them by hand -- this is the one
    layout fact a Carbon UI Shell page still has to state for itself.
 */
+/* FOLLOW THE BLUE -- THE SELECTED FUNCTION (SJ s51 leg 3b, his chair 2026-09-07: "My View Accounts function
+   should still be indicated ... just follow the blue!"). Carbon's own selected state is a 3px bar at the
+   edge under a grey shade -- true but not OBVIOUS on a record. Styled on the HOST (the shadow tree keeps
+   its own colours): a blue wash and a 4px bar in the interactive blue, the same blue as the module's line.
+   No outline: that stays Carbon's for focus. */
+cds-side-nav-link[active] {
+    background: var(--cds-highlight, #d0e2ff);
+    box-shadow: inset 4px 0 0 0 var(--cds-border-interactive, #0f62fe);
+}
+
 .app-content {
     margin-top: 3rem;
     margin-left: 16rem;
