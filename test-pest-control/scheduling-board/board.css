@@ -1,6 +1,7 @@
-/* Route Board -- THE BOARD (board-001 1.1.0). Colour under his law: the bar in blue, LATE as one red word, a blue line
-   where you are, blue text for what you set (FOLLOW THE BLUE); no washes ("I WAY overdid the color palette!", his verdict
-   on the 2025 board). Generated; do not edit. */
+/* Route Board -- THE BOARD (board-001 2.0.0, THE PLANNING JOB). Colour under his law: the bar in blue, LATE as one red
+   word, a blue line where you are, blue text for what you set (FOLLOW THE BLUE); no washes ("I WAY overdid the color
+   palette!", his verdict on the 2025 board); the flags in quiet words, no lights (his health cut 2026-09-11).
+   Generated; do not edit. */
 .bd { max-width: 100rem; margin: 0 auto; padding: 1rem 1.5rem; font-size: 0.875rem; color: #161616; }
 .bd-head { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .bd-modes { display: inline-flex; border: 1px solid #c6c6c6; border-radius: 4px; overflow: hidden; }
@@ -8,7 +9,9 @@
 .bd-mode + .bd-mode { border-left: 1px solid #c6c6c6; }
 .bd-mode--on { background: #0f62fe; color: #fff; }
 .bd-title { font-size: 1.5rem; font-weight: 400; margin: 0; }
+.bd-title .bd-released { color: #0f62fe; font-size: 0.9375rem; margin-left: 0.5rem; }
 .bd-sub { color: #525252; font-size: 0.8125rem; }
+.bd-sub .bd-late { margin-left: 0.25rem; }
 .bd-acts { margin-left: auto; display: flex; gap: 0.4rem; align-items: center; }
 .bd-act { background: transparent; border: 1px solid #c6c6c6; color: #161616; border-radius: 4px; padding: 0.25rem 0.85rem; font: inherit; font-size: 0.875rem; cursor: pointer; }
 .bd-act:hover { background: #e8e8e8; }
@@ -21,20 +24,17 @@
 .bd-day--on { border-color: #0f62fe; background: #d0e2ff; box-shadow: inset 0 -3px 0 #0f62fe; font-weight: 600; }
 .bd-day--none { color: #a8a8a8; cursor: default; }
 .bd-day--gen { color: #a8a8a8; border-style: dashed; cursor: default; }
+.bd-day--all small { color: #0f62fe; }
 .bd-step { background: #fff; border: 1px solid #c6c6c6; border-radius: 4px; color: #0f62fe; padding: 0.25rem 0.6rem; font: inherit; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
 .bd-step:disabled { color: #a8a8a8; cursor: not-allowed; }
 .bd-home { background: #fff; border: 1px solid #0f62fe; border-radius: 1rem; color: #0f62fe; padding: 0.2rem 0.7rem; font: inherit; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
-.bd-search { display: flex; gap: 0.6rem; align-items: center; margin: 0 0 0.5rem; flex-wrap: wrap; }
-.bd-search input { font: inherit; font-size: 0.8125rem; border: 1px solid #8d8d8d; background: #f4f4f4; padding: 0.35rem 0.5rem; width: 26rem; max-width: 100%; }
-.bd-search-state { display: inline-flex; gap: 0.4rem; align-items: center; }
-.bd-place { color: #0f62fe; font-weight: 600; font-size: 0.8125rem; }
-.bd-clear { background: transparent; border: 0; color: #0f62fe; text-decoration: underline; font: inherit; font-size: 0.75rem; cursor: pointer; padding: 0; }
-.bd-filters { font-size: 0.8125rem; margin: 0 0 0.6rem; display: flex; gap: 0.5rem 1rem; flex-wrap: wrap; align-items: center; }
-.bd-pill { display: inline-block; border: 1px solid #c6c6c6; border-radius: 1rem; padding: 0.05rem 0.55rem; cursor: pointer; background: #fff; font: inherit; font-size: 0.8125rem; }
-.bd-pill--on { border-color: #0f62fe; color: #0f62fe; }
+.bd-jump { display: flex; gap: 0.6rem; align-items: center; margin: 0 0 0.5rem; flex-wrap: wrap; }
+.bd-jump input { font: inherit; font-size: 0.8125rem; border: 1px solid #8d8d8d; background: #f4f4f4; padding: 0.35rem 0.5rem; width: 26rem; max-width: 100%; }
+.bd-jump-state { display: inline-flex; gap: 0.4rem; align-items: center; }
 .bd-verdict { font-size: 0.8125rem; margin: 0 0 0.6rem; color: #525252; }
 .bd-verdict.is-bad { color: #da1e28; }
-.bd-panel { border: 1px solid #0f62fe; border-left: 4px solid #0f62fe; background: #fff; padding: 0.6rem 0.9rem; margin: 0 0 0.75rem; }
+/* THE EXCEPTION PANEL lives inside the sitting's sheet since act (b) (the drop is the sitting's) */
+.bd-panel { border: 1px solid #0f62fe; border-left: 4px solid #0f62fe; background: #fff; padding: 0.6rem 0.9rem; margin: 0.4rem 0 0.75rem; }
 .bd-panel[hidden], .bd-verdict[hidden] { display: none; }   /* the shell's section rule would show an empty frame */
 .bd-panel-h { font-weight: 600; margin: 0 0 0.4rem; }
 .bd-panel-cause { color: #525252; font-size: 0.8125rem; margin: 0 0 0.4rem; }
@@ -46,39 +46,131 @@
 .bd-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .bd-panel-out { font-size: 0.8125rem; margin-top: 0.4rem; }
 .bd-panel-out.is-bad { color: #da1e28; }
-.bd-board { display: flex; gap: 0.5rem; overflow-x: auto; align-items: flex-start; padding-bottom: 0.5rem; }
-.bd-cols { display: flex; gap: 0.5rem; align-items: flex-start; }
-.bd-col { flex: 0 0 16rem; border: 1px solid #c6c6c6; background: #fff; font-size: 0.8125rem; }
-.bd-col--pool { border-color: #8d8d8d; background: #f4f4f4; }
-.bd-col--over { outline: 2px solid #0f62fe; outline-offset: -2px; }
-.bd-col--lit { outline: 2px solid #0f62fe; outline-offset: -2px; }
-.bd-col--lit .bd-col-h { background: #d0e2ff; }
-.bd-col--collapsed .bd-cards, .bd-col--collapsed .bd-col-f { display: none; }
-.bd-col-h { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e0e0e0; }
-.bd-col-h .bd-muted { display: block; }
-.bd-widen { padding: 0.35rem 0.6rem 0; display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; font-size: 0.75rem; color: #525252; }
-.bd-widen input { font: inherit; font-size: 0.75rem; border: 1px solid #8d8d8d; background: #fff; padding: 0.1rem 0.3rem; }
-.bd-widen .bd-btn { font-size: 0.75rem; padding: 0.15rem 0.5rem; }
+/* THE DAY'S HEAD: the day, its count, its release cue, RELEASE ALL or the receipt where the button stood */
+.bd-dayhead { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 0.25rem 0 0.5rem; font-size: 0.9375rem; }
+.bd-dayhead .bd-muted { font-size: 0.8125rem; }
+.bd-receipt { border: 1px solid #c6c6c6; padding: 0.2rem 0.6rem; font-size: 0.75rem; color: #0f62fe; }
+/* THE EXCEPTIONS BAND above the grid: the red is the one word's; the band's edge is a line, never a wash */
+.bd-band { border: 1px solid #c6c6c6; border-left: 3px solid #da1e28; background: #fff; margin: 0 0 0.75rem; }
+.bd-band-h { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; font-size: 0.8125rem; }
+.bd-band-cards { display: flex; gap: 0.5rem; padding: 0 0.6rem 0.6rem; overflow-x: auto; align-items: flex-start; }
+.bd-band--closed .bd-band-cards { display: none; }
+.bd-card--x { flex: 0 0 20rem; margin: 0; border-left: 3px solid #da1e28; cursor: grab; }
+.bd-card--x:active { cursor: grabbing; }
+.bd-card--x .bd-top3 { color: #525252; font-size: 0.75rem; margin-top: 0.2rem; }
+/* THE GROUPS: AREA then ZONE, collapsible; the heading carries the group's totals; THE COLLAPSE IS THE FILTER */
+.bd-group { margin: 0.25rem 0 0.5rem; }
+.bd-group-h { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.5rem; background: #f4f4f4; border-left: 3px solid #8d8d8d; font-size: 0.8125rem; margin: 0.4rem 0 0.3rem; }
+.bd-group-h--area { border-left-color: #0f62fe; background: #edf5ff; }
+.bd-group-h--closed { border-style: dashed; border-width: 1px; border-left-width: 3px; background: #fff; }
+.bd-group-h--lit { outline: 2px solid #0f62fe; outline-offset: -2px; }
+.bd-group-tot { color: #525252; font-size: 0.75rem; }
+.bd-group--closed > .bd-grid, .bd-group--closed > .bd-zone { display: none; }
+.bd-zone--closed > .bd-grid { display: none; }
+.bd-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.2rem 0 0.4rem 1rem; align-items: flex-start; }
 .bd-chev { display: inline-block; width: 1rem; color: #0f62fe; cursor: pointer; border: 0; background: transparent; font: inherit; padding: 0; }
 .bd-tech { color: #0f62fe; text-decoration: underline; cursor: pointer; background: transparent; border: 0; font: inherit; font-weight: 600; padding: 0; }
+/* THE SCORECARD: the bar in the client's unit, the caption beneath, the stops beside, the flags in words, the cue, Release */
+.bd-tcard { flex: 0 0 18rem; border: 1px solid #c6c6c6; background: #fff; font-size: 0.8125rem; }
+.bd-tcard--over { outline: 2px solid #0f62fe; outline-offset: -2px; }
+.bd-tcard--lit { outline: 2px solid #0f62fe; outline-offset: -2px; }
+.bd-tcard--released { border-color: #8d8d8d; }
+.bd-tcard-h { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e0e0e0; }
+.bd-tcard-h .bd-muted { display: block; }
 .bd-bar { margin: 0.5rem 0.6rem 0.2rem; height: 6px; background: #e0e0e0; }
 .bd-bar span { display: block; height: 6px; background: #0f62fe; }
-.bd-bar-label { display: flex; justify-content: space-between; padding: 0 0.6rem 0.4rem; font-size: 0.75rem; color: #525252; }
-.bd-cards { min-height: 2rem; }
+.bd-bar-label { display: flex; justify-content: space-between; padding: 0 0.6rem 0.3rem; font-size: 0.75rem; color: #525252; }
+.bd-flags { padding: 0 0.6rem 0.3rem; }
+.bd-flag { color: #525252; font-size: 0.75rem; margin: 0.1rem 0; }
+.bd-tcard-f { padding: 0.4rem 0.6rem 0.6rem; display: flex; gap: 0.5rem; align-items: center; }
+.bd-cue { color: #0f62fe; background: transparent; border: 0; font: inherit; font-size: 0.8125rem; cursor: pointer; padding: 0; }
+.bd-cue .bd-caret { display: inline-block; margin-left: 0.25rem; }
 .bd-card { margin: 0.35rem 0.6rem; padding: 0.4rem 0.5rem; border: 1px solid #e0e0e0; background: #fff; }
-.bd-card--pool { cursor: grab; }
-.bd-card--pool:active { cursor: grabbing; }
-.bd-card--stop { border-left: 3px solid #0f62fe; cursor: pointer; }
 .bd-card--on { border-color: #0f62fe; box-shadow: inset 0 0 0 1px #0f62fe; }
 .bd-card-n { font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 0.75rem; }
 .bd-late { color: #da1e28; font-weight: 600; }
 .bd-reason { color: #525252; font-size: 0.75rem; }
 .bd-detail { margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px dashed #c6c6c6; font-size: 0.75rem; }
 .bd-detail div { margin: 0.1rem 0; }
-.bd-drop { margin: 0.35rem 0.6rem; padding: 0.8rem 0.5rem; border: 1px dashed #8d8d8d; text-align: center; color: #525252; }
-.bd-col-f { padding: 0.4rem 0.6rem 0.6rem; display: flex; gap: 0.4rem; }
 .bd-muted { color: #6f6f6f; font-size: 0.75rem; }
 .bd-right { margin-left: auto; }
-.bd-quiet { background: #f4f4f4; border-radius: 6px; padding: 0.6rem 0.9rem; color: #525252; font-size: 0.875rem; margin: 0.35rem 0.6rem; }
+.bd-quiet { background: #f4f4f4; border-radius: 6px; padding: 0.6rem 0.9rem; color: #525252; font-size: 0.875rem; margin: 0.35rem 0; }
+.bd-band .bd-quiet { margin: 0 0.6rem 0.6rem; }
 .bd-error { background: #fff1f1; border-left: 4px solid #da1e28; padding: 0.6rem 0.9rem; margin: 0.4rem 0; font-size: 0.875rem; }
 .bd-note { color: #525252; font-size: 0.8125rem; margin: 0.6rem 0 0; }
+/* THE SITTING (act (b)): a TEARSHEET over the board -- tearsheet-001's form: the full sheet with the board's edge showing
+   behind it under a dim, two panes (the stops under the live scorecard; the pool), the footer's buttons in the controls'
+   own colours (s51 card 33: a mark never overrides a control's legibility -- Save primary, Cancel and Release ghost) */
+.bd-sitting[hidden] { display: none; }
+.bd-scrim { position: fixed; inset: 0; background: rgba(22, 22, 22, 0.45); z-index: 7000; }
+.bd-sheet { position: fixed; top: 5.5rem; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid #c6c6c6;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2); z-index: 7001; display: flex; flex-direction: column; font-size: 0.875rem; color: #161616; }
+.bd-sheet-h { padding: 0.9rem 1.5rem 0.6rem; border-bottom: 1px solid #e0e0e0; }
+.bd-sheet-t { font-size: 1.25rem; font-weight: 400; margin: 0; }
+.bd-sheet-t .bd-muted { font-size: 0.875rem; margin-left: 0.5rem; }
+.bd-sheet-sub { color: #525252; font-size: 0.8125rem; margin: 0.2rem 0 0; }
+.bd-sheet-body { display: flex; flex: 1; min-height: 0; }
+.bd-sheet-list { flex: 1 1 55%; min-width: 0; border-right: 1px solid #e0e0e0; overflow: auto; padding: 0.6rem 1.5rem 1rem; }
+.bd-sheet-pool { flex: 1 1 45%; min-width: 0; overflow: auto; padding: 0.6rem 1.5rem 1rem; background: #fafafa; }
+.bd-sheet-card { border: 1px solid #c6c6c6; background: #fff; margin: 0.4rem 0 0.6rem; }
+.bd-sheet-listh { display: flex; align-items: baseline; gap: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid #e0e0e0; margin: 0.4rem 0 0.2rem; flex-wrap: wrap; }
+.bd-cost { color: #525252; font-size: 0.8125rem; }
+.bd-cost--silent { color: #525252; }
+.bd-cost--asked { color: #0f62fe; }
+.bd-cost--refused { color: #da1e28; }
+.bd-cost:empty { display: none; }
+.bd-stops { list-style: none; margin: 0; padding: 0; min-height: 6rem; }
+.bd-stops--over { outline: 2px dashed #0f62fe; outline-offset: 2px; }
+.bd-stop { display: grid; grid-template-columns: 2rem 6.5rem minmax(0, 1fr) 5.5rem; gap: 0.5rem; padding: 0.4rem 0.4rem; border-bottom: 1px solid #f0f0f0; cursor: pointer; align-items: baseline; }
+.bd-stop--on { background: #edf5ff; box-shadow: inset 3px 0 0 #0f62fe; }
+.bd-stop-seq, .bd-stop-eta { font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 0.75rem; color: #525252; }
+.bd-stop-place { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bd-stop-work { grid-column: 2 / 5; color: #525252; font-size: 0.8125rem; }
+.bd-stop .bd-detail { grid-column: 1 / 5; }
+.bd-sheet-out { font-size: 0.8125rem; color: #525252; margin: 0.3rem 0; }
+.bd-sheet-out.is-bad { color: #da1e28; }
+.bd-sheet-out:empty { display: none; }
+/* THE POOL IN THE STOPS' FORM (his chair, s52 leg 7 act (a)): rows, not tiles -- the stops' grid beside it */
+.bd-pool-cards { display: block; }
+.bd-pool-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.1rem 0.5rem; padding: 0.4rem 0.4rem; border-bottom: 1px solid #f0f0f0; cursor: grab; align-items: baseline; }
+.bd-pool-row:active { cursor: grabbing; }
+.bd-pool-row--x { box-shadow: inset 3px 0 0 #da1e28; }
+.bd-pool-row--on { background: #edf5ff; box-shadow: inset 3px 0 0 #0f62fe; }
+.bd-pool-acct { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bd-pool-n { font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 0.75rem; color: #525252; white-space: nowrap; justify-self: end; }
+.bd-pool-work { grid-column: 1 / 3; color: #525252; font-size: 0.8125rem; }
+.bd-pool-why { grid-column: 1 / 3; color: #525252; font-size: 0.75rem; }
+.bd-pool-row .bd-place-here { grid-column: 1 / 3; justify-self: start; margin-top: 0.3rem; }
+.bd-pool-row .bd-detail { grid-column: 1 / 3; }
+.bd-sheet-f { border-top: 1px solid #e0e0e0; padding: 0.75rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem; align-items: center; }
+.bd-sheet-note { margin-right: auto; color: #525252; font-size: 0.8125rem; }
+.bd-btn--ghost { background: transparent; color: #0f62fe; border-color: #c6c6c6; }
+.bd-btn--ghost:hover { background: #e8e8e8; }
+/* THE MAP ON SEQUENCE (act (c)): the sitting's head switches PLACE to SEQUENCE -- the pins joined in order on the right,
+   the list draggable on the left; the pins in blue, the start a black square, the end a white one (Q4: the Mapbox seam;
+   a blank ground where the deployment carries no key) */
+.bd-sheet-h { display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.bd-sheet-h .bd-sheet-hl { flex: 1 1 auto; min-width: 0; }
+.bd-sit-modes { margin-top: 0.2rem; }
+.bd-sheet-pool[hidden], .bd-sheet-map[hidden] { display: none; }
+.bd-sheet-map { flex: 1 1 45%; min-width: 0; display: flex; flex-direction: column; background: #fafafa; }
+.bd-sheet-map .bd-sheet-listh { padding: 0.4rem 1.5rem; margin: 0.4rem 0 0.2rem; }
+.bd-map-price { color: #0f62fe; }
+.bd-map-quiet { padding: 0 1.5rem; }
+.bd-map-quiet:empty { display: none; }
+.bd-map-quiet .bd-quiet { margin: 0.2rem 0 0.4rem; }
+.bd-map { flex: 1; min-height: 16rem; position: relative; background: #f4f4f4; }
+.bd-map .mapboxgl-canvas, .bd-map .maplibregl-canvas { outline: 0; }
+.bd-pin { width: 1.5rem; height: 1.5rem; border-radius: 50%; background: #0f62fe; color: #fff; font: 600 0.75rem/1.25rem 'IBM Plex Mono', Menlo, Consolas, monospace;
+          text-align: center; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); cursor: pointer; box-sizing: border-box; }
+.bd-pin--start { background: #161616; border-radius: 3px; }
+.bd-pin--end { background: #fff; color: #161616; border-color: #161616; border-radius: 3px; }
+.bd-pin--on { box-shadow: 0 0 0 3px #0f62fe, 0 1px 3px rgba(0, 0, 0, 0.35); }
+.bd-stop--order { cursor: grab; }
+.bd-stop--order:active { cursor: grabbing; }
+.bd-stop--dragging { opacity: 0.5; }
+.bd-stop--over { box-shadow: inset 0 3px 0 #0f62fe; }
+.bd-stop-moves { white-space: nowrap; justify-self: end; }
+.bd-move { border: 0; background: transparent; color: #0f62fe; cursor: pointer; font: inherit; font-size: 0.7rem; padding: 0 0.2rem; }
+.bd-move:disabled { color: #c6c6c6; cursor: default; }
+.bd-stop-eta--proposed { color: #a8a8a8; }
