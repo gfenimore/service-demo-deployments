@@ -6,6 +6,10 @@
 .fp-chip { display: inline-block; background: #e0e0e0; color: #161616; border-radius: 999px;
            padding: 0.05rem 0.65rem; font-size: 0.8125rem; margin-left: 0.35rem; }
 .fp-chip--ok { background: #defbe6; color: #0e6027; }
+/* THIS LOCATION ONLY (SJ s52 leg 12): the scope line; the history at the place under the list */
+.fp-scope { font-size: 0.8125rem; color: #525252; margin: 0.35rem 0 0; }
+.fp-scope[hidden], .fp-history[hidden] { display: none; }
+.fp-history { margin-top: 0.9rem; }
 .fp-tray { margin-top: 1rem; }
 .fp-tray-label { font-size: 0.75rem; color: #525252; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.35rem; }
 .fp-quiet { background: #f4f4f4; border-radius: 6px; padding: 0.6rem 0.9rem; color: #525252; font-size: 0.875rem; }

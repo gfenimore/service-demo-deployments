@@ -59,11 +59,32 @@
          * @private
          */
         _matchRoute(path) {
-            // First try exact match
-            if (this._routes[path]) {
-                return { handler: this._routes[path], params: {} };
+            // THE ROUTE'S QUERY (SJ s52 leg 12, 2026-09-17; the Details sheet): a hash may carry `?key=value` after the
+            // path -- /accounts/<id>?location=<loc>. The path is matched WITHOUT it and the query's keys ride on the
+            // params beside the route's own (`:id` first, so the first key stays the record's id). Before this the query
+            // was swallowed into `:id` ("<id>?location=<loc>") and the record opened empty.
+            const qi = String(path).indexOf('?');
+            const bare = qi === -1 ? path : path.slice(0, qi);
+            const query = {};
+            if (qi !== -1) {
+                path.slice(qi + 1).split('&').forEach((kv) => {
+                    if (!kv) return;
+                    const eq = kv.indexOf('=');
+                    const k = decodeURIComponent(eq === -1 ? kv : kv.slice(0, eq));
+                    const v = eq === -1 ? '' : decodeURIComponent(kv.slice(eq + 1));
+                    if (k) query[k] = v;
+                });
             }
-            
+            const withQuery = (params) => {
+                Object.keys(query).forEach((k) => { if (!(k in params)) params[k] = query[k]; });
+                return params;
+            };
+
+            // First try exact match
+            if (this._routes[bare]) {
+                return { handler: this._routes[bare], params: withQuery({}) };
+            }
+
             // Try pattern matching
             for (const [pattern, handler] of Object.entries(this._routes)) {
                 const paramNames = [];
@@ -72,15 +93,15 @@
                     return '([^/]+)';
                 });
                 const regex = new RegExp(`^${regexStr}$`);
-                const match = path.match(regex);
-                
+                const match = bare.match(regex);
+
                 if (match) {
                     const params = {};
                     paramNames.forEach((name, i) => params[name] = match[i + 1]);
-                    return { handler, params };
+                    return { handler, params: withQuery(params) };
                 }
             }
-            
+
             return null;
         },
         

@@ -150,6 +150,10 @@
     <script src="../account-intake-tearsheet/tearsheet.js"></script>
 
     <script>
+        // THE BARE PAGE (SJ s52 leg 12, 2026-09-17; the Details sheet): opened with ?bare=1 the shell draws no header and no
+        // side-nav -- the page alone, so another page can frame it (the sitting frames the account's record narrowed to a
+        // location over its pane). Nothing else changes: the same mounts, the same routes, the same sign-in.
+        if (/(?:^\?|[?&])bare=1(?:&|$)/.test(window.location.search || '')) { document.body.setAttribute('data-shell-bare', '1'); }
         // GATE 6 -- what mounts where, projected from app_components.
         window.ShellMounts = [
   {
@@ -566,9 +570,14 @@
                     var handed = 0;
                     (routed[r] || []).forEach(function (slug) {
                         var c = (window.ShellComponents || {})[slug];
+                        // THE ROUTE'S QUERY (SJ s52 leg 12): a hash with `?location=<loc>` hands every key to the component
+                        // through its context BEFORE the record id, so a record card can narrow itself (the Details sheet)
+                        if (c && keys.length > 1 && typeof c.onContext === 'function') {
+                            try { c.onContext(Object.assign({}, window.AppContext || {}, { params: params })); } catch (e) { console.error('[AppShell] context for "' + slug + '" failed:', e); }
+                        }
                         if (c && typeof c.setRecordId === 'function') { c.setRecordId(decodeURIComponent(id)); handed++; }
                     });
-                    console.log('[AppShell] route ' + r + ' carries ' + keys[0] + '=' + id + ' -> handed to ' + handed + ' component(s)');
+                    console.log('[AppShell] route ' + r + ' carries ' + keys[0] + '=' + id + (keys.length > 1 ? ' and ' + keys.slice(1).join(', ') : '') + ' -> handed to ' + handed + ' component(s)');
                 });
             });
 

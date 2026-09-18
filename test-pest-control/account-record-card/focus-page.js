@@ -44,7 +44,7 @@
   'use strict';
 
   var FACE = {"schema":"services_template","tray":{"kinds":{"open_touch":{"button":{"title":"Resolve","status":"live"}},"coverage_gap":{"button":{"title":"Resolve","status":"future"}},"site_out_of_rhythm":{"button":{"title":"Schedule service","status":"future"}}},"source":"v_account_tray"},"verbs":[{"verb":"edit","route":"/accounts/:id/edit","title":"Edit","scenario":"the edit act (s44 Q-AA/Q-AF): correct the standing account whole through the edit door"}],"entity":"account","header":{"chips":["status","account_type","billing_city"],"title_field":"account_name"},"selectors":[{"key":"contact","list":{"source":"v_account_people","columns":[{"field":"person","header":"person"},{"field":"role","header":"role"},{"field":"reach","header":"reach"},{"field":"prefers","header":"prefers"},{"field":"site","header":"site"}],"order_by":"rank","row_expansion":{"kind":"touch_log","source":"v_contact_touch_log"}},"label":"Contact"},{"key":"coverage","list":{"source":"v_account_coverage","columns":[{"field":"site","header":"site"},{"field":"target","header":"target"},{"field":"item_type","header":"type"},{"field":"plan","header":"plan"},{"field":"status","header":"status"}],"order_by":"site","site_leads":true},"label":"Service Coverage"},{"key":"work_orders","list":{"source":"v_account_work","columns":[{"field":"site","header":"site"},{"field":"work_date","header":"date"},{"field":"work_type","header":"type"},{"field":"summary","header":"summary"},{"field":"status","header":"status"}],"order_by":"work_date desc","site_leads":true},"label":"Work Orders"},{"key":"ledger","list":{"source":"v_account_ledger","columns":[{"field":"doc_date","header":"date"},{"field":"document","header":"document"},{"field":"site","header":"site"},{"field":"amount","header":"amount"},{"field":"status","header":"status"}],"order_by":"doc_date desc","caption_billing_address":true},"label":"Ledger"}],"primary_key":"account_id","frame_columns":5,"personas":{"FIELD_TECH":{"fields":["account_name","billing_street_address","billing_city","phone","next_service_date"],"readonly":["account_name","billing_street_address","billing_city","phone","next_service_date"],"filters":{"status":["active"]},"actions":["view","search"],"seated":false},"GENERIC_USER":{"fields":["account_name","billing_street_address","billing_city","billing_state","billing_zip_code","phone","email","status","balance","created_at"],"readonly":["account_name","status","balance"],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"OPS_MANAGER":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","phone","email","balance","last_service_date","next_service_date","service_frequency"],"readonly":["balance"],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"ADMIN_FULL":{"fields":["account_name","account_type","billing_street_address","billing_city","billing_state","billing_zip_code","status","internal_notes","phone","email","balance","last_service_date","next_service_date","service_frequency","created_at","updated_at"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"CUSTOMER_SERVICE":{"fields":["account_name","account_type","status","billing_street_address","billing_city","billing_state","billing_zip_code","internal_notes","created_at","phone","email"],"readonly":["account_name","status","balance","last_service_date","next_service_date"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":true},"SERVICE_MANAGER":{"fields":["account_name","billing_street_address","billing_city","phone","status","last_service_date","next_service_date","service_frequency"],"readonly":["account_name","status"],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":false}}};
-  var SKELETON = "<!-- Account Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46; 1.2.0 THE RAIL). Generated; do not edit.\n     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by\n     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c.\n     1.2.0 (s51 rung 5a): the body splits into THE RAIL on the left (hidden unless the blueprint\n     declares one and the role holds a step) and the main column: the selectors, the frame, and\n     the lit step's body (its gate mounted in the frame). -->\n<div class=\"fp\" data-blueprint=\"c3000000-0000-0000-0000-000000000001\">\n  <header class=\"fp-head\">\n    <h2 class=\"fp-title\" data-fp=\"title\"></h2>\n    <span class=\"fp-chips\" data-fp=\"chips\"></span>\n    <span class=\"fp-verbs\" data-fp=\"verbs\"></span>\n  </header>\n  <section class=\"fp-tray\" aria-label=\"Needs attention\">\n    <p class=\"fp-tray-label\">Needs attention</p>\n    <div data-fp=\"tray\"></div>\n  </section>\n  <div class=\"fp-body fp-body--norail\" data-fp=\"body\">\n    <nav class=\"fp-rail\" data-fp=\"rail\" aria-label=\"The acts, in order\" hidden></nav>\n    <div class=\"fp-main\">\n      <nav class=\"fp-selectors\" data-fp=\"selectors\" aria-label=\"Detail selectors\"></nav>\n      <section class=\"fp-frame\" aria-label=\"Detail\">\n        <p class=\"fp-caption\" data-fp=\"caption\"></p>\n        <div class=\"fp-radios\" data-fp=\"radios\"></div>\n        <p class=\"fp-siteline\" data-fp=\"siteline\" hidden></p>\n        <div class=\"fp-list\" data-fp=\"list\"></div>\n      </section>\n      <section class=\"fp-step\" data-fp=\"step\" aria-label=\"The step\" hidden></section>\n    </div>\n  </div>\n</div>\n";
+  var SKELETON = "<!-- Account Focus Page -- THE ONE PAGE (focus-page-001, screen-grammar 42-46; 1.2.0 THE RAIL). Generated; do not edit.\n     The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written by\n     focus-page.js FIRST, then filled. Five regions less one: the call panel arrives with 3c.\n     1.2.0 (s51 rung 5a): the body splits into THE RAIL on the left (hidden unless the blueprint\n     declares one and the role holds a step) and the main column: the selectors, the frame, and\n     the lit step's body (its gate mounted in the frame). -->\n<div class=\"fp\" data-blueprint=\"c3000000-0000-0000-0000-000000000001\">\n  <header class=\"fp-head\">\n    <h2 class=\"fp-title\" data-fp=\"title\"></h2>\n    <span class=\"fp-chips\" data-fp=\"chips\"></span>\n    <span class=\"fp-verbs\" data-fp=\"verbs\"></span>\n  </header>\n  <p class=\"fp-scope\" data-fp=\"scope\" hidden></p>\n  <section class=\"fp-tray\" aria-label=\"Needs attention\">\n    <p class=\"fp-tray-label\">Needs attention</p>\n    <div data-fp=\"tray\"></div>\n  </section>\n  <div class=\"fp-body fp-body--norail\" data-fp=\"body\">\n    <nav class=\"fp-rail\" data-fp=\"rail\" aria-label=\"The acts, in order\" hidden></nav>\n    <div class=\"fp-main\">\n      <nav class=\"fp-selectors\" data-fp=\"selectors\" aria-label=\"Detail selectors\"></nav>\n      <section class=\"fp-frame\" aria-label=\"Detail\">\n        <p class=\"fp-caption\" data-fp=\"caption\"></p>\n        <div class=\"fp-radios\" data-fp=\"radios\"></div>\n        <p class=\"fp-siteline\" data-fp=\"siteline\" hidden></p>\n        <div class=\"fp-list\" data-fp=\"list\"></div>\n        <div class=\"fp-history\" data-fp=\"history\" hidden></div>\n      </section>\n      <section class=\"fp-step\" data-fp=\"step\" aria-label=\"The step\" hidden></section>\n    </div>\n  </div>\n</div>\n";
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -73,6 +73,10 @@
       this.railSelected = null;
       this.gateInstance = null;
       this.lastVerdict = null;
+      // THIS LOCATION ONLY (SJ s52 leg 12, 2026-09-17; the sitting's Details sheet): the route's `location` locks every
+      // selector to one site -- the radios fold, the site line stands, the tray narrows, the history at the place reads
+      this.siteLockId = null;
+      this.siteLock = null;
     }
 
     getMetadata() {
@@ -95,6 +99,10 @@
 
     onContext(context) {
       this.context = context || {};
+      // THIS LOCATION ONLY: the shell hands the route's query on context.params (`location`); a change re-reads the lists
+      var p = this.context.params || {};
+      var lock = p.location ? String(p.location) : null;
+      if (lock !== this.siteLockId) { this.siteLockId = lock; this.siteLock = null; this.listCache = {}; this.siteFocus = {}; }
       if (this.context.recordId && !this.recordId) this.recordId = this.context.recordId;
       this.maybeLoad();
     }
@@ -148,9 +156,18 @@
       if (r.error) return this.fail(FACE.entity, r.error.message);
       this.rec = (r.data || [])[0];
       if (!this.rec) return this.fail(FACE.entity, 'no record ' + this.recordId);
+      // THIS LOCATION ONLY: the locked site's own row -- its name is what every list's `site` column carries
+      this.siteLock = null;
+      if (this.siteLockId) {
+        var lr = await this.from('service_location').select('*').eq('service_location_id', this.siteLockId).eq(FACE.primary_key, this.recordId).limit(1);
+        if (seq !== this._loadSeq) return;
+        var lrow = (lr.data || [])[0];
+        this.siteLock = lrow ? { id: this.siteLockId, name: lrow.location_name || '', row: lrow } : { id: this.siteLockId, name: null, row: null, missing: lr.error ? lr.error.message : 'no such location on this account' };
+      }
       await this.loadRail();
       if (seq !== this._loadSeq) return;
       this.renderHeader();
+      this.renderScope();
       await this.renderTray();
       if (seq !== this._loadSeq) return;
       this.renderRail();
@@ -185,6 +202,23 @@
       this.renderVerbs(gate);
     }
 
+    // THIS LOCATION ONLY (SJ s52 leg 12): the scope line under the identity -- said, never implied
+    renderScope() {
+      var host = this.$('scope'); if (!host) return;
+      clear(host);
+      if (!this.siteLock) { host.hidden = true; host.removeAttribute('data-location'); return; }
+      host.hidden = false; host.setAttribute('data-location', this.siteLock.id);
+      if (this.siteLock.row) {
+        var loc = this.siteLock.row;
+        host.appendChild(el('b', null, 'this location only: ' + this.siteLock.name));
+        var addr = [loc.street_address, loc.city, loc.state, loc.postal_code].filter(Boolean).join(', ');
+        if (addr) host.appendChild(document.createTextNode(' · ' + addr));
+        if (loc.access_information) host.appendChild(document.createTextNode(' · ' + loc.access_information));
+      } else {
+        host.appendChild(el('span', 'fp-error', 'the location ' + this.siteLock.id + ' is not on this account (' + (this.siteLock.missing || '?') + ') -- the whole record shows'));
+      }
+    }
+
     // -- the earned seats (1.1.0, concept 41's clause): declared verbs, quiet, role-gated --
     // 1.2.0: a seat whose verb is a rail step folds into the rail (the rail is the acts' own place)
     renderVerbs(gate) {
@@ -216,6 +250,8 @@
       if (seq !== this._loadSeq) return;   // a newer load owns the tray now
       if (r.error) return this.fail(FACE.tray.source, r.error.message);
       var rows = r.data || [];
+      // THIS LOCATION ONLY: the tray narrowed to the locked place (a row with no place stays -- it is the account's)
+      if (this.siteLock && this.siteLock.row) { var lockId = this.siteLock.id; rows = rows.filter(function (t) { return !t.service_location_id || String(t.service_location_id) === lockId; }); }
       var order = Object.keys(FACE.tray.kinds);
       rows.sort(function (a, b) {
         return (order.indexOf(a.kind) - order.indexOf(b.kind)) || (a.headline < b.headline ? -1 : 1);
@@ -471,19 +507,25 @@
       var s = FACE.selectors[i], L = s.list;
       var rows = await this.fetchList(i);
 
+      // THIS LOCATION ONLY (SJ s52 leg 12): the locked site narrows every list that carries a site; no radios, the site line stands
+      var locked = !!(this.siteLock && this.siteLock.row);
+      // a row with no site is the account's own (a contact for the whole account, a ledger line) and stays
+      if (locked && rows.length && rows[0].site !== undefined) { var lockName = this.siteLock.name; rows = rows.filter(function (r) { return !r.site || r.site === lockName; }); }
+
       // caption -- and the Ledger's half of the address law (46)
-      var cap = s.label + ' · ' + rows.length + ' row(s)';
+      var cap = s.label + ' · ' + rows.length + ' row(s)' + (locked ? ' · this location only' : '');
       if (L.caption_billing_address && this.rec) {
         cap += ' · billing address: ' + [this.rec.billing_street_address, this.rec.billing_city,
           this.rec.billing_state, this.rec.billing_zip_code].filter(Boolean).join(', ');
       }
       this.$('caption').textContent = cap;
 
-      // site radios (44); one site -> they collapse (30)
+      // site radios (44); one site -> they collapse (30); a locked site draws none
       var radios = this.$('radios'); clear(radios);
       var line = this.$('siteline'); line.hidden = true; line.textContent = '';
       var focus = this.siteFocus[i] || 'all';
-      if (L.site_leads) {
+      if (locked && L.site_leads) { await this.renderSiteLine(line, this.siteLock.name); }
+      else if (L.site_leads) {
         var sites = []; rows.forEach(function (r) { if (r.site && sites.indexOf(r.site) < 0) sites.push(r.site); });
         sites.sort();
         if (sites.length > 1) {
@@ -540,6 +582,35 @@
       }
       table.appendChild(tbody);
       list.appendChild(table);
+      await this.renderHistory(s, locked);
+    }
+
+    // THE HISTORY AT THIS LOCATION (SJ s52 leg 12; his word: "notes are how techs say what is happening on the account"):
+    // under the Work Orders list when a site is locked -- the last three services at the place from v_location_history
+    // (the date, the service, the technician, the note the field wrote); nothing drawn on the whole record
+    async renderHistory(s, locked) {
+      var host = this.$('history'); if (!host) return;
+      clear(host); host.hidden = true;
+      if (!locked || s.key !== 'work_orders') return;
+      var r = await this.from('v_location_history').select('*').eq('service_location_id', this.siteLock.id).order('ordinal').limit(3);
+      host.hidden = false;
+      host.appendChild(el('p', 'fp-caption', 'History at this location' + (r.error ? '' : ' · ' + (r.data || []).length + ' service(s)')));
+      if (r.error) { host.appendChild(el('div', 'fp-error', 'v_location_history: ' + r.error.message)); return; }
+      var rows = r.data || [];
+      if (!rows.length) { host.appendChild(el('p', 'fp-muted', 'no service on the record at this location')); return; }
+      var table = el('table', 'fp-table'); var thead = document.createElement('thead'); var trh = document.createElement('tr');
+      ['date', 'service', 'technician', 'note'].forEach(function (h) { trh.appendChild(el('th', null, h)); });
+      thead.appendChild(trh); table.appendChild(thead);
+      var tbody = document.createElement('tbody');
+      rows.forEach(function (x) {
+        var tr = document.createElement('tr'); tr.setAttribute('data-fp-history-row', String(x.ordinal)); tr.setAttribute('data-fp-history-source', String(x.source || ''));
+        tr.appendChild(el('td', null, String(x.served_on || '').slice(5) || '-'));
+        tr.appendChild(el('td', null, x.service || '-'));
+        tr.appendChild(el('td', x.technician ? null : 'fp-muted', x.technician || '-'));
+        var note = el('td', x.note ? null : 'fp-muted', x.note || '-'); note.setAttribute('data-fp-history-note', x.note ? '1' : '0'); tr.appendChild(note);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody); host.appendChild(table);
     }
 
     // the site line -- the site's half of the address law (46)

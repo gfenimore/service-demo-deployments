@@ -1,5 +1,5 @@
 /**
- * Route Board - Generated Blueprint UI (THE BOARD, board-001 2.0.0 -- THE PLANNING JOB)
+ * Route Board - Generated Blueprint UI (THE BOARD, board-001 2.2.0 -- THE PLANNING JOB; THE SITTING AS A ROUTE-BUILDING TOOL)
  *
  * 1.0.0 (SJ s51 rung 5a, the second sitting, 2026-09-08): his diver board of 2025 thrown on the flow paper as
  * reading C -- "WE produce proposed routes/stops, and the users are only dealing with non-happy-path scenarios" --
@@ -57,6 +57,36 @@
  * loads once when Sequence first opens (never at mount) through the deployment seam's key; with NO KEY (Local) the map
  * draws the pins and the line on a BLANK GROUND and calls nothing of the map's -- the pins' DOM and the source's
  * features are the proof (Q4: "the tiles absent").
+ *
+ * 2.1.0 (SJ s52 leg 11, 2026-09-16; THE SITTING AFTER HIS WALK on DEMO -- the mockup first, three rounds at his eye, his
+ * fifteen calls agreed; cards 41, 46-49): THE ROUTE HEADER IS THE ROUTE'S STATE (the technician, the day, the state, the
+ * zone; the scorecard under the name, re-read after every act; no sentence and no clock -- the teaching line behind a help
+ * mark); THREE LEVELS IN THREE PLACES (the ROUTE menu at the header's right with Release, the later route acts' slot; the
+ * SITTING's Cancel and Save beside it, gray until an act is written or an order proposed, a close mark for a sheet with
+ * nothing to keep; the STOP's acts on its row); POOL | MAP on the pane it switches; THE STOP ROW two lines (the number, the
+ * promised window from the stops read's window_text, the account / the service, the mandate word, "by hand") and a third
+ * only when the place is not the account's name; ONE MOTION TO PLACE (the drag; the cost read while the card is over the
+ * list; the panel after the decision) -- a click on a stop or a pool card READS: the facts, THE HISTORY (`history`: the
+ * last three services, two rows each, the technician's note under), the account record in its own tab (`account_route`) --
+ * and never places; the row's own button retired; THE WORDS "Add to route" and "Cancel", no reason preselected, the button
+ * dark until one is chosen, the origin row grayed while the panel stands; THE BOARD'S OPEN CALLS THE SWEEP (`open`,
+ * ensure_swept once per mount before the first read, under the busy mark -- card 41).
+ *
+ * 2.2.0 (SJ s52 leg 12, 2026-09-17; THE SITTING AS A ROUTE-BUILDING TOOL -- the mockup first, five rounds at his eye,
+ * cards 53-60, Q12; his frame: "the sitting builds routes fast, thirty a period; records are the exception's door;
+ * just-in-time info -- access to vital data without cluttering the screen"): THE HEADER IS A DECLARED LINE (`summary`:
+ * the pairs the instance names from the days read's row, one dense line of label and value, the days read's flag as a
+ * gray aside; a client adds a column, the face draws one more pair; not tiles); THE ROWS left-justified (lines 2 and 3
+ * under the name); the chip reads the mandate's kind alone, "by hand" plain; NO YEARS on the sitting; THE ONE-LINK OPEN
+ * (a click on a stop or a pool card opens one line, "Details" -- no facts, no history, no other link; `history` and
+ * `pool_route` unread); THE DETAILS SHEET (`details`: the account's own record narrowed to the row's service location,
+ * the shell's page framed bare over the Pool | Map pane, one close mark, the stops untouched, the whole record's link at
+ * its foot); THE TWO LISTS IN ONE SHAPE (a pool row in the stops' grid: the buffer, the account, the service, the address
+ * when it differs; the "left in the pool" line retired; the stripe and a red chip ONLY where the reason says something);
+ * THE FIT COLUMN AND THE SORT (`fit`: what it costs to place the card on this route in dollars; ACCOMMODATED ON THIS
+ * ROUTE first by cost, a cut line, the rest by buffer with the refusal's word -- Q12); THE HEADER'S THREE ACTS (card 60:
+ * the Route menu lit at the open and gray while unsaved changes stand; Cancel always lit, the way back to the board, the
+ * close mark retired; Save gray until any change and lit after); the proposal line beside Pool | Map until Save.
  * Blueprint ID: d4000000-0000-0000-0000-000000000001
  * Pattern: BOARD
  *
@@ -68,8 +98,8 @@
 (function() {
   'use strict';
 
-  var FACE = {"schema":"services_template","map":{"order":{"verb":"sequence","function":"sequence_by_hand"},"accept":{"function":"accept_run"},"function":"schedule_geojson"},"acts":[{"verb":"place_week","route":"/operations/scheduling/:id/place-week","scope":"week","title":"Place the week"},{"verb":"sequence","route":"/operations/scheduling/:id/sequence","scope":"day","title":"Sequence"},{"verb":"release","route":"/operations/scheduling/:id/release","scope":"day","title":"Release"}],"days":"v_board_days","drag":{"verb":"place","confirm":"Place {account} on {date} with {technician}?","function":"place_on_day","silent_reason":"route_filter","default_reason":"customer_asked"},"pool":"work_order_due_list","unit":"stops","areas":"geographic_area","stops":"v_schedule_stops","zones":"service_zone","detail":"v_board_stop_detail","groups":"v_board_groups","period":{"key":"policy.planning_period","default":"week","function":"set_tenant_policy","lead_key":"policy.planning_lead"},"desktop":{"refusal":"The board is a desk's screen. Open it on a screen at least 1024 pixels wide.","min_width":1024},"reasons":"v_override_reasons","release":{"verb":"release","function":"release_schedule"},"sitting":{"cost":{"function":"drop_cost"},"cancel":{"function":"undo_since"}},"registry":"tenant_property","unit_key":"capacity.unit","day_route":"/operations/scheduling/:id","days_route":"/operations/scheduling/days","exceptions":"v_board_exceptions","pool_route":"/operations/pending/:id","period_read":"v_board_period","pool_detail":"v_board_pool_detail","release_all":{"verb":"release","function":"release_day"},"weekdays_key":"calendar.operating_weekdays","personas":{"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search"],"seated":false},"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"OPS_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":true}}};
-  var SKELETON = "<!-- Route Board -- THE BOARD (board-001 2.0.0; s52 leg 6 act (a): READING E, THE PLANNING JOB, passed whole at his word\n     2026-09-12 \"I think it looks great! I approve Reading E now\"; act (b): THE SITTING, a tearsheet over the board).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written\n     by board.js FIRST, then filled. -->\n<div class=\"bd\" data-blueprint=\"d4000000-0000-0000-0000-000000000001\">\n  <header class=\"bd-head\">\n    <span class=\"bd-modes\" data-bd=\"modes\"></span>\n    <h2 class=\"bd-title\" data-bd=\"title\">The board</h2>\n    <span class=\"bd-sub\" data-bd=\"sub\"></span>\n    <span class=\"bd-acts\" data-bd=\"acts\"></span>\n  </header>\n  <nav class=\"bd-track\" data-bd=\"track\" aria-label=\"The days track\"></nav>\n  <div class=\"bd-jump\" data-bd=\"jump\"></div>\n  <p class=\"bd-verdict\" data-bd-out=\"1\" hidden></p>\n  <div class=\"bd-dayhead\" data-bd=\"dayhead\"></div>\n  <section class=\"bd-band\" data-bd=\"band\" aria-label=\"The exceptions\"></section>\n  <div class=\"bd-groups\" data-bd=\"groups\"></div>\n  <p class=\"bd-note\" data-bd=\"note\"></p>\n  <section class=\"bd-sitting\" data-bd=\"sitting\" aria-label=\"The sitting\" hidden></section>\n</div>\n";
+  var FACE = {"schema":"services_template","fit":"sitting_fit","map":{"order":{"verb":"sequence","function":"sequence_by_hand"},"accept":{"function":"accept_run"},"function":"schedule_geojson"},"acts":[{"verb":"place_week","route":"/operations/scheduling/:id/place-week","scope":"week","title":"Place the week"},{"verb":"sequence","route":"/operations/scheduling/:id/sequence","scope":"day","title":"Sequence"},{"verb":"release","route":"/operations/scheduling/:id/release","scope":"day","title":"Release"}],"days":"v_board_days","drag":{"verb":"place","confirm":"Place {account} on {date} with {technician}?","function":"place_on_day","silent_reason":"route_filter","default_reason":"customer_asked"},"open":{"function":"ensure_swept"},"pool":"work_order_due_list","unit":"stops","areas":"geographic_area","stops":"v_schedule_stops","zones":"service_zone","detail":"v_board_stop_detail","groups":"v_board_groups","period":{"key":"policy.planning_period","default":"week","function":"set_tenant_policy","lead_key":"policy.planning_lead"},"desktop":{"refusal":"The board is a desk's screen. Open it on a screen at least 1024 pixels wide.","min_width":1024},"details":"/accounts/:id?location=:location","reasons":"v_override_reasons","release":{"verb":"release","function":"release_schedule"},"sitting":{"cost":{"function":"drop_cost"},"cancel":{"function":"undo_since"}},"summary":[{"of":"room","flag":"overloaded by","label":"stops","values":[{"unit":"count","column":"placed"}]},{"of":"minimum","flag":"under the minimum","label":"revenue","values":[{"unit":"money","column":"revenue"}]},{"label":"mandated","values":[{"unit":"count","column":"mandated"}]},{"label":"drive","values":[{"unit":"mi","column":"drive_miles"},{"unit":"min","column":"drive_minutes"}]}],"registry":"tenant_property","unit_key":"capacity.unit","day_route":"/operations/scheduling/:id","days_route":"/operations/scheduling/days","exceptions":"v_board_exceptions","period_read":"v_board_period","pool_detail":"v_board_pool_detail","release_all":{"verb":"release","function":"release_day"},"weekdays_key":"calendar.operating_weekdays","account_route":"/accounts/:id","personas":{"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search"],"seated":false},"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"OPS_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":true}}};
+  var SKELETON = "<!-- Route Board -- THE BOARD (board-001 2.2.0; s52 leg 6 act (a): READING E, THE PLANNING JOB, passed whole at his word\n     2026-09-12 \"I think it looks great! I approve Reading E now\"; act (b): THE SITTING, a tearsheet over the board;\n     s52 leg 11: THE SITTING AFTER HIS WALK, the mockup first; s52 leg 12: THE SITTING AS A ROUTE-BUILDING TOOL).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written\n     by board.js FIRST, then filled. -->\n<div class=\"bd\" data-blueprint=\"d4000000-0000-0000-0000-000000000001\">\n  <header class=\"bd-head\">\n    <span class=\"bd-modes\" data-bd=\"modes\"></span>\n    <h2 class=\"bd-title\" data-bd=\"title\">The board</h2>\n    <span class=\"bd-sub\" data-bd=\"sub\"></span>\n    <span class=\"bd-acts\" data-bd=\"acts\"></span>\n  </header>\n  <nav class=\"bd-track\" data-bd=\"track\" aria-label=\"The days track\"></nav>\n  <div class=\"bd-jump\" data-bd=\"jump\"></div>\n  <p class=\"bd-verdict\" data-bd-out=\"1\" hidden></p>\n  <div class=\"bd-dayhead\" data-bd=\"dayhead\"></div>\n  <section class=\"bd-band\" data-bd=\"band\" aria-label=\"The exceptions\"></section>\n  <div class=\"bd-groups\" data-bd=\"groups\"></div>\n  <p class=\"bd-note\" data-bd=\"note\"></p>\n  <section class=\"bd-sitting\" data-bd=\"sitting\" aria-label=\"The sitting\" hidden></section>\n</div>\n";
   // the keys a 1.x row does not carry read their defaults here -- honest until the rows land
   var REGISTRY = FACE.registry || 'tenant_property';
   var PERIOD = FACE.period || {};
@@ -83,6 +113,18 @@
   var MAP = FACE.map || null;                              // act (c): THE MAP on Sequence; absent = no Sequence, no hand order
   var MAP_ORDER = (MAP && MAP.order) || null;              // the hand order's door (sequence_by_hand) and the verb the role must hold
   var MAP_ACCEPT = (MAP && MAP.accept) || null;            // the accept door (accept_run): SAVE and RELEASE call it for the pending proposal
+  // 2.2.0 (THE LEAN OPEN): `history` and `pool_route` are UNREAD -- a click opens one link; the sheet reads the record
+  var ACCOUNT_ROUTE = FACE.account_route || null;          // 2.1.0: the account's own page; 2.2.0: the link at the Details sheet's foot; absent = no link
+  var OPEN = FACE.open || null;                            // 2.1.0 (card 41): the sweep the board's open calls once per mount; absent = the face reads what stands
+  // 2.2.0 (card 56): THE DECLARED LINE -- the pairs the route header shows; a 2.1.0 row draws the four defaults
+  var SUMMARY = Array.isArray(FACE.summary) && FACE.summary.length ? FACE.summary : [
+    { label: 'stops', values: [{ column: 'placed', unit: 'count' }], of: 'room', flag: 'overloaded by' },
+    { label: 'revenue', values: [{ column: 'revenue', unit: 'money' }], of: 'minimum', flag: 'under the minimum' },
+    { label: 'mandated', values: [{ column: 'mandated', unit: 'count' }] },
+    { label: 'drive', values: [{ column: 'drive_miles', unit: 'mi' }, { column: 'drive_minutes', unit: 'min' }] }
+  ];
+  var FIT = FACE.fit || null;                              // 2.2.0 (card 58, Q12): the fit read; absent = the pool by buffer, no cost column
+  var DETAILS = FACE.details || null;                      // 2.2.0 (card 55): the record's route framed in the pane; absent = no Details link
   var RENDERER = (MAP && MAP.renderer) || {};              // the renderer's seams: Mapbox GL JS by default (Q4); MapLibre the swap
   var RENDERER_SCRIPT = RENDERER.script || 'https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js';
   var RENDERER_CSS = RENDERER.css || 'https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css';
@@ -115,6 +157,18 @@
   function miles(x) { return (Math.round((Number(x) || 0) * 10) / 10) + ' mi'; }
   function mins(x) { return Math.round(Number(x) || 0) + ' min'; }
   function sameOrder(a, b) { if (!a || !b || a.length !== b.length) return false; for (var i = 0; i < a.length; i++) if (a[i] !== b[i]) return false; return true; }
+  // 2.2.0 (his call: no years in this module -- "they have the year info in their planning window"): a date as MM-DD; a day as "mon 09-21"
+  function mmdd(s) { var t = String(s || ''); return /^\d{4}-\d\d-\d\d/.test(t) ? t.slice(5, 10) : t; }
+  function dayWord(d) { return ((d && d.weekday) || '') + ' ' + mmdd(d && d.route_date); }
+  // 2.2.0 (card 56): a pair's value in its unit
+  function unitWord(v, unit) {
+    var n = Number(v);
+    if (unit === 'money') return money(isFinite(n) ? n : 0);
+    if (unit === 'mi') return miles(v);
+    if (unit === 'min') return mins(v);
+    if (unit === 'text') return v === null || v === undefined ? '-' : String(v);
+    return isFinite(n) ? String(Math.round(n)) : (v === null || v === undefined ? '-' : String(v));
+  }
 
   // THE RENDERER, loaded once when Sequence first opens (never at mount): the script and its stylesheet from the seams;
   // resolves the library's global, or null when the script cannot be loaded (the list and the door still work)
@@ -187,6 +241,7 @@
       this.openX = null;            // the band card opened in place (the four things)
       this.refused = false;         // the desktop law
       this.sitting = null;          // THE SITTING open on one schedule (act (b)): {route, day, stamp, stops, pool, costs, inHand, ...}
+      this.swept = false;           // 2.1.0: the open's sweep called once per mount (card 41)
     }
 
     getMetadata() { return { blueprintId: 'd4000000-0000-0000-0000-000000000001', pattern: 'BOARD', entity: 'route' }; }
@@ -247,7 +302,7 @@
       if (this.container) clear(this.container);
       this.dropMap(this.sitting);
       this.sitting = null;   // the sheet leaves with the board; nothing is undone (every act was written through its door)
-      this.container = null; this.days = []; this.groups = []; this.exceptions = []; this.period = null; this.registryRead = false;
+      this.container = null; this.days = []; this.groups = []; this.exceptions = []; this.period = null; this.registryRead = false; this.swept = false;
     }
 
     onContext(context) { this.context = context || {}; this.maybeLoad(); }
@@ -377,6 +432,19 @@
       this.busy(true);
       if (!this.registryRead) await this.readRegistry();
       if (!this.closedRead) this.readClosed();
+      // 2.1.0 (card 41; Q1: the board's open is the clock): THE BOARD'S OPEN CALLS THE SWEEP once per mount, before the first
+      // read, under the busy mark -- a sweep that ran at this open is said; one that had run today is silent; a refusal is said
+      if (OPEN && !this.swept) {
+        this.swept = true;
+        var tenantId = this.context && this.context.tenant_id;
+        if (tenantId && !/^__/.test(String(tenantId))) {
+          var sw = await this.rpc(OPEN.function, { p_tenant: tenantId });
+          if (seq !== this._loadSeq) return;
+          this.container.setAttribute('data-bd-swept', sw.ok ? (sw.data && sw.data.already_swept === false ? 'ran' : 'stood') : 'refused');
+          if (sw.ok && sw.data && sw.data.already_swept === false) this.say('The machine has run for today at this open: ' + plural(Number(sw.data.placed) || 0, 'placement') + ', ' + (Number(sw.data.left) || 0) + ' left in the pool with a reason (' + OPEN.function + ').', false);
+          else if (!sw.ok) this.say('The machine did not run at this open: ' + sw.words + ' -- the board reads what stands.', true);
+        }
+      }
       if (seq !== this._loadSeq) return;
       if (!this.period) this.goHome();
       var from = iso(this.period.start), to = iso(this.period.end);
@@ -792,12 +860,9 @@
       row('when', f.window + '; cheapest ' + f.cheapest);
       row('who', f.who);
       row('terms', f.terms);
-      if (FACE.pool_route) {
-        var a = el('button', 'bd-tech', 'open the work order');
-        a.type = 'button'; a.setAttribute('data-bd-pool-open', '1');
-        a.addEventListener('click', function (e) { e.stopPropagation(); self.navigate(FACE.pool_route, w.work_order_id); });
-        box.appendChild(a);
-      }
+      if (f.mandated) row('', f.mandated);
+      // 2.2.0 (THE LEAN OPEN): the band's card opens with the four things alone -- the history and the work order's page are
+      // the Details sheet's on the sitting (`history` and `pool_route` unread)
     }
 
     // -- THE GROUPS: the day's schedules as CARDS IN A GRID under AREA then ZONE headings (his mockup 09-11), each heading
@@ -997,6 +1062,8 @@
       if (this.sitting && this.sitting.route === d.route_id) { if (inHand) this.takeInHand(inHand); return; }
       this.sitting = { route: d.route_id, day: d, stamp: null, stampFrom: 'desk', stops: [], pool: [], poolZoned: false, costs: {}, inHand: inHand || null,
                        dragging: null, openWo: null, openStop: null, panel: null, out: null, bad: false, acts: 0, loading: true, sheet: null,
+                       // 2.2.0: the fit read's rows by work order (card 58); the Details sheet standing over the pane (card 55)
+                       fit: null, details: null,
                        // act (c): THE MAP on Sequence -- the mode, the door's collection, the renderer's map, its state, the pins, the ground;
                        // her order of the day's stops, the pending proposal {run, row, order}, the price in flight
                        mode: 'place', geo: null, map: null, mapState: 'idle', mapNote: null, ground: null, markers: [], fitted: false,
@@ -1046,6 +1113,8 @@
         var id = row.work_order_id; if (!id) return;
         if (!byId[id]) { byId[id] = row; order.push(id); } else if (exception) { byId[id] = row; }
       };
+      // 2.2.0: a band row carries no account or place id; the due list's row lends them (the Details link needs both)
+      var lend = function (p) { var r = byId[p.work_order_id]; if (!r) return; if (!r.account_id) r.account_id = p.account_id || null; if (!r.service_location_id) r.service_location_id = p.service_location_id || null; };
       if (FACE.exceptions) {
         var xr = await this.tenantOf(this.from(FACE.exceptions).select('*').eq('route_date', s.day.route_date)).order('late', { ascending: false }).order('buffer');
         if (stale()) return;
@@ -1059,12 +1128,34 @@
         var rows = pr.data || [];
         s.poolZoned = rows.some(function (p) { return p.zone !== undefined && p.zone !== null; });
         if (s.poolZoned && zones.length) rows.filter(function (p) { return zones.indexOf(p.zone) !== -1; }).forEach(function (p) {
-          put({ work_order_id: p.work_order_id, account_name: p.account_name, site: p.site, service: p.service, buffer_days: p.buffer_days, late: !!p.late, reason: p.late ? 'LATE' : (p.pool_reason || null), zone: p.zone, top_three: null, candidates: null, window: p.service_window, exception: false }, false);
+          put({ work_order_id: p.work_order_id, account_name: p.account_name, account_id: p.account_id || null, service_location_id: p.service_location_id || null, site: p.site, service: p.service, buffer_days: p.buffer_days, late: !!p.late, reason: p.late ? 'LATE' : (p.pool_reason || null), zone: p.zone, top_three: null, candidates: null, window: p.service_window, exception: false }, false);
         });
+        rows.forEach(lend);
       }
       s.pool = order.map(function (id) { return byId[id]; });
+      // 2.2.0 (card 58; Q12 "accommodated on this route"): THE FIT READ -- every ready card priced against this route; the pool
+      // ordered accommodated-first by cost, then the rest by buffer (a 2.1.0 row keeps the buffer order alone)
+      s.fit = null;
+      if (FIT && s.pool.length) {
+        var fr = await this.rpc(FIT, { p_route: route });
+        if (stale()) return;
+        if (fr.ok && Array.isArray(fr.data)) { s.fit = {}; fr.data.forEach(function (f) { s.fit[f.work_order_id] = f; }); }
+        else { s.out = FIT + ': ' + (fr.words || 'the fit could not be read'); s.bad = true; }
+      }
+      if (s.fit) {
+        var fitOf = function (w) { return s.fit[w.work_order_id] || null; };
+        s.pool.sort(function (a, b) {
+          var fa = fitOf(a), fb = fitOf(b);
+          var aa = fa && fa.accommodated ? 0 : 1, ab = fb && fb.accommodated ? 0 : 1;
+          if (aa !== ab) return aa - ab;
+          if (aa === 0) { var da = Number(fa.delta), db = Number(fb.delta); if (isFinite(da) && isFinite(db) && da !== db) return da - db; }
+          var ba = Number(a.buffer_days), bb = Number(b.buffer_days); if (isFinite(ba) && isFinite(bb) && ba !== bb) return ba - bb;
+          return String(a.account_name).localeCompare(String(b.account_name));
+        });
+      }
       if (s.inHand && !byId[s.inHand]) s.inHand = null;
       if (s.openWo && !byId[s.openWo]) s.openWo = null;
+      if (s.openStop && !s.stops.some(function (x) { return x.route_stop_id === s.openStop; })) s.openStop = null;
       // act (c): the map's collection re-read with the rows once the map has been opened (a drop adds a pin)
       if (s.geo || s.mode === 'sequence') { await this.readGeo(); if (stale()) return; }
       s.loading = false;
@@ -1079,6 +1170,13 @@
       sh.style.left = left + 'px';
       sh.style.width = Math.max(320, Math.min(window.innerWidth - left, rect.width + 48)) + 'px';
       if (this.sitting.map && this.sitting.mode === 'sequence') { try { this.sitting.map.resize(); } catch (ignored) { /* the map follows the sheet */ } }
+      this.placeDetails();
+    }
+    // 2.2.0 (card 55): the Details sheet stands exactly over the right pane -- measured, so the stops never move
+    placeDetails() {
+      var s = this.sitting; var dp = this.sheetQ('[data-bd-sit="details"]'); if (!s || !dp || dp.hidden) return;
+      var pane = this.sheetQ(MAP && s.mode === 'sequence' ? '[data-bd-sit="mappane"]' : '[data-bd-sit="poolpane"]'); if (!pane) return;
+      dp.style.left = pane.offsetLeft + 'px'; dp.style.width = pane.offsetWidth + 'px'; dp.style.top = pane.offsetTop + 'px'; dp.style.height = pane.offsetHeight + 'px';
     }
     renderSitting() {
       var self = this;
@@ -1096,7 +1194,7 @@
         var head = el('header', 'bd-sheet-h'); head.setAttribute('data-bd-sit', 'head'); sheet.appendChild(head);
         var body = el('div', 'bd-sheet-body');
         var list = el('div', 'bd-sheet-list');
-        var card = el('div', 'bd-sheet-card'); card.setAttribute('data-bd-sit-card', '1'); list.appendChild(card);
+        // 2.1.0: the scorecard stands in the route header (renderSitHead), not over the list
         var lh = el('div', 'bd-sheet-listh'); lh.setAttribute('data-bd-sit', 'listh'); list.appendChild(lh);
         var out = el('div', 'bd-sheet-out'); out.setAttribute('data-bd-sit-out', '1'); list.appendChild(out);
         var panel = el('section', 'bd-panel'); panel.setAttribute('data-bd-sit-panel', '1'); panel.hidden = true; list.appendChild(panel);
@@ -1119,45 +1217,57 @@
         var mq = el('div', 'bd-map-quiet'); mq.setAttribute('data-bd-map-quiet', '1'); mapPane.appendChild(mq);
         var mhost = el('div', 'bd-map'); mhost.setAttribute('data-bd-map', s.route); mhost.setAttribute('data-bd-map-state', 'idle'); mapPane.appendChild(mhost);
         body.appendChild(mapPane);
+        // 2.2.0 (card 55): THE DETAILS SHEET, laid over the right pane when a row's Details is clicked (placeDetails measures it)
+        var dPane = el('div', 'bd-sheet-details'); dPane.setAttribute('data-bd-sit', 'details'); dPane.hidden = true;
+        body.appendChild(dPane);
         sheet.appendChild(body);
-        var foot = el('footer', 'bd-sheet-f'); foot.setAttribute('data-bd-sit', 'foot'); sheet.appendChild(foot);
-        sheet.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (s.panel) { s.panel = null; self.renderSitPanel(); } else if (s.openWo || s.openStop) { s.openWo = null; s.openStop = null; self.renderSitPool(); self.renderSitStops(); } } });
+        // 2.1.0 (his call 2): the footer retired -- the route's and the sitting's acts stand in the header (renderSitFoot renders there)
+        sheet.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (s.details) { self.closeDetails(); } else if (s.panel) { s.panel = null; self.renderSitPanel(); } else if (s.openWo || s.openStop) { s.openWo = null; s.openStop = null; self.renderSitPool(); self.renderSitStops(); } } });
         host.appendChild(sheet);
         s.sheet = sheet;
         this.placeSheet();
       }
-      this.renderSitHead(); this.renderSitCard(); this.renderSitListHead(); this.renderSitOut(); this.renderSitPanel(); this.renderSitStops(); this.renderSitPool(); this.renderSitPanes(); this.renderSitMap(); this.renderSitFoot();
+      this.renderSitHead(); this.renderSitCard(); this.renderSitListHead(); this.renderSitOut(); this.renderSitPanel(); this.renderSitStops(); this.renderSitPool(); this.renderSitPanes(); this.renderSitMap(); this.renderSitFoot(); this.renderSitDetails();
     }
+    // 2.1.0 (his walk, calls 1 and 3): THE ROUTE HEADER IS THE ROUTE'S STATE -- the technician, the day, the state, the zone;
+    // the scorecard under the name, re-read after every act; no sentence and no clock on the sheet (the teaching line behind a
+    // help mark); the route's and the sitting's acts at the right (renderSitFoot renders into the acts host)
     renderSitHead() {
-      var self = this, s = this.sitting, d = s.day; var host = this.sheetQ('[data-bd-sit="head"]'); if (!host) return; clear(host);
+      var s = this.sitting, d = s.day; var host = this.sheetQ('[data-bd-sit="head"]'); if (!host) return; clear(host);
       var left = el('div', 'bd-sheet-hl');
-      var t = el('h3', 'bd-sheet-t', d.technician + '\'s ' + (d.weekday || '') + ' ' + d.route_date);
+      // 2.2.0: no year on the sitting ("mon 09-21")
+      var t = el('h3', 'bd-sheet-t', d.technician + ' · ' + dayWord(d));
       t.setAttribute('data-bd-sit-title', d.route_id);
       t.appendChild(document.createTextNode(' '));
-      t.appendChild(el('span', 'bd-muted', d.state + (d.zones ? ' · ' + d.zones : '')));
+      t.appendChild(el('span', 'bd-muted', '· ' + d.state + (d.zones ? ' · ' + d.zones : '')));
+      var help = el('button', 'bd-help', '?'); help.type = 'button'; help.setAttribute('data-bd-sit-help', '1'); help.setAttribute('aria-label', 'how the sitting works');
+      help.title = s.mode === 'sequence'
+        ? 'MAP: the day on the map, the stops as pins joined in order, the start and the end marked. Drag a row in the list (or step it) into your order and the door prices it live against the machine\'s -- a proposal until Save accepts it. Cancel undoes this sitting\'s runs in one act.'
+        : 'THE SITTING: the stops beside the pool. Drag a pool card onto the list: inside the criteria it lands with no question; on the exception the panel asks your reason; the door refuses what cannot be done. The cost reads on the list\'s head as the card crosses it. A click on a row reads its facts and its history and places nothing. Save keeps what was written; Cancel undoes this sitting\'s runs in one act.';
+      t.appendChild(help);
       left.appendChild(t);
-      var opened = ' (opened ' + String(s.stamp || '').replace('T', ' ').slice(0, 19) + ', the ' + s.stampFrom + '\'s clock)';
-      left.appendChild(el('p', 'bd-sheet-sub', s.mode === 'sequence'
-        ? 'SEQUENCE: the day on the map, the stops as pins joined in order, the start and the end marked. Drag a row in the list (or step it) into your order and the door prices it live against the machine\'s -- a proposal until Save accepts it. Cancel undoes this sitting\'s runs in one act' + opened + '.'
-        : 'THE SITTING: the stops beside the pool. A card dropped on the list goes through the door live -- inside the criteria it places; on the exception the panel asks your reason; the door refuses what cannot be done. The cost reads on the list\'s head as the card crosses it. Save keeps what was written; Cancel undoes this sitting\'s runs in one act' + opened + '.'));
+      var card = el('div', 'bd-sheet-card bd-sheet-card--head'); card.setAttribute('data-bd-sit-card', '1'); left.appendChild(card);
       host.appendChild(left);
-      // act (c): the head's switch -- PLACE (the pool beside the stops) or SEQUENCE (the map beside the order)
-      if (MAP) {
-        var sw = el('span', 'bd-modes bd-sit-modes'); sw.setAttribute('data-bd-sit-modes', '1');
-        [['place', 'Place'], ['sequence', 'Sequence']].forEach(function (m) {
-          var b = el('button', 'bd-mode' + (s.mode === m[0] ? ' bd-mode--on' : ''), m[1]);
-          b.type = 'button'; b.setAttribute('data-bd-sit-mode', m[0]);
-          b.title = m[0] === 'place' ? 'PLACE: the pool beside the stops; every drop through the door' : 'SEQUENCE: the day on the map; drag the order in the list, the door prices it';
-          b.addEventListener('click', function () { self.setSitMode(m[0]); });
-          sw.appendChild(b);
-        });
-        host.appendChild(sw);
-      }
+      var acts = el('div', 'bd-sheet-acts'); acts.setAttribute('data-bd-sit', 'acts'); host.appendChild(acts);
+    }
+    // 2.1.0 (his call 4): POOL | MAP stands in the pane's head, on the thing it switches (the words Place / Sequence retired)
+    sitSwitch() {
+      var self = this, s = this.sitting;
+      var sw = el('span', 'bd-modes bd-sit-modes'); sw.setAttribute('data-bd-sit-modes', '1');
+      if (!MAP) { sw.appendChild(el('b', null, 'THE POOL')); return sw; }
+      [['place', 'Pool'], ['sequence', 'Map']].forEach(function (m) {
+        var b = el('button', 'bd-mode' + (s.mode === m[0] ? ' bd-mode--on' : ''), m[1]);
+        b.type = 'button'; b.setAttribute('data-bd-sit-mode', m[0]);
+        b.title = m[0] === 'place' ? 'POOL: the pool beside the stops; a card dragged onto the list goes through the door' : 'MAP: the day on the map; drag the order in the list, the door prices it';
+        b.addEventListener('click', function () { self.setSitMode(m[0]); });
+        sw.appendChild(b);
+      });
+      return sw;
     }
     setSitMode(m) {
       var s = this.sitting; if (!s || (m !== 'place' && m !== 'sequence') || s.mode === m) return;
       s.mode = m; s.dragStop = null; s.dragging = null;
-      this.renderSitHead(); this.renderSitListHead(); this.renderSitStops(); this.renderSitPanes();
+      this.renderSitHead(); this.renderSitCard(); this.renderSitListHead(); this.renderSitStops(); this.renderSitPool(); this.renderSitMapHead(); this.renderSitPanes(); this.renderSitFoot();
       if (m === 'sequence') this.openMap();
     }
     // the right pane by mode: the pool, or the map (the map re-measured when it returns)
@@ -1166,11 +1276,41 @@
       var seq = MAP && s.mode === 'sequence';
       pool.hidden = !!seq; map.hidden = !seq;
       if (seq && s.map) { try { s.map.resize(); } catch (ignored) { /* the map follows the pane */ } }
+      this.placeDetails();   // 2.2.0: the Details sheet follows the pane it covers
     }
+    // 2.2.0 (card 56; his word "our mission is to design the most flexible format for route header data"): THE HEADER IS A
+    // DECLARED LINE -- the instance's pairs, each a label over a value read from the days read's row ("X of Y" when the pair
+    // names `of`), the matching flag drawn whole as the gray aside; the drive pair's aside while a hand order stands unsaved is
+    // the proposal; no tiles, no bar, no heading -- the route's current state, re-read after every act
     renderSitCard() {
-      var s = this.sitting; var host = this.sheetQ('[data-bd-sit-card]'); if (!host) return; clear(host);
-      var h = el('div', 'bd-tcard-h'); h.appendChild(el('b', null, 'THE SCORECARD, live')); h.appendChild(document.createTextNode(' ')); h.appendChild(el('span', 'bd-muted', 're-read after every act')); host.appendChild(h);
-      this.healthInto(host, s.day);
+      var s = this.sitting, d = s.day; var host = this.sheetQ('[data-bd-sit-card]'); if (!host) return; clear(host);
+      var flags = this.flagsOf(d);
+      var line = el('div', 'bd-hline'); line.setAttribute('data-bd-hline', String(SUMMARY.length));
+      var prop = this.proposalWords();
+      SUMMARY.forEach(function (p) {
+        var pair = el('span', 'bd-pair'); pair.setAttribute('data-bd-pair', p.label);
+        pair.appendChild(el('i', 'bd-pair-l', p.label));
+        var vals = (p.values || []).map(function (v) { return unitWord(d[v.column], v.unit || 'count'); });
+        var text = vals.join(' · ');
+        if (p.of) { var u0 = (p.values && p.values[0] && p.values[0].unit) || 'count'; text += ' of ' + unitWord(d[p.of], u0); }
+        var b = el('b', 'bd-pair-v', text); b.setAttribute('data-bd-value', text); pair.appendChild(b);
+        var aside = null;
+        if (p.flag) { var hit = flags.filter(function (f) { return String(f).indexOf(p.flag) !== -1; })[0]; if (hit) aside = hit; }
+        if (!aside && prop && (p.values || []).some(function (v) { return v.column === 'drive_miles' || v.column === 'drive_minutes'; })) aside = prop.short;
+        if (aside) { var u = el('u', 'bd-pair-a', aside); u.setAttribute('data-bd-aside', '1'); pair.appendChild(u); }
+        line.appendChild(pair);
+      });
+      host.appendChild(line);
+    }
+    // 2.2.0 (card 56): the proposal's words while a hand order stands unsaved -- the aside on the drive pair, the line beside Pool | Map
+    proposalWords() {
+      var s = this.sitting; if (!s || !s.proposal || !s.proposal.row) return null;
+      var row = s.proposal.row, gp = (s.geo && s.geo.properties) || {};
+      var dm = Number(row.drive_miles), dn = Number(row.drive_minutes), bm = Number(gp.drive_miles), bn = Number(gp.drive_minutes);
+      if (!isFinite(dm)) return { short: 'by hand, priced -- a proposal until Save', long: 'your order priced by the door -- a proposal until Save' };
+      var delta = isFinite(bm) ? ' (' + (dm - bm >= 0 ? '+' : '-') + miles(Math.abs(dm - bm)) + (isFinite(dn) && isFinite(bn) ? ', ' + (dn - bn >= 0 ? '+' : '-') + mins(Math.abs(dn - bn)) : '') + ')' : '';
+      var machine = isFinite(bm) ? miles(bm) + ' / ' + mins(bn) : 'the machine\'s drive unread';
+      return { short: 'by hand ' + miles(dm) + ' · ' + mins(dn) + ', a proposal', long: 'by hand ' + miles(dm) + ' / ' + mins(dn) + ' against the machine\'s ' + machine + delta + ' · a proposal until Save' };
     }
     renderSitListHead() {
       var s = this.sitting; var host = this.sheetQ('[data-bd-sit="listh"]'); if (!host) return; clear(host);
@@ -1233,10 +1373,16 @@
         var li = el('li', 'bd-stop' + (s.openStop === st.route_stop_id ? ' bd-stop--on' : '') + (canOrder ? ' bd-stop--order' : ''));
         li.setAttribute('data-stop', st.route_stop_id); li.setAttribute('data-seq', String(seq));
         li.appendChild(el('span', 'bd-stop-seq', String(seq)));
-        var eta = el('span', 'bd-stop-eta' + (proposed ? ' bd-stop-eta--proposed' : ''), proposed ? '--:--' : (st.eta || '-'));
-        if (proposed) eta.title = 'the eta is written when your order is accepted (Save)';
-        li.appendChild(eta);
-        li.appendChild(el('span', 'bd-stop-place', st.place || '-'));
+        // 2.1.0 (his calls 5-6): THE PROMISED WINDOW where the eta stood -- the stops read's window_text (the eta through the
+        // client's grain; a dash before the day is sequenced; the technician sees ETAs after dispatch); a 2.0.0 row shows its eta
+        var winText = st.window_text !== undefined ? (st.window_text || '-') : (st.eta || '-');
+        var win = el('span', 'bd-stop-eta bd-stop-win' + (proposed ? ' bd-stop-eta--proposed' : ''), proposed ? '--' : winText);
+        win.setAttribute('data-bd-window', proposed ? '' : (st.window_text || ''));
+        win.title = proposed ? 'the window is written when your order is accepted (Save)' : ('the promised window' + (st.eta && st.eta !== '-' ? '; the eta ' + st.eta : '; no eta until the day is sequenced'));
+        li.appendChild(win);
+        // line 1: the account (the place stands in for a 2.0.0 row); line 3 the place only when it is not the account's name
+        var acct = el('span', 'bd-stop-place', st.account || st.place || '-'); acct.setAttribute('data-bd-account', st.account || '');
+        li.appendChild(acct);
         if (canOrder) {
           var mv = el('span', 'bd-stop-moves');
           var up = el('button', 'bd-move', '▲'); up.type = 'button'; up.setAttribute('data-bd-move-up', st.route_stop_id); up.title = 'one earlier'; up.disabled = i === 0;
@@ -1252,9 +1398,17 @@
           li.addEventListener('dragleave', function () { li.classList.remove('bd-stop--over'); });
           li.addEventListener('drop', function (e) { if (!s.dragStop) return; e.preventDefault(); e.stopPropagation(); li.classList.remove('bd-stop--over'); var from = s.dragStop; s.dragStop = null; self.moveStop(from, st.route_stop_id); });
         } else li.appendChild(el('span', 'bd-muted', st.state || ''));
-        li.appendChild(el('div', 'bd-stop-work', st.work_orders || ''));
+        // line 2: the service, THE CHIP (2.2.0: the mandate's kind alone -- "the user will learn that any widget of that color is
+        // referring to a mandate"), "by hand" plain when a reason placed it (a 2.0.0 row prints its work orders)
+        var l2 = el('div', 'bd-stop-work'); l2.setAttribute('data-bd-line2', '1');
+        l2.appendChild(document.createTextNode(st.service !== undefined ? (st.service || '-') : (st.work_orders || '')));
+        if (st.mandated) { l2.appendChild(document.createTextNode(' · ')); var mw = el('em', 'bd-mandate', String(st.mandated).replace(/^mandated:\s*/, '')); mw.setAttribute('data-bd-mandated', '1'); mw.title = 'a mandate: ' + String(st.mandated).replace(/^mandated:\s*/, ''); l2.appendChild(mw); }
+        if (st.by_hand) { l2.appendChild(document.createTextNode(' · ')); var bh = el('span', 'bd-hand', 'by hand'); bh.setAttribute('data-bd-by-hand', String(st.hand_reason || '1')); bh.title = 'placed by hand' + (st.hand_reason ? ': ' + String(st.hand_reason).replace(/_/g, ' ') : ''); l2.appendChild(bh); }
+        li.appendChild(l2);
+        if (st.account && st.place && st.place !== st.account) { var l3 = el('div', 'bd-stop-place3', st.place); l3.setAttribute('data-bd-line3', '1'); li.appendChild(l3); }
         li.addEventListener('click', function () { s.openStop = s.openStop === st.route_stop_id ? null : st.route_stop_id; self.renderSitStops(); self.markPin(); });
-        if (s.openStop === st.route_stop_id) self.fillStopDetail(st, li);
+        // 2.2.0 (THE LEAN OPEN, card 54): a click opens ONE line -- Details; no facts, no history
+        if (s.openStop === st.route_stop_id) self.fillDetailsLine(li, st.account_id, st.service_location_id, st.account || st.place, 'stop', st.route_stop_id);
         host.appendChild(li);
       });
     }
@@ -1394,7 +1548,7 @@
     renderSitMapHead() {
       var s = this.sitting; var host = this.sheetQ('[data-bd-sit="maph"]'), quiet = this.sheetQ('[data-bd-map-quiet]'); if (!s || !host || !quiet) return;
       clear(host); clear(quiet);
-      host.appendChild(el('b', null, 'THE MAP'));
+      host.appendChild(this.sitSwitch());   // 2.1.0: POOL | MAP on the pane it switches
       var gp = (s.geo && s.geo.properties) || {};
       var standing = s.stops.map(function (st) { return st.route_stop_id; });
       var proposed = s.order && !sameOrder(s.order, standing);
@@ -1449,8 +1603,9 @@
       try { var rr = await this.from(RUNS).select('*').eq('run_id', run).limit(1); if (!rr.error && rr.data && rr.data[0]) row = rr.data[0]; } catch (ignored) { /* the price stays on the door */ }
       if (!this.sitting || this.sitting !== s || seq !== s._orderSeq) return;
       s.pricing = false; s.proposal = { run: run, row: row, order: order.slice() }; s.acts++;
-      s.out = 'Your order priced by the door' + (row && row.result_summary ? ': ' + row.result_summary : ' (run ' + run + ')') + ' -- a proposal until Save accepts it.'; s.bad = false;
-      this.renderSitOut(); this.renderSitStops(); this.renderSitFoot(); this.renderSitMap();
+      // 2.2.0 (card 56): the paragraph above the stops retired -- the price reads on the pane's line and the drive pair's aside
+      s.out = null; s.bad = false;
+      this.renderSitOut(); this.renderSitCard(); this.renderSitStops(); this.renderSitPool(); this.renderSitFoot(); this.renderSitMap();
     }
     // THE PROPOSAL ACCEPTED through its door (SAVE; RELEASE first): null when none stands, the run when accepted, false when refused
     async acceptProposal() {
@@ -1468,18 +1623,71 @@
       if (s.map) { try { s.map.remove(); } catch (ignored) { /* gone */ } s.map = null; }
       s.mapState = 'idle';
     }
-    // a stop OPENED IN PLACE with its facts: what the technician sees (his cut 6)
-    async fillStopDetail(st, li) {
-      var box = el('div', 'bd-detail bd-detail--stop', 'reading...');
-      box.setAttribute('data-bd-stop-detail', st.route_stop_id);
-      li.appendChild(box);
-      var r = await this.from(FACE.detail).select('*').eq('route_stop_id', st.route_stop_id).limit(1);
-      clear(box);
-      if (r.error) { box.appendChild(el('div', 'bd-error', r.error.message)); return; }
-      var f = (r.data || [])[0];
-      if (!f) { box.appendChild(el('div', 'bd-muted', 'no facts stand on this stop')); return; }
-      var row = function (label, text) { if (!text) return; var d = el('div', null, null); d.appendChild(el('span', 'bd-muted', label + ' ')); d.appendChild(document.createTextNode(text)); box.appendChild(d); };
-      row('work', f.summary); row('window', f.window); row('grade', f.grade); row('mandate', f.mandate); row('access', f.paper); row('promise', f.promise); row('', f.mandated);
+    // 2.2.0 (THE LEAN OPEN, card 54; his call: "the more we provide on a single-click open is slowing them down... that detail
+    // belongs with the phone app"): a click on a stop or a pool card opens ONE line -- "Details" -- and nothing else; the facts,
+    // the history and the record are the Details sheet's (card 55). A click never places.
+    fillDetailsLine(host, acct, loc, name, kind, key) {
+      var self = this, s = this.sitting;
+      var line = el('div', 'bd-open'); line.setAttribute('data-bd-open', kind + ':' + key);
+      if (DETAILS && loc) {
+        var a = document.createElement('a'); a.className = 'bd-details-link'; a.textContent = 'Details'; a.href = '#';
+        a.setAttribute('data-bd-details', String(loc)); a.setAttribute('data-bd-details-account', String(acct || ''));
+        a.title = 'this location\'s record over the pane; the sitting stays';
+        a.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); self.openDetails(acct, loc, name); });
+        line.appendChild(a);
+        if (s && s.details && s.details.location === loc) line.appendChild(el('span', 'bd-muted', ' open'));
+      } else {
+        var q = el('span', 'bd-muted', DETAILS ? 'no place on this row -- no details' : 'no Details on this deployment'); q.setAttribute('data-bd-details-none', '1'); line.appendChild(q);
+      }
+      host.appendChild(line);
+    }
+    // 2.2.0 (card 55, his idea 2026-09-17): THE DETAILS SHEET -- the shell's own record page, framed BARE over the right pane,
+    // narrowed to the row's service location (the record card takes `location`); one close mark; the stops and the header never
+    // move, a drag still lands; the whole record's link at the foot leaves the sitting for the app's page
+    openDetails(acct, loc, name) {
+      var s = this.sitting; if (!s || !DETAILS || !loc) return;
+      s.details = { account: acct || null, location: loc, name: name || '' };
+      this.renderSitDetails(); this.renderSitStops(); this.renderSitPool();
+    }
+    closeDetails() {
+      var s = this.sitting; if (!s) return;
+      s.details = null;
+      this.renderSitDetails(); this.renderSitStops(); this.renderSitPool();
+    }
+    detailsSrc(acct, loc) {
+      var route = String(DETAILS).replace(':id', encodeURIComponent(acct || '')).replace(':location', encodeURIComponent(loc || ''));
+      var page = (window.location.pathname || '').replace(/[^/]*$/, 'index.html');
+      return page + '?bare=1#' + route;
+    }
+    renderSitDetails() {
+      var self = this, s = this.sitting; var dp = this.sheetQ('[data-bd-sit="details"]'); if (!dp) return;
+      if (!s.details) { clear(dp); dp.hidden = true; return; }
+      if (dp.getAttribute('data-bd-details-location') === String(s.details.location) && !dp.hidden) return;
+      clear(dp); dp.hidden = false; dp.setAttribute('data-bd-details-location', String(s.details.location)); dp.setAttribute('data-bd-details-account', String(s.details.account || ''));
+      var head = el('div', 'bd-details-h');
+      var hl = el('div', 'bd-details-hl');
+      hl.appendChild(el('span', 'bd-details-k', 'details · this location only'));
+      var nm = el('b', 'bd-details-name', s.details.name || 'the location'); nm.setAttribute('data-bd-details-name', '1'); hl.appendChild(nm);
+      head.appendChild(hl);
+      var close = el('button', 'bd-btn bd-btn--ghost bd-details-close', '✕'); close.type = 'button'; close.setAttribute('data-bd-details-close', '1'); close.setAttribute('aria-label', 'close the details'); close.title = 'close the sheet; the sitting is as you left it';
+      close.addEventListener('click', function () { self.closeDetails(); });
+      head.appendChild(close);
+      dp.appendChild(head);
+      var frame = document.createElement('iframe'); frame.className = 'bd-details-frame'; frame.setAttribute('data-bd-details-frame', '1'); frame.setAttribute('title', 'the record at this location');
+      frame.src = this.detailsSrc(s.details.account, s.details.location);
+      dp.appendChild(frame);
+      if (ACCOUNT_ROUTE && s.details.account) {
+        var foot = el('div', 'bd-details-f');
+        foot.appendChild(el('span', 'bd-muted', 'the account\'s whole record: '));
+        var a = document.createElement('a'); a.className = 'bd-tech bd-account-link'; a.textContent = 'Accounts › ' + (s.details.name || 'the account');
+        a.setAttribute('data-bd-account-link', String(s.details.account)); a.href = '#' + String(ACCOUNT_ROUTE).replace(':id', encodeURIComponent(s.details.account));
+        a.title = 'the app\'s page; leaves the sitting (what was written stands)';
+        a.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); var acct = s.details.account; self.closeDetails(); self.navigate(ACCOUNT_ROUTE, acct); });
+        foot.appendChild(a);
+        foot.appendChild(el('span', 'bd-muted', ' (the app\'s page; leaves the sitting)'));
+        dp.appendChild(foot);
+      }
+      this.placeDetails();
     }
     poolWords(s) {
       var zones = split(s.day.zones);
@@ -1493,54 +1701,75 @@
       var self = this, s = this.sitting;
       var head = this.sheetQ('[data-bd-sit="poolh"]'); var host = this.sheetQ('[data-bd-pool]'); if (!head || !host) return;
       clear(head); clear(host);
-      head.appendChild(el('b', null, 'THE POOL'));
-      var n = el('span', 'bd-muted', s.loading ? 'reading...' : this.poolWords(s)); n.setAttribute('data-bd-sit-pool', String(s.pool.length)); head.appendChild(n);
+      // 2.1.0 (his calls 4 and 6): the switch where the label stood; the planning window printed ONCE here, not on every row
+      // (2.2.0: no year -- "09-21 to 09-27")
+      head.appendChild(this.sitSwitch());
+      var n = el('span', 'bd-muted', s.loading ? 'reading...' : this.poolWords(s) + (this.period ? ' · the window ' + mmdd(iso(this.period.start)) + ' to ' + mmdd(iso(this.period.end)) : '')); n.setAttribute('data-bd-sit-pool', String(s.pool.length)); head.appendChild(n);
+      // 2.2.0 (card 56): the proposal's line beside the switch while a hand order stands unsaved; gone at Save
+      var prop = this.proposalWords();
+      if (prop) { var pl = el('span', 'bd-map-price bd-proposal-line', prop.long); pl.setAttribute('data-bd-proposal-line', String(s.proposal.run)); head.appendChild(pl); }
+      // 2.2.0 (cards 57-58): the columns and the order said ONCE on the pane's line, never on a row
+      if (!s.loading && s.pool.length) { var cols = el('span', 'bd-muted bd-pool-columns', s.fit ? 'buffer days · account · the cost to place here · accommodated on this route first, by cost, then the rest by buffer' : 'buffer days · account · by buffer'); cols.setAttribute('data-bd-pool-columns', s.fit ? 'fit' : 'buffer'); head.appendChild(cols); }
       if (s.loading) return;
       if (!s.poolZoned) { var z = el('div', 'bd-quiet', 'the zones\' own ready rows read when the pool rows carry a zone; the day\'s exceptions stand here'); z.setAttribute('data-bd-pool-unzoned', '1'); host.appendChild(z); }
       if (!s.pool.length) { var q = el('div', 'bd-quiet', 'none -- the machine placed everything in this schedule\'s zones'); q.setAttribute('data-bd-pool-empty', '1'); host.appendChild(q); return; }
       var canDrag = this.may(FACE.drag.verb);
-      // THE POOL IN THE STOPS' FORM (his chair, s52 leg 7 act (a), 2026-09-14: "the pool's cards should be in the same display
-      // list form as Place or Sequence"): one row per card -- the account, its window and buffer at the right, the service under,
-      // the machine's word under that; an exception marked at its left edge, the card in hand lit like a stop; no band card here
-      // (the band's card is a 20rem-wide tile for a row of tiles; in a column that width became its height)
+      // THE TWO LISTS IN ONE SHAPE (2.2.0, card 57; his chair 2026-09-14 "the pool's cards should be in the same display list form"
+      // and 2026-09-16 "the data in the route list and the pool list need symmetry"): a pool row in the stops' own grid -- the buffer
+      // where the stop has its window, the account, the service under it, the address a third line when it differs; THE FIT COLUMN
+      // at the right (card 58: what it costs to place the card here, the machine's price); the stripe and a red chip ONLY where the
+      // reason says something (Q12: the refusal's word; "no room" never); the card in hand lit like a stop; the "left in the pool"
+      // line, the buffer word and the zone RETIRED from the row
+      var cutDrawn = false;
       s.pool.forEach(function (w) {
         var on = s.inHand === w.work_order_id;
-        var card = el('div', 'bd-pool-row bd-card--p' + (w.exception ? ' bd-pool-row--x' : '') + (on ? ' bd-pool-row--on' : ''));
+        var f = s.fit ? (s.fit[w.work_order_id] || null) : null;
+        var refusal = f ? (f.accommodated ? null : (f.refusal || 'not accommodated')) : (w.late ? 'late' : null);
+        // 2.2.0 (card 58): THE CUT LINE where the accommodated end and the rest begin
+        if (s.fit && f && !f.accommodated && !cutDrawn) { cutDrawn = true; var cut = el('div', 'bd-pool-cut', 'not accommodated on this route · by buffer'); cut.setAttribute('data-bd-pool-cut', '1'); host.appendChild(cut); }
+        // 2.1.0 (his call 46.2): the origin row grays while the panel asks about it -- the panel is the one lit thing
+        var origin = !!(s.panel && s.panel.wo && s.panel.wo.work_order_id === w.work_order_id);
+        var card = el('div', 'bd-pool-row bd-card--p' + (refusal ? ' bd-pool-row--x' : '') + (on ? ' bd-pool-row--on' : '') + (origin ? ' bd-pool-row--asked' : '') + (s.fit && f && !f.accommodated ? ' bd-pool-row--far' : ''));
         card.setAttribute('data-wo', w.work_order_id);
         if (s.openWo === w.work_order_id) card.setAttribute('data-open', '1');
         if (on) card.setAttribute('data-in-hand', '1');
-        var acct = el('span', 'bd-pool-acct'); acct.appendChild(el('b', null, w.account_name + (w.site && w.site !== w.account_name ? ' / ' + w.site : ''))); card.appendChild(acct);
-        var nn = el('span', 'bd-pool-n', 'buffer ' + w.buffer_days + (w.window ? ' · ' + w.window : ''));
-        if (w.late) { nn.appendChild(document.createTextNode(' ')); nn.appendChild(el('span', 'bd-late', 'LATE')); }
-        card.appendChild(nn);
-        card.appendChild(el('div', 'bd-pool-work', w.service));
-        var why = el('div', 'bd-pool-why', (w.late ? 'past its window' : (w.reason ? 'left in the pool: ' + String(w.reason).replace(/_/g, ' ') : 'ready, its window ahead')) + (w.zone ? ' · ' + w.zone : ''));
-        why.setAttribute('data-bd-reason', String(w.reason || ''));
-        if (w.exception) { var top = el('span', 'bd-top3', ' · ' + (w.candidates ? 'cheapest: ' + w.top_three : String(w.top_three || 'no day in the horizon can take it'))); top.setAttribute('data-bd-top3', String(w.candidates || 0)); why.appendChild(top); }
-        card.appendChild(why);
-        // a click takes the card IN HAND: the cost reads on the list's head, the four things open, Place here beside them
-        card.addEventListener('click', function () { self.takeInHand(w.work_order_id); });
+        if (origin) card.setAttribute('data-bd-origin', '1');
+        if (f) { card.setAttribute('data-bd-accommodated', f.accommodated ? '1' : '0'); card.setAttribute('data-bd-fit', f.delta === null || f.delta === undefined ? '' : String(f.delta)); }
+        card.setAttribute('data-bd-buffer', String(w.buffer_days));
+        card.setAttribute('data-bd-refusal', refusal || '');
+        // line 1: the buffer, the account, the cost to place here
+        var buf = el('span', 'bd-pool-buf', String(w.buffer_days)); buf.title = 'buffer days'; card.appendChild(buf);
+        var acct = el('span', 'bd-pool-acct'); acct.appendChild(el('b', null, w.account_name)); acct.setAttribute('data-bd-account', w.account_name || ''); card.appendChild(acct);
+        var fitEl = el('span', 'bd-pool-fit', f ? (f.delta === null || f.delta === undefined ? '-' : (f.accommodated ? money(f.delta) : money(f.delta))) : '');
+        if (f) fitEl.title = f.accommodated ? 'what it costs to place this card on this route (the door\'s own price)' : 'the cost if placed here; the route does not accommodate it';
+        card.appendChild(fitEl);
+        // line 2: the service, the chip only where the reason says something
+        var l2 = el('div', 'bd-pool-work'); l2.setAttribute('data-bd-line2', '1');
+        l2.appendChild(document.createTextNode(w.service || '-'));
+        if (refusal) { l2.appendChild(document.createTextNode(' · ')); var chip = el('em', 'bd-refusal', refusal); chip.setAttribute('data-bd-chip', refusal); chip.title = 'why this route does not accommodate it'; l2.appendChild(chip); }
+        card.appendChild(l2);
+        // line 3: the place, only when it is not the account's name
+        if (w.site && w.site !== '-' && w.site !== w.account_name) { var l3 = el('div', 'bd-pool-place3', w.site); l3.setAttribute('data-bd-line3', '1'); card.appendChild(l3); }
+        // 2.1.0 (his call 7): ONE MOTION TO PLACE -- the drag; a click opens ONE line (2.2.0: Details) and never places
+        card.addEventListener('click', function () { self.toggleOpenWo(w.work_order_id); });
         if (canDrag) {
           card.draggable = true;
           card.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', w.work_order_id); e.dataTransfer.effectAllowed = 'move'; s.dragging = w.work_order_id; self.readCost(w.work_order_id); });
           card.addEventListener('dragend', function () { s.dragging = null; self.renderSitCost(); });
         } else card.title = 'closed to your role';
-        if (on) {
-          if (canDrag) {
-            var place = el('button', 'bd-btn bd-btn--primary bd-place-here', 'Place here');
-            place.type = 'button'; place.setAttribute('data-bd-place-here', w.work_order_id); place.title = 'the same door as a drop on the list';
-            place.addEventListener('click', function (e) { e.stopPropagation(); self.sitDrop(w.work_order_id); });
-            card.appendChild(place);
-          }
-          if (s.openWo === w.work_order_id) self.fillPoolDetail(w, card);
-        }
+        if (s.openWo === w.work_order_id) self.fillDetailsLine(card, w.account_id, w.service_location_id, w.account_name, 'pool', w.work_order_id);
         host.appendChild(card);
       });
     }
+    toggleOpenWo(woId) {
+      var s = this.sitting; if (!s) return;
+      s.openWo = s.openWo === woId ? null : woId;
+      this.renderSitPool();
+    }
+    // a band card dropped on a scorecard opens the sitting with the card IN HAND: lit, its cost read (the drag places it)
     takeInHand(woId) {
       var s = this.sitting; if (!s) return;
-      if (s.inHand === woId) { s.openWo = s.openWo === woId ? null : woId; }
-      else { s.inHand = woId; s.openWo = woId; }
+      s.inHand = woId;
       this.renderSitPool(); this.renderSitCost();
       this.readCost(woId);
     }
@@ -1550,7 +1779,7 @@
       var s = this.sitting; if (!s) return;
       var w = s.pool.filter(function (x) { return x.work_order_id === woId; })[0];
       if (!w) return;
-      s.panel = null; s.out = 'Placing ' + w.account_name + ' on ' + s.day.route_date + ' with ' + s.day.technician + '...'; s.bad = false;
+      s.panel = null; s.out = 'Placing ' + w.account_name + ' on ' + dayWord(s.day) + ' with ' + s.day.technician + '...'; s.bad = false;
       this.renderSitPanel(); this.renderSitOut();
       var r = await this.rpc(FACE.drag.function, this.doorBody(w, s.day, SILENT_REASON, null));
       if (!this.sitting || this.sitting !== s) return;
@@ -1560,7 +1789,7 @@
         await this.loadSitting();
       } else if (r.exception) {
         s.out = null; s.panel = { wo: w, cause: r.words, out: null, bad: false };
-        this.renderSitOut(); this.renderSitPanel();
+        this.renderSitOut(); this.renderSitPanel(); this.renderSitPool();   // 2.1.0: the origin row grays while the panel stands
         var p = this.sheetQ('[data-bd-sit-panel]'); if (p && p.scrollIntoView) p.scrollIntoView({ block: 'nearest' });
       } else {
         s.out = 'Refused: ' + r.words; s.bad = true;
@@ -1574,34 +1803,37 @@
       if (!s.panel) { host.hidden = true; return; }
       host.hidden = false;
       var w = s.panel.wo, d = s.day;
-      host.appendChild(el('p', 'bd-panel-h', 'Place ' + w.account_name + ': ' + w.service + ' on ' + d.weekday + ' ' + d.route_date + ' with ' + d.technician + ' -- the exception'));
+      // 2.1.0 (his walk, card 46): THE WORDS -- "Add to route", "Cancel"; NO REASON PRESELECTED ("system learning is vital
+      // here"): the button stays dark until a reason is chosen; the origin row grays (renderSitPool) and this panel is the one lit thing
+      host.appendChild(el('p', 'bd-panel-h', 'Add ' + w.account_name + ' to this route: ' + dayWord(d) + ' with ' + d.technician + ' -- the door asks'));
       var cause = el('p', 'bd-panel-cause', 'The door says: ' + (s.panel.cause || 'outside the criteria'));
       cause.setAttribute('data-bd-cause', '1');
       host.appendChild(cause);
-      host.appendChild(el('label', null, 'Why this day (the human\'s reason)'));
+      host.appendChild(el('label', null, 'Why this day'));
       var sel = document.createElement('select'); sel.setAttribute('data-bd-reason', '1');
-      var seen = {};
+      var o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'choose a reason'; o0.selected = true; sel.appendChild(o0);
+      var seen = {}, offered = 0;
       this.reasons.forEach(function (rs) {
         if (!rs.code || seen[rs.code] || rs.code === SILENT_REASON) return;
-        seen[rs.code] = true;
+        seen[rs.code] = true; offered++;
         var o = document.createElement('option'); o.value = rs.code; o.textContent = rs.meaning || rs.code;
-        if (rs.code === FACE.drag.default_reason) o.selected = true;
         sel.appendChild(o);
       });
-      if (!sel.childNodes.length) { var o0 = document.createElement('option'); o0.value = ''; o0.textContent = '(no reasons stand -- ' + FACE.reasons + ' is empty)'; sel.appendChild(o0); }
+      if (!offered) { o0.textContent = '(no reasons stand -- ' + FACE.reasons + ' is empty)'; }
       host.appendChild(sel);
       host.appendChild(el('label', null, 'A note (with Other, or whenever it helps)'));
       var note = document.createElement('textarea'); note.rows = 2; note.setAttribute('data-bd-note', '1');
       host.appendChild(note);
       var acts = el('div', 'bd-panel-acts');
-      var place = el('button', 'bd-btn bd-btn--primary', 'Place on this day');
-      place.type = 'button'; place.setAttribute('data-bd-place', '1');
+      var place = el('button', 'bd-btn bd-btn--primary', 'Add to route');
+      place.type = 'button'; place.setAttribute('data-bd-place', '1'); place.disabled = true; place.title = 'dark until a reason is chosen';
       place.addEventListener('click', function () { self.sitAnswer(sel.value, note.value); });
-      var cancel = el('button', 'bd-btn bd-btn--ghost', 'Not this day');
-      cancel.type = 'button'; cancel.setAttribute('data-bd-cancel', '1');
-      cancel.addEventListener('click', function () { s.panel = null; self.renderSitPanel(); });
+      sel.addEventListener('change', function () { place.disabled = !sel.value; place.title = sel.value ? 'a hand placement through the door, your reason on the run row' : 'dark until a reason is chosen'; });
+      var cancel = el('button', 'bd-btn bd-btn--ghost', 'Cancel');
+      cancel.type = 'button'; cancel.setAttribute('data-bd-cancel', '1'); cancel.title = 'the card stays in the pool; nothing written';
+      cancel.addEventListener('click', function () { s.panel = null; self.renderSitPanel(); self.renderSitPool(); });
       acts.appendChild(place); acts.appendChild(cancel);
-      acts.appendChild(el('span', 'bd-muted', 'a hand placement, kind override, with its delta; your reason rides the run row for the Performance module'));
+      acts.appendChild(el('span', 'bd-muted', 'your reason rides the run row for the Performance module'));
       host.appendChild(acts);
       var out = el('div', 'bd-panel-out' + (s.panel.bad ? ' is-bad' : ''), s.panel.out || '');
       out.setAttribute('data-bd-panel-out', '1');
@@ -1611,6 +1843,7 @@
     // the human ANSWERS the exception with a reason
     async sitAnswer(reason, note) {
       var s = this.sitting; if (!s || !s.panel) return;
+      if (!reason) { s.panel.out = 'choose a reason first -- no reason is preselected'; s.panel.bad = true; this.renderSitPanel(); return; }
       var w = s.panel.wo;
       s.panel.out = 'Placing...'; s.panel.bad = false; this.renderSitPanel();
       var r = await this.rpc(FACE.drag.function, this.doorBody(w, s.day, reason, note));
@@ -1625,50 +1858,65 @@
         this.renderSitPanel();
       }
     }
-    // THE FOOTER'S BUTTONS in the controls' own colours: RELEASE (ghost) or the stamp; CANCEL (ghost); SAVE (primary)
+    // 2.1.0 (his calls 2-3): THREE LEVELS IN THREE PLACES, in the route header's right -- THE ROUTE's menu (Release, or the
+    // stamp; the later route acts take their slot here), THE SITTING's Cancel and Save GRAY until an act is written or an order
+    // proposed, a close mark for a sheet with nothing to keep; the footer retired. The colours the controls' own (s51 card 33).
+    // 2.2.0 (card 60, his note 2026-09-17): THE HEADER'S THREE ACTS -- "the Route/Release drop-down activates on form load but
+    // deactivates if ANY changes are made. The Cancel button is always active and returns the user to the previous screen. The
+    // Save button activates if there are ANY changes to the route stop ordering, or additions/subtractions." The close mark
+    // retired (Cancel is the way out); the colours the controls' own (s51 card 33).
     renderSitFoot() {
-      var self = this, s = this.sitting, d = s.day; var host = this.sheetQ('[data-bd-sit="foot"]'); if (!host) return; clear(host);
-      var note = el('span', 'bd-sheet-note', s.loading ? '' : (s.acts ? plural(s.acts, 'act') + ' written through the door this sitting' : 'nothing written yet this sitting')); note.setAttribute('data-bd-sit-acts', String(s.acts));
-      host.appendChild(note);
-      if (this.isReleased(d)) { var st = el('span', 'bd-receipt', 'released ' + (d.released && d.released !== '-' ? d.released : '')); st.setAttribute('data-bd-sit-released', '1'); host.appendChild(st); }
+      var self = this, s = this.sitting, d = s.day; var host = this.sheetQ('[data-bd-sit="acts"]'); if (!host) return; clear(host);
+      var changed = s.acts > 0 || !!s.proposal;
+      var menu = document.createElement('details'); menu.className = 'bd-route-menu' + (changed ? ' bd-route-menu--off' : ''); menu.setAttribute('data-bd-route-menu', changed ? 'off' : 'on');
+      var sum = document.createElement('summary'); sum.className = 'bd-btn bd-btn--ghost bd-route-sum'; sum.textContent = 'Route'; menu.appendChild(sum);
+      sum.title = changed ? 'gray while your changes stand -- Save or Cancel first' : 'the acts on the whole route';
+      if (changed) { sum.setAttribute('aria-disabled', 'true'); sum.addEventListener('click', function (e) { e.preventDefault(); menu.open = false; }); }
+      var items = el('div', 'bd-route-items');
+      if (this.isReleased(d)) { var st = el('span', 'bd-receipt', 'released ' + (d.released && d.released !== '-' ? mmdd(d.released) : '')); st.setAttribute('data-bd-sit-released', '1'); items.appendChild(st); }
       else if (FACE.release && this.may(FACE.release.verb) && d.state === 'draft') {
         var rel = el('button', 'bd-btn bd-btn--ghost', 'Release'); rel.type = 'button'; rel.setAttribute('data-bd-sit-release', '1');
         rel.title = 'this schedule through ' + FACE.release.function + ' -- sequenced first when no order stands, the promises written';
-        rel.addEventListener('click', function () { self.sitRelease(); });
-        host.appendChild(rel);
-      }
-      if (SITTING && SITTING.cancel) {
-        var can = el('button', 'bd-btn bd-btn--ghost', 'Cancel'); can.type = 'button'; can.setAttribute('data-bd-sit-cancel', '1');
-        can.title = 'every run on this schedule since the sitting opened, undone newest first in one act (' + SITTING.cancel.function + ')';
-        can.addEventListener('click', function () { self.sitCancel(); });
-        host.appendChild(can);
-      }
-      var save = el('button', 'bd-btn bd-btn--primary', 'Save'); save.type = 'button'; save.setAttribute('data-bd-sit-save', '1');
-      save.title = s.proposal && MAP_ACCEPT ? 'accepts your order through ' + MAP_ACCEPT.function + ' and closes the sitting' : 'closes the sitting; every act was written through its door as you worked';
+        rel.addEventListener('click', function () { menu.open = false; self.sitRelease(); });
+        items.appendChild(rel);
+      } else items.appendChild(el('span', 'bd-muted', 'no route act open to your role on this day'));
+      menu.appendChild(items);
+      host.appendChild(menu);
+      var can = el('button', 'bd-btn bd-btn--ghost', 'Cancel'); can.type = 'button'; can.setAttribute('data-bd-sit-cancel', '1'); can.disabled = false;
+      can.title = changed && SITTING && SITTING.cancel ? 'every run on this schedule since the sitting opened, undone newest first in one act (' + SITTING.cancel.function + '); back to the board' : 'back to the board' + (changed ? ' -- what was written stands' : '');
+      can.addEventListener('click', function () { self.sitCancel(); });
+      host.appendChild(can);
+      var save = el('button', 'bd-btn bd-btn--primary', 'Save'); save.type = 'button'; save.setAttribute('data-bd-sit-save', '1'); save.disabled = !changed;
+      save.title = s.proposal && MAP_ACCEPT ? 'accepts your order through ' + MAP_ACCEPT.function + ' and closes the sitting' : (changed ? 'closes the sitting; every act was written through its door as you worked' : 'gray until a change -- a drop, an order, an unassign');
       if (s.proposal) save.setAttribute('data-bd-proposal', String(s.proposal.run));
       save.addEventListener('click', function () { self.sitSave(); });
       host.appendChild(save);
+      var note = el('span', 'bd-sheet-note', s.loading ? '' : (s.acts ? plural(s.acts, 'act') + ' written' : '')); note.setAttribute('data-bd-sit-acts', String(s.acts)); note.title = 'written through the door this sitting';
+      host.appendChild(note);
     }
     async sitRelease() {
       var s = this.sitting; if (!s) return;
       // act (c): a pending hand order is accepted before the release, so the promises carry her order
       var acc = await this.acceptProposal();
       if (acc === false || !this.sitting || this.sitting !== s) return;
-      s.out = 'Releasing ' + s.day.technician + '\'s ' + s.day.route_date + (acc ? ' with your order accepted' : '') + '...'; s.bad = false; this.renderSitOut();
+      s.out = 'Releasing ' + s.day.technician + '\'s ' + dayWord(s.day) + (acc ? ' with your order accepted' : '') + '...'; s.bad = false; this.renderSitOut();
       var r = await this.rpc(FACE.release.function, { p_route: s.route, p_by: this.byWord() });
       if (!this.sitting || this.sitting !== s) return;
       if (r.ok) {
         var n = typeof r.data === 'number' ? r.data : (r.data && r.data.promises);
-        s.out = 'Released ' + s.day.technician + '\'s ' + s.day.route_date + (n !== undefined && n !== null ? ' -- ' + plural(n, 'promise') + ' written' : '') + '.'; s.bad = false;
+        s.out = 'Released ' + s.day.technician + '\'s ' + dayWord(s.day) + (n !== undefined && n !== null ? ' -- ' + plural(n, 'promise') + ' written' : '') + '.'; s.bad = false;
         await this.loadSitting();
       } else { s.out = 'Release refused: ' + r.words; s.bad = true; this.renderSitOut(); }
     }
     async sitCancel() {
-      var s = this.sitting; if (!s || !SITTING || !SITTING.cancel) return;
+      var s = this.sitting; if (!s) return;
+      // 2.2.0 (card 60): Cancel is always the way back -- with nothing written it simply closes; without a cancel door it closes with what stands
+      var changed = s.acts > 0 || !!s.proposal;
+      if (!changed || !SITTING || !SITTING.cancel) { await this.closeSitting('Closed: ' + s.day.technician + '\'s ' + dayWord(s.day) + ' -- ' + (s.acts ? plural(s.acts, 'act') + ' written through the door this sitting stand' : 'nothing written') + (s.proposal ? '; your order stays a proposal, not accepted' : '') + '.'); return; }
       s.out = 'Undoing this sitting\'s runs...'; s.bad = false; this.renderSitOut();
       var r = await this.rpc(SITTING.cancel.function, { p_route: s.route, p_stamp: s.stamp, p_by: this.byWord() });
       if (!this.sitting || this.sitting !== s) return;
-      if (r.ok) { var n = typeof r.data === 'number' ? r.data : 0; await this.closeSitting('Cancelled: ' + plural(n, 'run') + ' on ' + s.day.technician + '\'s ' + s.day.route_date + ' undone in one act, newest first -- the placements back to the pool.'); }
+      if (r.ok) { var n = typeof r.data === 'number' ? r.data : 0; await this.closeSitting('Cancelled: ' + plural(n, 'run') + ' on ' + s.day.technician + '\'s ' + dayWord(s.day) + ' undone in one act, newest first -- the placements back to the pool.'); }
       else { s.out = 'Cancel refused: ' + r.words + ' -- the sitting stays open; every act so far stands as written.'; s.bad = true; this.renderSitOut(); }
     }
     async sitSave() {
@@ -1676,7 +1924,7 @@
       // act (c): SAVE accepts the pending hand order through its door; a refusal keeps the sitting open with the door's words
       var acc = await this.acceptProposal();
       if (acc === false || !this.sitting || this.sitting !== s) return;
-      await this.closeSitting('Saved: ' + s.day.technician + '\'s ' + s.day.route_date + ' -- ' + plural(s.acts, 'act') + ' written through the door this sitting' + (acc ? '; your order accepted (the stops re-sequenced, the drive and the flags re-read)' : '') + '; the card and the heading re-read.');
+      await this.closeSitting('Saved: ' + s.day.technician + '\'s ' + dayWord(s.day) + ' -- ' + plural(s.acts, 'act') + ' written through the door this sitting' + (acc ? '; your order accepted (the stops re-sequenced, the drive and the flags re-read)' : '') + '; the card and the heading re-read.');
     }
     // the sheet closes; the board's card and the heading's totals RE-READ (his item 8)
     async closeSitting(note) {

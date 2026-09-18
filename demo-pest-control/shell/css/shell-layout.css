@@ -71,6 +71,21 @@ cds-side-nav {
     width: 100%;
 }
 
+/* ── the bare page (SJ s52 leg 12, the Details sheet) ────────────────────────────────────────
+   ?bare=1 on the page: no header, no side-nav, the content from the top edge -- the page as another
+   page frames it. The same tokens, the same content region; only the chrome is gone. */
+body[data-shell-bare] cds-header,
+body[data-shell-bare] cds-side-nav {
+    display: none !important;
+}
+
+body[data-shell-bare] .app-content {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 0.75rem 1rem 1.5rem;
+    min-height: 100vh;
+}
+
 /* ── the persona switcher ────────────────────────────────────────────────────────────────────
    Ours, not Carbon's -- Carbon has no opinion about personas. Styled to sit in the header without
    pretending to be a Carbon component, because it is a development affordance and looking
