@@ -1218,6 +1218,11 @@
         var lh = el('div', 'bd-sheet-listh'); lh.setAttribute('data-bd-sit', 'listh'); list.appendChild(lh);
         var out = el('div', 'bd-sheet-out'); out.setAttribute('data-bd-sit-out', '1'); list.appendChild(out);
         var panel = el('section', 'bd-panel'); panel.setAttribute('data-bd-sit-panel', '1'); panel.hidden = true; list.appendChild(panel);
+        // 2.3.0 (his walk on DEMO 2026-09-19, the second fault): the panel stands INSIDE the asked stop's row while an unassign
+        // asks, and the row's own click toggles the open line and redraws the list -- so every click on the select or the note
+        // destroyed the panel under the hand (the machine's chair set values and never clicked; card 73's class). A click or a
+        // press inside the panel is the panel's own and goes no further up.
+        ['click', 'mousedown', 'pointerdown', 'dragstart'].forEach(function (evName) { panel.addEventListener(evName, function (e) { e.stopPropagation(); }); });
         var ol = el('ol', 'bd-stops'); ol.setAttribute('data-bd-stops', '1'); list.appendChild(ol);
         // THE LIST IS THE DROP TARGET: the cost line reads as the card crosses it; the drop goes through the door
         if (this.may(FACE.drag.verb)) {
