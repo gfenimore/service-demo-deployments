@@ -1381,6 +1381,7 @@
       // back to its standing place above the list before the rows are redrawn (the drop's panel stands there)
       var panelHost = this.sheetQ('[data-bd-sit-panel]');
       if (panelHost && panelHost.parentNode !== host.parentNode) host.parentNode.insertBefore(panelHost, host);
+      if (panelHost) panelHost.classList.remove('bd-panel--row');   // the row's class goes on again below, for the asked row alone
       clear(host);
       if (!s.stops.length && !s.loading) { var q = el('li', 'bd-quiet', 'no stop stands on this schedule -- the pool beside is the first drop'); q.setAttribute('data-bd-stops-empty', '1'); host.appendChild(q); return; }
       // act (c): in SEQUENCE the rows stand in HER order (the proposal's, or the rows' own), numbered as she has them; the eta
@@ -1438,7 +1439,9 @@
         // 2.2.0 (THE LEAN OPEN, card 54): a click opens ONE line -- Details; no facts, no history
         if (s.openStop === st.route_stop_id) self.fillDetailsLine(li, st.account_id, st.service_location_id, st.account || st.place, 'stop', st.route_stop_id);
         // 2.3.0 (leg 10): the asked stop carries the panel under its lines
-        if (asked && panelHost) { panelHost.classList.add('bd-panel--row'); li.appendChild(panelHost); } else if (panelHost) panelHost.classList.remove('bd-panel--row');
+        // (his walk on DEMO 2026-09-19: every later row's else-branch stripped this class again -- the panel fell into the first
+        //  column, one word a line; the class is cleared once above the loop, never here)
+        if (asked && panelHost) { panelHost.classList.add('bd-panel--row'); li.appendChild(panelHost); }
         host.appendChild(li);
       });
     }

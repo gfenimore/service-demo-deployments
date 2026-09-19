@@ -196,7 +196,9 @@
 /* 2.3.0 (s52 leg 10): THE UNASSIGN -- the origin row grays while the panel asks about it; the panel stands under the row; the
    returned card's chip and stripe in blue, not red (nothing is wrong with the card: a hand took it off, with a reason) */
 .bd-stop--asked, .bd-stop--asked .bd-stop-place, .bd-stop--asked .bd-stop-work, .bd-stop--asked .bd-stop-seq, .bd-stop--asked .bd-stop-eta { color: #a8a8a8; }
-.bd-stop .bd-panel--row { grid-column: 1 / 5; margin: 0.4rem 0 0.2rem; }
+.bd-stop .bd-panel--row { grid-column: 1 / 5; margin: 0.4rem 0 0.2rem; cursor: default; }
+/* the panel is the one lit thing: the asked row's gray stops at the panel's edge (his walk on DEMO 2026-09-19) */
+.bd-stop--asked .bd-panel--row, .bd-stop--asked .bd-panel--row .bd-panel-h { color: #161616; }
 .bd-unassign-link { margin-left: 0.9rem; }
 .bd-pool-row--off { box-shadow: inset 3px 0 0 #0f62fe; }
 .bd-refusal--off { color: #0c447c; background: #e6f1fb; }
