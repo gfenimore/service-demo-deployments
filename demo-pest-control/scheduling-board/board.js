@@ -1,5 +1,5 @@
 /**
- * Route Board - Generated Blueprint UI (THE BOARD, board-001 2.2.0 -- THE PLANNING JOB; THE SITTING AS A ROUTE-BUILDING TOOL)
+ * Route Board - Generated Blueprint UI (THE BOARD, board-001 2.3.0 -- THE PLANNING JOB; UNASSIGN A STOP, WITH A REASON)
  *
  * 1.0.0 (SJ s51 rung 5a, the second sitting, 2026-09-08): his diver board of 2025 thrown on the flow paper as
  * reading C -- "WE produce proposed routes/stops, and the users are only dealing with non-happy-path scenarios" --
@@ -87,6 +87,17 @@
  * ROUTE first by cost, a cut line, the rest by buffer with the refusal's word -- Q12); THE HEADER'S THREE ACTS (card 60:
  * the Route menu lit at the open and gray while unsaved changes stand; Cancel always lit, the way back to the board, the
  * close mark retired; Save gray until any change and lit after); the proposal line beside Pool | Map until Save.
+ *
+ * 2.3.0 (SJ s52 leg 10, 2026-09-19; UNASSIGN A STOP, WITH A REASON -- Q7 RULED (a) 2026-09-15, his added MVP scenario:
+ * "on the tech tearsheet, we must have the ability to unassign a W.O. (stop), with a reason"; the mockup first at his eye;
+ * Q15 RULED (a)): on a DRAFT day the opened stop line reads "Details" and "Unassign" (THE LEAN OPEN kept: one line, two
+ * links; on a released day "Details" alone -- a promise is not undone, the recall is leg 8's); Unassign opens the panel IN
+ * THE SHEET UNDER THE ROW, the drop's twin ("Take <account> off this route: <day> with <technician>"; the client's own list
+ * from `unassign.reasons`, no reason preselected, OTHER with a note; "Unassign" dark until a reason is chosen; "Cancel";
+ * the origin row gray) and calls `unassign.function` (unassign_stop: the standing placement undone through the undo door,
+ * the reason on the undo row); the stops, the pool and the header re-read live, the act counted; the returned card reads
+ * "unassigned: <reason>" as its chip until the next sweep re-reasons it. THE UNASSIGN STANDS: the sitting's Cancel does not
+ * put it back (row 67's law: an undo is not undone); the way back is the drag from the pool. A 2.2.0 row draws no Unassign.
  * Blueprint ID: d4000000-0000-0000-0000-000000000001
  * Pattern: BOARD
  *
@@ -98,8 +109,8 @@
 (function() {
   'use strict';
 
-  var FACE = {"schema":"services_template","fit":"sitting_fit","map":{"order":{"verb":"sequence","function":"sequence_by_hand"},"accept":{"function":"accept_run"},"function":"schedule_geojson"},"acts":[{"verb":"place_week","route":"/operations/scheduling/:id/place-week","scope":"week","title":"Place the week"},{"verb":"sequence","route":"/operations/scheduling/:id/sequence","scope":"day","title":"Sequence"},{"verb":"release","route":"/operations/scheduling/:id/release","scope":"day","title":"Release"}],"days":"v_board_days","drag":{"verb":"place","confirm":"Place {account} on {date} with {technician}?","function":"place_on_day","silent_reason":"route_filter","default_reason":"customer_asked"},"open":{"function":"ensure_swept"},"pool":"work_order_due_list","unit":"stops","areas":"geographic_area","stops":"v_schedule_stops","zones":"service_zone","detail":"v_board_stop_detail","groups":"v_board_groups","period":{"key":"policy.planning_period","default":"week","function":"set_tenant_policy","lead_key":"policy.planning_lead"},"desktop":{"refusal":"The board is a desk's screen. Open it on a screen at least 1024 pixels wide.","min_width":1024},"details":"/accounts/:id?location=:location","reasons":"v_override_reasons","release":{"verb":"release","function":"release_schedule"},"sitting":{"cost":{"function":"drop_cost"},"cancel":{"function":"undo_since"}},"summary":[{"of":"room","flag":"overloaded by","label":"stops","values":[{"unit":"count","column":"placed"}]},{"of":"minimum","flag":"under the minimum","label":"revenue","values":[{"unit":"money","column":"revenue"}]},{"label":"mandated","values":[{"unit":"count","column":"mandated"}]},{"label":"drive","values":[{"unit":"mi","column":"drive_miles"},{"unit":"min","column":"drive_minutes"}]}],"registry":"tenant_property","unit_key":"capacity.unit","day_route":"/operations/scheduling/:id","days_route":"/operations/scheduling/days","exceptions":"v_board_exceptions","period_read":"v_board_period","pool_detail":"v_board_pool_detail","release_all":{"verb":"release","function":"release_day"},"weekdays_key":"calendar.operating_weekdays","account_route":"/accounts/:id","personas":{"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search"],"seated":false},"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"OPS_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":true}}};
-  var SKELETON = "<!-- Route Board -- THE BOARD (board-001 2.2.0; s52 leg 6 act (a): READING E, THE PLANNING JOB, passed whole at his word\n     2026-09-12 \"I think it looks great! I approve Reading E now\"; act (b): THE SITTING, a tearsheet over the board;\n     s52 leg 11: THE SITTING AFTER HIS WALK, the mockup first; s52 leg 12: THE SITTING AS A ROUTE-BUILDING TOOL).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written\n     by board.js FIRST, then filled. -->\n<div class=\"bd\" data-blueprint=\"d4000000-0000-0000-0000-000000000001\">\n  <header class=\"bd-head\">\n    <span class=\"bd-modes\" data-bd=\"modes\"></span>\n    <h2 class=\"bd-title\" data-bd=\"title\">The board</h2>\n    <span class=\"bd-sub\" data-bd=\"sub\"></span>\n    <span class=\"bd-acts\" data-bd=\"acts\"></span>\n  </header>\n  <nav class=\"bd-track\" data-bd=\"track\" aria-label=\"The days track\"></nav>\n  <div class=\"bd-jump\" data-bd=\"jump\"></div>\n  <p class=\"bd-verdict\" data-bd-out=\"1\" hidden></p>\n  <div class=\"bd-dayhead\" data-bd=\"dayhead\"></div>\n  <section class=\"bd-band\" data-bd=\"band\" aria-label=\"The exceptions\"></section>\n  <div class=\"bd-groups\" data-bd=\"groups\"></div>\n  <p class=\"bd-note\" data-bd=\"note\"></p>\n  <section class=\"bd-sitting\" data-bd=\"sitting\" aria-label=\"The sitting\" hidden></section>\n</div>\n";
+  var FACE = {"schema":"services_template","fit":"sitting_fit","map":{"order":{"verb":"sequence","function":"sequence_by_hand"},"accept":{"function":"accept_run"},"function":"schedule_geojson"},"acts":[{"verb":"place_week","route":"/operations/scheduling/:id/place-week","scope":"week","title":"Place the week"},{"verb":"sequence","route":"/operations/scheduling/:id/sequence","scope":"day","title":"Sequence"},{"verb":"release","route":"/operations/scheduling/:id/release","scope":"day","title":"Release"}],"days":"v_board_days","drag":{"verb":"place","confirm":"Place {account} on {date} with {technician}?","function":"place_on_day","silent_reason":"route_filter","default_reason":"customer_asked"},"open":{"function":"ensure_swept"},"pool":"work_order_due_list","unit":"stops","areas":"geographic_area","stops":"v_schedule_stops","zones":"service_zone","detail":"v_board_stop_detail","groups":"v_board_groups","period":{"key":"policy.planning_period","default":"week","function":"set_tenant_policy","lead_key":"policy.planning_lead"},"desktop":{"refusal":"The board is a desk's screen. Open it on a screen at least 1024 pixels wide.","min_width":1024},"details":"/accounts/:id?location=:location","reasons":"v_override_reasons","release":{"verb":"release","function":"release_schedule"},"sitting":{"cost":{"function":"drop_cost"},"cancel":{"function":"undo_since"}},"summary":[{"of":"room","flag":"overloaded by","label":"stops","values":[{"unit":"count","column":"placed"}]},{"of":"minimum","flag":"under the minimum","label":"revenue","values":[{"unit":"money","column":"revenue"}]},{"label":"mandated","values":[{"unit":"count","column":"mandated"}]},{"label":"drive","values":[{"unit":"mi","column":"drive_miles"},{"unit":"min","column":"drive_minutes"}]}],"registry":"tenant_property","unassign":{"verb":"place","reasons":"v_unassign_reasons","function":"unassign_stop"},"unit_key":"capacity.unit","day_route":"/operations/scheduling/:id","days_route":"/operations/scheduling/days","exceptions":"v_board_exceptions","period_read":"v_board_period","pool_detail":"v_board_pool_detail","release_all":{"verb":"release","function":"release_day"},"weekdays_key":"calendar.operating_weekdays","account_route":"/accounts/:id","personas":{"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search"],"seated":false},"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"OPS_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":["route_name","status","route_date","weekday","technician","template","state","room","placed","slack","minutes","released"],"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":true}}};
+  var SKELETON = "<!-- Route Board -- THE BOARD (board-001 2.3.0; s52 leg 10 UNASSIGN A STOP, WITH A REASON; s52 leg 6 act (a): READING E, THE PLANNING JOB, passed whole at his word\n     2026-09-12 \"I think it looks great! I approve Reading E now\"; act (b): THE SITTING, a tearsheet over the board;\n     s52 leg 11: THE SITTING AFTER HIS WALK, the mockup first; s52 leg 12: THE SITTING AS A ROUTE-BUILDING TOOL).\n     Generated; do not edit. The shell mounts into an EMPTY host (the s37 skeleton lesson): this markup is written\n     by board.js FIRST, then filled. -->\n<div class=\"bd\" data-blueprint=\"d4000000-0000-0000-0000-000000000001\">\n  <header class=\"bd-head\">\n    <span class=\"bd-modes\" data-bd=\"modes\"></span>\n    <h2 class=\"bd-title\" data-bd=\"title\">The board</h2>\n    <span class=\"bd-sub\" data-bd=\"sub\"></span>\n    <span class=\"bd-acts\" data-bd=\"acts\"></span>\n  </header>\n  <nav class=\"bd-track\" data-bd=\"track\" aria-label=\"The days track\"></nav>\n  <div class=\"bd-jump\" data-bd=\"jump\"></div>\n  <p class=\"bd-verdict\" data-bd-out=\"1\" hidden></p>\n  <div class=\"bd-dayhead\" data-bd=\"dayhead\"></div>\n  <section class=\"bd-band\" data-bd=\"band\" aria-label=\"The exceptions\"></section>\n  <div class=\"bd-groups\" data-bd=\"groups\"></div>\n  <p class=\"bd-note\" data-bd=\"note\"></p>\n  <section class=\"bd-sitting\" data-bd=\"sitting\" aria-label=\"The sitting\" hidden></section>\n</div>\n";
   // the keys a 1.x row does not carry read their defaults here -- honest until the rows land
   var REGISTRY = FACE.registry || 'tenant_property';
   var PERIOD = FACE.period || {};
@@ -125,6 +136,8 @@
   ];
   var FIT = FACE.fit || null;                              // 2.2.0 (card 58, Q12): the fit read; absent = the pool by buffer, no cost column
   var DETAILS = FACE.details || null;                      // 2.2.0 (card 55): the record's route framed in the pane; absent = no Details link
+  var UNASSIGN = FACE.unassign || null;                    // 2.3.0 (leg 10, Q7): the door and the reasons' read; absent = no Unassign on the row
+  var UNASSIGN_VERB = (UNASSIGN && UNASSIGN.verb) || (FACE.drag && FACE.drag.verb) || 'place';   // who may place a stop may take it off
   var RENDERER = (MAP && MAP.renderer) || {};              // the renderer's seams: Mapbox GL JS by default (Q4); MapLibre the swap
   var RENDERER_SCRIPT = RENDERER.script || 'https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js';
   var RENDERER_CSS = RENDERER.css || 'https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css';
@@ -229,6 +242,7 @@
       this.periodRead = null;       // the title's row (FACE.period_read)
       this.poolCount = null;        // the pool's count when no title row stands
       this.reasons = [];
+      this.unassignReasons = [];   // 2.3.0 (leg 10): the client's list for a stop coming off, read once
       this.zones = [];
       this.areas = [];
       this.closed = {};             // the seat's closed groups, kept on the desk
@@ -491,6 +505,12 @@
         var rs = await this.tenantOf(this.from(FACE.reasons).select('*'));   // the client's list, not every tenant's
         if (seq !== this._loadSeq) return;
         if (rs.error) this.fail(FACE.reasons, rs.error.message); else this.reasons = rs.data || [];
+      }
+      // 2.3.0 (leg 10): the reasons a stop comes off -- the client's own list (v_unassign_reasons), read once
+      if (UNASSIGN && !this.unassignReasons.length) {
+        var us = await this.tenantOf(this.from(UNASSIGN.reasons).select('*'));
+        if (seq !== this._loadSeq) return;
+        if (us.error) this.fail(UNASSIGN.reasons, us.error.message); else this.unassignReasons = us.data || [];
       }
       if (FACE.zones && !this.zones.length) { var z = await this.from(FACE.zones).select('*').order('zone_name'); if (!z.error) this.zones = z.data || []; }
       if (FACE.areas && !this.areas.length) { var a = await this.from(FACE.areas).select('*').order('name'); if (!a.error) this.areas = a.data || []; }
@@ -1222,7 +1242,7 @@
         body.appendChild(dPane);
         sheet.appendChild(body);
         // 2.1.0 (his call 2): the footer retired -- the route's and the sitting's acts stand in the header (renderSitFoot renders there)
-        sheet.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (s.details) { self.closeDetails(); } else if (s.panel) { s.panel = null; self.renderSitPanel(); } else if (s.openWo || s.openStop) { s.openWo = null; s.openStop = null; self.renderSitPool(); self.renderSitStops(); } } });
+        sheet.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (s.details) { self.closeDetails(); } else if (s.panel) { s.panel = null; self.renderSitPanel(); self.renderSitStops(); self.renderSitPool(); } else if (s.openWo || s.openStop) { s.openWo = null; s.openStop = null; self.renderSitPool(); self.renderSitStops(); } } });
         host.appendChild(sheet);
         s.sheet = sheet;
         this.placeSheet();
@@ -1356,7 +1376,12 @@
       host.textContent = s.out || ''; host.className = 'bd-sheet-out' + (s.bad ? ' is-bad' : '');
     }
     renderSitStops() {
-      var self = this, s = this.sitting; var host = this.sheetQ('[data-bd-stops]'); if (!host) return; clear(host);
+      var self = this, s = this.sitting; var host = this.sheetQ('[data-bd-stops]'); if (!host) return;
+      // 2.3.0 (leg 10): the panel stands UNDER THE ROW it asks about while an unassign is asked (the mockup at his eye); it goes
+      // back to its standing place above the list before the rows are redrawn (the drop's panel stands there)
+      var panelHost = this.sheetQ('[data-bd-sit-panel]');
+      if (panelHost && panelHost.parentNode !== host.parentNode) host.parentNode.insertBefore(panelHost, host);
+      clear(host);
       if (!s.stops.length && !s.loading) { var q = el('li', 'bd-quiet', 'no stop stands on this schedule -- the pool beside is the first drop'); q.setAttribute('data-bd-stops-empty', '1'); host.appendChild(q); return; }
       // act (c): in SEQUENCE the rows stand in HER order (the proposal's, or the rows' own), numbered as she has them; the eta
       // greys until the order is accepted (the door writes the eta at the acceptance); the rows drag and step
@@ -1370,8 +1395,11 @@
       host.setAttribute('data-bd-order', sequence ? rows.map(function (st) { return st.route_stop_id; }).join(',') : '');
       rows.forEach(function (st, i) {
         var seq = sequence ? i + 1 : st.seq;
-        var li = el('li', 'bd-stop' + (s.openStop === st.route_stop_id ? ' bd-stop--on' : '') + (canOrder ? ' bd-stop--order' : ''));
+        // 2.3.0 (leg 10): the origin row grays while the unassign panel asks about it -- the panel is the one lit thing (card 46's rule)
+        var asked = !!(s.panel && s.panel.unassign && s.panel.stop && s.panel.stop.route_stop_id === st.route_stop_id);
+        var li = el('li', 'bd-stop' + (s.openStop === st.route_stop_id ? ' bd-stop--on' : '') + (canOrder ? ' bd-stop--order' : '') + (asked ? ' bd-stop--asked' : ''));
         li.setAttribute('data-stop', st.route_stop_id); li.setAttribute('data-seq', String(seq));
+        if (asked) li.setAttribute('data-bd-origin', '1');
         li.appendChild(el('span', 'bd-stop-seq', String(seq)));
         // 2.1.0 (his calls 5-6): THE PROMISED WINDOW where the eta stood -- the stops read's window_text (the eta through the
         // client's grain; a dash before the day is sequenced; the technician sees ETAs after dispatch); a 2.0.0 row shows its eta
@@ -1409,6 +1437,8 @@
         li.addEventListener('click', function () { s.openStop = s.openStop === st.route_stop_id ? null : st.route_stop_id; self.renderSitStops(); self.markPin(); });
         // 2.2.0 (THE LEAN OPEN, card 54): a click opens ONE line -- Details; no facts, no history
         if (s.openStop === st.route_stop_id) self.fillDetailsLine(li, st.account_id, st.service_location_id, st.account || st.place, 'stop', st.route_stop_id);
+        // 2.3.0 (leg 10): the asked stop carries the panel under its lines
+        if (asked && panelHost) { panelHost.classList.add('bd-panel--row'); li.appendChild(panelHost); } else if (panelHost) panelHost.classList.remove('bd-panel--row');
         host.appendChild(li);
       });
     }
@@ -1639,6 +1669,15 @@
       } else {
         var q = el('span', 'bd-muted', DETAILS ? 'no place on this row -- no details' : 'no Details on this deployment'); q.setAttribute('data-bd-details-none', '1'); line.appendChild(q);
       }
+      // 2.3.0 (leg 10, Q7 (a); the mockup at his eye): on a DRAFT day a stop's line grows ONE link beside Details -- "Unassign";
+      // the role that may place a stop may take it off; a released day is a promise (no link; the recall is leg 8's)
+      if (kind === 'stop' && UNASSIGN && s && s.day && s.day.state === 'draft' && this.may(UNASSIGN_VERB)) {
+        var u = document.createElement('a'); u.className = 'bd-details-link bd-unassign-link'; u.textContent = 'Unassign'; u.href = '#';
+        u.setAttribute('data-bd-unassign-link', String(key));
+        u.title = 'take this stop off the route, with a reason; the work order goes back to the pool as ready';
+        u.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); self.askUnassign(key); });
+        line.appendChild(u);
+      }
       host.appendChild(line);
     }
     // 2.2.0 (card 55, his idea 2026-09-17): THE DETAILS SHEET -- the shell's own record page, framed BARE over the right pane,
@@ -1725,12 +1764,16 @@
         var on = s.inHand === w.work_order_id;
         var f = s.fit ? (s.fit[w.work_order_id] || null) : null;
         var refusal = f ? (f.accommodated ? null : (f.refusal || 'not accommodated')) : (w.late ? 'late' : null);
+        // 2.3.0 (leg 10): a card the scheduler took off a day reads WHY -- "unassigned: <reason>" -- until the next sweep re-reasons
+        // it (card 32's rule); a quiet chip, not the red one: nothing is wrong with the card
+        var off = (!refusal && /^unassigned: /.test(String(w.reason || ''))) ? String(w.reason).replace(/_/g, ' ') : null;
         // 2.2.0 (card 58): THE CUT LINE where the accommodated end and the rest begin
         if (s.fit && f && !f.accommodated && !cutDrawn) { cutDrawn = true; var cut = el('div', 'bd-pool-cut', 'not accommodated on this route · by buffer'); cut.setAttribute('data-bd-pool-cut', '1'); host.appendChild(cut); }
         // 2.1.0 (his call 46.2): the origin row grays while the panel asks about it -- the panel is the one lit thing
         var origin = !!(s.panel && s.panel.wo && s.panel.wo.work_order_id === w.work_order_id);
-        var card = el('div', 'bd-pool-row bd-card--p' + (refusal ? ' bd-pool-row--x' : '') + (on ? ' bd-pool-row--on' : '') + (origin ? ' bd-pool-row--asked' : '') + (s.fit && f && !f.accommodated ? ' bd-pool-row--far' : ''));
+        var card = el('div', 'bd-pool-row bd-card--p' + (refusal ? ' bd-pool-row--x' : '') + (off ? ' bd-pool-row--off' : '') + (on ? ' bd-pool-row--on' : '') + (origin ? ' bd-pool-row--asked' : '') + (s.fit && f && !f.accommodated ? ' bd-pool-row--far' : ''));
         card.setAttribute('data-wo', w.work_order_id);
+        card.setAttribute('data-bd-off', off || '');
         if (s.openWo === w.work_order_id) card.setAttribute('data-open', '1');
         if (on) card.setAttribute('data-in-hand', '1');
         if (origin) card.setAttribute('data-bd-origin', '1');
@@ -1747,6 +1790,7 @@
         var l2 = el('div', 'bd-pool-work'); l2.setAttribute('data-bd-line2', '1');
         l2.appendChild(document.createTextNode(w.service || '-'));
         if (refusal) { l2.appendChild(document.createTextNode(' · ')); var chip = el('em', 'bd-refusal', refusal); chip.setAttribute('data-bd-chip', refusal); chip.title = 'why this route does not accommodate it'; l2.appendChild(chip); }
+        else if (off) { l2.appendChild(document.createTextNode(' · ')); var offChip = el('em', 'bd-refusal bd-refusal--off', off); offChip.setAttribute('data-bd-chip', off); offChip.title = 'taken off a day by hand, with this reason; the next sweep re-reads it'; l2.appendChild(offChip); }
         card.appendChild(l2);
         // line 3: the place, only when it is not the account's name
         if (w.site && w.site !== '-' && w.site !== w.account_name) { var l3 = el('div', 'bd-pool-place3', w.site); l3.setAttribute('data-bd-line3', '1'); card.appendChild(l3); }
@@ -1802,6 +1846,7 @@
       clear(host);
       if (!s.panel) { host.hidden = true; return; }
       host.hidden = false;
+      if (s.panel.unassign) { this.renderUnassignPanel(host); return; }   // 2.3.0 (leg 10): the drop's twin, for a stop coming off
       var w = s.panel.wo, d = s.day;
       // 2.1.0 (his walk, card 46): THE WORDS -- "Add to route", "Cancel"; NO REASON PRESELECTED ("system learning is vital
       // here"): the button stays dark until a reason is chosen; the origin row grays (renderSitPool) and this panel is the one lit thing
@@ -1855,6 +1900,74 @@
         await this.loadSitting();
       } else {
         s.panel.out = (r.exception ? 'Still the exception: ' : 'Refused: ') + r.words; s.panel.bad = true;
+        this.renderSitPanel();
+      }
+    }
+    // 2.3.0 (s52 leg 10; Q7 RULED (a); the mockup at his eye 2026-09-19; Q15 RULED (a)): THE UNASSIGN PANEL -- the drop's twin,
+    // under the row it asks about: what happens and to whom, the client's own reasons (none preselected; Other wants a note),
+    // "Unassign" dark until a reason is chosen, "Cancel" beside it; the words say it writes at once and Cancel does not put it back
+    renderUnassignPanel(host) {
+      var self = this, s = this.sitting; var st = s.panel.stop, d = s.day;
+      host.appendChild(el('p', 'bd-panel-h', 'Take ' + (st.account || st.place || 'this stop') + ' off this route: ' + dayWord(d) + ' with ' + d.technician));
+      var cause = el('p', 'bd-panel-cause', 'The work order goes back to the pool as ready, with your reason on the record. It writes at once; to put it back, add it to a route from the pool.');
+      cause.setAttribute('data-bd-cause', 'unassign');
+      host.appendChild(cause);
+      host.appendChild(el('label', null, 'Why it comes off'));
+      var sel = document.createElement('select'); sel.setAttribute('data-bd-reason', '1');
+      var o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'choose a reason'; o0.selected = true; sel.appendChild(o0);
+      var seen = {}, offered = 0;
+      this.unassignReasons.forEach(function (rs) {
+        if (!rs.code || seen[rs.code]) return;
+        seen[rs.code] = true; offered++;
+        var o = document.createElement('option'); o.value = rs.code; o.textContent = rs.meaning || rs.code;
+        sel.appendChild(o);
+      });
+      if (!offered) { o0.textContent = '(no reasons stand -- ' + UNASSIGN.reasons + ' is empty)'; }
+      host.appendChild(sel);
+      host.appendChild(el('label', null, 'A note (with Other, or whenever it helps)'));
+      var note = document.createElement('textarea'); note.rows = 2; note.setAttribute('data-bd-note', '1');
+      host.appendChild(note);
+      var acts = el('div', 'bd-panel-acts');
+      var go = el('button', 'bd-btn bd-btn--primary', 'Unassign');
+      go.type = 'button'; go.setAttribute('data-bd-unassign', '1'); go.disabled = true; go.title = 'dark until a reason is chosen';
+      go.addEventListener('click', function () { self.sitUnassign(sel.value, note.value); });
+      sel.addEventListener('change', function () { go.disabled = !sel.value; go.title = sel.value ? 'the stop off the route through the door, your reason on the undo row' : 'dark until a reason is chosen'; });
+      var cancel = el('button', 'bd-btn bd-btn--ghost', 'Cancel');
+      cancel.type = 'button'; cancel.setAttribute('data-bd-cancel', '1'); cancel.title = 'the stop stays; nothing written';
+      cancel.addEventListener('click', function () { s.panel = null; self.renderSitPanel(); self.renderSitStops(); self.renderSitPool(); });
+      acts.appendChild(go); acts.appendChild(cancel);
+      acts.appendChild(el('span', 'bd-muted', 'once written it stands: the sitting\'s Cancel does not put it back; the drag from the pool does'));
+      host.appendChild(acts);
+      var out = el('div', 'bd-panel-out' + (s.panel.bad ? ' is-bad' : ''), s.panel.out || '');
+      out.setAttribute('data-bd-panel-out', '1');
+      out.hidden = !s.panel.out;
+      host.appendChild(out);
+    }
+    // the Unassign link on an opened stop asks: the panel under the row, the origin row gray
+    askUnassign(stopId) {
+      var s = this.sitting; if (!s || !UNASSIGN) return;
+      var st = null; s.stops.forEach(function (x) { if (x.route_stop_id === stopId) st = x; });
+      if (!st || !st.work_order_id) return;
+      s.panel = { unassign: true, stop: st, out: null, bad: false }; s.out = null; s.bad = false;
+      this.renderSitOut(); this.renderSitPanel(); this.renderSitStops(); this.renderSitPool();
+      var p = this.sheetQ('[data-bd-sit-panel]'); if (p && p.scrollIntoView) p.scrollIntoView({ block: 'nearest' });
+    }
+    // the reason chosen: ONE DOOR (unassign_stop) -- the stop off the day, the work order ready, the reason on the undo row;
+    // the sitting re-read live; the act counted (Save lit, the Route menu gray). It stands (Q15): Cancel does not put it back.
+    async sitUnassign(reason, note) {
+      var s = this.sitting; if (!s || !s.panel || !s.panel.unassign) return;
+      if (!reason) { s.panel.out = 'choose a reason first -- no reason is preselected'; s.panel.bad = true; this.renderSitPanel(); return; }
+      var st = s.panel.stop;
+      s.panel.out = 'Taking it off...'; s.panel.bad = false; this.renderSitPanel();
+      var r = await this.rpc(UNASSIGN.function, { p_work_order: st.work_order_id, p_by: this.byWord(), p_reason: reason, p_note: (note && note.trim()) ? note : null });
+      if (!this.sitting || this.sitting !== s) return;
+      if (r.ok) {
+        s.acts++; s.panel = null; s.openStop = null;
+        s.out = 'Unassigned ' + (st.account || st.place) + ' (' + String(reason).replace(/_/g, ' ') + ') -- off the day, back in the pool as ready; the undo row carries your reason. It stands: Cancel does not put it back.'; s.bad = false;
+        this.renderSitPanel();
+        await this.loadSitting();
+      } else {
+        s.panel.out = 'Refused: ' + r.words; s.panel.bad = true;
         this.renderSitPanel();
       }
     }

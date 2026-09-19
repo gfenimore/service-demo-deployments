@@ -1,4 +1,4 @@
-/* Route Board -- THE BOARD (board-001 2.2.0, THE PLANNING JOB; THE SITTING AS A ROUTE-BUILDING TOOL). Colour under his law: the bar in blue, LATE as one red
+/* Route Board -- THE BOARD (board-001 2.3.0, THE PLANNING JOB; UNASSIGN A STOP, WITH A REASON). Colour under his law: the bar in blue, LATE as one red
    word, a blue line where you are, blue text for what you set (FOLLOW THE BLUE); no washes ("I WAY overdid the color
    palette!", his verdict on the 2025 board); the flags in quiet words, no lights (his health cut 2026-09-11).
    Generated; do not edit. */
@@ -193,6 +193,13 @@
 .bd-details-close { padding: 0.15rem 0.5rem; }
 .bd-details-frame { flex: 1; width: 100%; border: 0; min-height: 12rem; background: #fff; }
 .bd-details-f { padding: 0.5rem 1rem; border-top: 1px solid #e0e0e0; font-size: 0.8125rem; }
+/* 2.3.0 (s52 leg 10): THE UNASSIGN -- the origin row grays while the panel asks about it; the panel stands under the row; the
+   returned card's chip and stripe in blue, not red (nothing is wrong with the card: a hand took it off, with a reason) */
+.bd-stop--asked, .bd-stop--asked .bd-stop-place, .bd-stop--asked .bd-stop-work, .bd-stop--asked .bd-stop-seq, .bd-stop--asked .bd-stop-eta { color: #a8a8a8; }
+.bd-stop .bd-panel--row { grid-column: 1 / 5; margin: 0.4rem 0 0.2rem; }
+.bd-unassign-link { margin-left: 0.9rem; }
+.bd-pool-row--off { box-shadow: inset 3px 0 0 #0f62fe; }
+.bd-refusal--off { color: #0c447c; background: #e6f1fb; }
 /* 2.2.0 (card 60): the Route menu gray while unsaved changes stand */
 .bd-route-menu--off .bd-route-sum { opacity: 0.5; cursor: not-allowed; }
 .bd-route-menu--off .bd-route-items { display: none; }
