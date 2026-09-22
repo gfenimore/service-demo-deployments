@@ -56,7 +56,8 @@
         //     pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY21jcWVqazh1MGdkaTJrb3NjcmttMDlkbyJ9.Mv7mFPvdY2EK9POGezqzOw -> a publishable (pk.*) Mapbox token, URL-restricted in the
         //                         Mapbox account; read by geocode_on_save forms.
         integrations: {
-            mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY210MDhua3F0MDIxNDJ3b2dkbXI1dWd0dCJ9.c76YTkNeZHQYHlH1LtPFgg'
+            mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY210MDhua3F0MDIxNDJ3b2dkbXI1dWd0dCJ9.c76YTkNeZHQYHlH1LtPFgg',
+            esriKey: 'AAPTavwuaxZ3ayUgcMKBPCcUyUA..U4C8SBk3jahBW2GSEHZRtEjCHa_HyxlbyanGREUhOjqWYnDMFdjfSdcvG7aS7dGDV45m0P1gJWhwCqVLisvf0sQws_6cYVQSFxY4WLIpfOZlEl_3veaWe0xvGyZQZ7ejXzYqW6u5XunwBDbYDSnQkh3QPVI4e3W-AYnH_UQSxhIrzpyRI7Fl2SINJr9Ho1T06TzBme-NN35r_uYVCSPgBtKwxbHYX4ZvEsr5XWQA9WXhyNLtsrU.AT1_0Ra25u2I'
         },
         user_id:   'system',
         role:      'admin',

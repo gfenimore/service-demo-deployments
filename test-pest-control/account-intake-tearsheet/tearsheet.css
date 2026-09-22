@@ -72,6 +72,11 @@
               box-shadow: 0 2px 8px rgba(0,0,0,.15); max-height: 220px; overflow: auto; }
 .ts-suggest li { padding: 7px 10px; font-size: 13px; cursor: pointer; }
 .ts-suggest li[aria-selected="true"], .ts-suggest li:hover { background: #edf5ff; }
+/* 3.2.0 THE ADDRESS SEAM: one quiet line under the place's grid -- on the map, or not yet */
+.ts-prov { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #525252; }
+.ts-prov-dot { width: 8px; height: 8px; border-radius: 50%; background: #a8a8a8; flex: none; }
+.ts-prov--on { color: #161616; }
+.ts-prov--on .ts-prov-dot { background: #24a148; }
 .ts-chip--click { cursor: pointer; }
 
 /* R2-6 (IN-5): the ONE people device gives its columns ROOM -- reach/role/notes stay legible */

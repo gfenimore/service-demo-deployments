@@ -7,6 +7,24 @@
  * Implements Pattern Interface Contract (JBA-003)
  * - mount(container) / unmount() / onContext(context) / getMetadata()
  *
+ * 3.2.0: THE ADDRESS SEAM (SJ s52 leg 13; Q18 a RULED ESRI 2026-09-21 on the test of 85
+ * real addresses; Q19 a: the key in the page, referrer-restricted; the mockup at his eye
+ * 2026-09-22, his calls 3 and 5). Every address rides Esri's suggest as it is typed (free,
+ * nothing stored) and the pick's STORED call (findAddressCandidates, forStorage=true -- the
+ * vendor's clause: results may be stored only when the request says so) puts the place ON
+ * THE MAP: the coordinate with its provenance (who, how exactly, when) rides the place's
+ * payload beside the address text and the door writes the five together. ONE quiet line
+ * under the place's grid says it: "On the map . rooftop . Esri . <date>" or "Not on the map
+ * yet -- pick the address from the list". Typing in the street after a pick takes the place
+ * off the map (his call 3); on Next, and before the act, a typed address with no pick is
+ * sent to Esri ONCE -- placed, it is on the map like a pick; silent, the place stays off the
+ * map and the door still admits it (v_places_off_the_map names it). The billing pick's
+ * coordinate rides the F14 copy into the place (his call 5); the account's own billing pair
+ * is never written. The search center and country come from v_intake_address_settings
+ * (policy.search_center, else the client's own mean). The deployment-seam key __ESRI_KEY__:
+ * no key = no list, never a block. Mapbox is gone from the intake; the map tiles are the
+ * board's business and untouched.
+ *
  * 3.1.2: THE SET'S PRICE (SJ s45, THE POUR SITTING; Q-AM). When billing is TOGETHER
  * the agreement carries the price OF THE SET (declared field `price` on the
  * agreement section; the field-kind law gives it the decimal device by name): the
@@ -57,6 +75,8 @@
   var ROSTERS_SEPARATE = SPINE && SPINE.rosters_separate === true;
   var TERM_MODES_UP_FRONT = SPINE && SPINE.terms_placement === 'modes_up_front_values_at_summary';
   var EDIT = TS.mode === 'edit';   // 3.1.0: the edit act (s44); absent = the create walk
+  // 3.2.0: the five that put a place ON THE MAP -- the coordinate with its provenance, written together by the door
+  var GEO_KEYS = ['latitude', 'longitude', 'geocode_provider', 'geocode_accuracy', 'geocoded_at'];
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -107,6 +127,7 @@
       this.agree = {};              // identity: description/start_date/end_date; values: frequency/billing_frequency
       this.roster = [];             // EVERY person in the act (one pool); _org marks roster vs place (IN-15 display split)
       this.places = [];             // each: {vals:{}, ties:[{pi,role,notes,is_primary}], items:[], sub, done}
+      this.billingGeo = {};         // 3.2.0: the billing pick's coordinate -- rides the F14 copy into the place, never the account row
       this.triage = '';             // '' | 'one' | 'many'  (F1 -- writes nothing)
       this.useBilling = '';         // '' | 'yes' | 'no'    (F14)
       this.cadMode = '';            // Q-M (a): the MODE is asked up front, '' until answered
@@ -219,6 +240,9 @@
           placeIndexById[l.service_location_id] = i;
           var vals = {};
           fam('places').fields.forEach(function (f) { if (l[f.field] !== undefined && l[f.field] !== null) vals[f.field] = l[f.field]; });
+          // 3.2.0: the standing coordinate and its provenance ride the edit -- an unchanged street keeps its place on the map
+          GEO_KEYS.forEach(function (k) { if (l[k] !== undefined && l[k] !== null) vals[k] = l[k]; });
+          if (vals.latitude !== undefined) vals._picked_street = vals.street_address || '';
           return { id: l.service_location_id, vals: vals, ties: [], items: [], sub: 'place', done: true };
         });
         var itemByTarget = {};
@@ -331,6 +355,7 @@
           }));
         }
       }
+      this.loadAddressSettings();   // 3.2.0: the search center and country for the address list (never a block)
       if (this.view !== 'front') this.renderAll();
     }
 
@@ -369,62 +394,171 @@
       }, 350);
     }
 
-    // ---- F16: every address rides the s39 Mapbox type-ahead (deployment-seam token) --
-    attachTypeahead(streetInput, targets) {
-      var self = this;
+    // ---- F16 -> 3.2.0 THE ADDRESS SEAM (SJ s52 leg 13): every address rides Esri's suggest as it is typed and the
+    // pick's STORED call puts the place ON THE MAP (the coordinate with its provenance); the key is the deployment
+    // seam __ESRI_KEY__, referrer-restricted in the Esri portal (Q19 a) -- no key = no list, never a block ---------
+    esriKey() {
       var ctx = window.AppContext || {};
-      var token = ctx.integrations && ctx.integrations.mapboxToken;
-      if (!token || /^__[A-Z_]+__$/.test(token)) return;   // no token, no type-ahead -- never a block
+      var key = ctx.integrations && ctx.integrations.esriKey;
+      if (!key || /^__[A-Z_]+__$/.test(key)) return null;
+      return key;
+    }
+    // v_intake_address_settings: the country and the client's search center (policy.search_center, else its own mean)
+    async loadAddressSettings() {
+      this.addrSettings = this.addrSettings || { country_code: 'USA', search_center: null };
+      this.client = this.client || this.dataClient();
+      if (!this.client) return;
+      try {
+        var tenant = (this.context && this.context.tenant_id) || ((window.AppContext || {}).tenant_id);
+        var r = await this.client.from('v_intake_address_settings').select('*').eq('tenant_id', tenant).limit(1);
+        if (!r.error && (r.data || []).length) this.addrSettings = r.data[0];
+      } catch (e) { /* no bias -- never a block */ }
+    }
+    esriUrl(op, params) {
+      var base = 'https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer/' + op;
+      var s = this.addrSettings || {};
+      var q = { f: 'json', token: this.esriKey(), countryCode: s.country_code || 'USA' };
+      if (s.search_center) q.location = s.search_center;
+      Object.keys(params).forEach(function (k) { if (params[k] !== undefined && params[k] !== null) q[k] = params[k]; });
+      return base + '?' + Object.keys(q).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(q[k]); }).join('&');
+    }
+    // THE STORED CALL: one candidate for a suggestion (text + magicKey) or for a typed address (text alone).
+    // forStorage=true is the vendor's clause -- the results may be kept only when the request says so.
+    async esriCandidate(text, magicKey) {
+      var url = this.esriUrl('findAddressCandidates', {
+        SingleLine: text, magicKey: magicKey || undefined, forStorage: 'true', maxLocations: 1,
+        outFields: 'Addr_type,AddNum,StAddr,StName,StType,StDir,City,RegionAbbr,Postal,Match_addr'
+      });
+      var res = await fetch(url);
+      if (!res.ok) return null;
+      var body = await res.json();
+      var c = (body.candidates || [])[0];
+      if (!c || !c.location || !c.attributes) return null;
+      var a = c.attributes;
+      // Esri's StAddr is the street line WHOLE, the house number inside it ("5301 Cortez Rd W" -- read from the service
+      // 2026-09-22 after his chair caught "716 716 44th St W"); AddNum + StName + StType + StDir only when StAddr is absent
+      var streetWhole = (a.StAddr || '').trim() || [a.AddNum, a.StName, a.StType, a.StDir].filter(function (x) { return x && String(x).trim(); }).map(function (x) { return String(x).trim(); }).join(' ');
+      return {
+        street: streetWhole,
+        city: a.City || '', state: a.RegionAbbr || '', zip: a.Postal || '',
+        latitude: c.location.y, longitude: c.location.x, accuracy: a.Addr_type || '', score: c.score
+      };
+    }
+    onMap(holder) {
+      return holder && holder.latitude !== undefined && holder.latitude !== null && holder.latitude !== ''
+        && holder.longitude !== undefined && holder.longitude !== null && holder.longitude !== '';
+    }
+    placeOnMap(holder, c, pickedStreet) {
+      holder.latitude = c.latitude; holder.longitude = c.longitude;
+      holder.geocode_provider = 'esri'; holder.geocode_accuracy = c.accuracy || 'esri';
+      holder.geocoded_at = new Date().toISOString();
+      holder._picked_street = pickedStreet !== undefined ? pickedStreet : c.street;
+      this.renderProv(holder);
+    }
+    takeOffMap(holder) {
+      GEO_KEYS.forEach(function (k) { delete holder[k]; });
+      delete holder._picked_street;
+      this.renderProv(holder);
+    }
+    // his call 3: on Next, and before the act, a typed address with no pick is sent to Esri ONCE -- placed, it is on
+    // the map like a pick; silent, the place stays off the map and the door still admits it
+    async ensurePlaced(holder) {
+      if (this.onMap(holder) || !this.esriKey() || !String(holder.street_address || '').trim()) return;
+      try {
+        var text = [holder.street_address, holder.city, [holder.state, holder.postal_code].filter(Boolean).join(' ')]
+          .filter(function (x) { return x && String(x).trim(); }).join(', ');
+        var c = await this.esriCandidate(text, null);
+        if (c && /^(PointAddress|Subaddress|StreetAddress|StreetAddressExt)$/.test(c.accuracy)) this.placeOnMap(holder, c, holder.street_address);
+      } catch (e) { /* Esri's silence leaves the place off the map */ }
+    }
+    async ensurePlacedAll() {
+      var self = this;
+      var live = this.places.filter(function (p) { return !self.placeIsEmpty(p); });
+      for (var i = 0; i < live.length; i++) await this.ensurePlaced(live[i].vals);
+    }
+    provWords(holder) {
+      if (!this.onMap(holder)) return { on: false, text: 'Not on the map yet -- pick the address from the list' };
+      var acc = holder.geocode_accuracy || '';
+      var how = /^(PointAddress|Subaddress)$/.test(acc) ? 'rooftop' : /^Street/.test(acc) ? 'the street'
+        : acc === 'hand' ? 'hand-placed' : acc === 'fixture' ? 'a fixture point' : acc;
+      var who = holder.geocode_provider === 'esri' ? 'Esri' : holder.geocode_provider === 'hand' ? 'by hand'
+        : holder.geocode_provider === 'seed' ? 'the story' : (holder.geocode_provider || '');
+      var when = holder.geocoded_at ? String(holder.geocoded_at).slice(0, 10) : '';
+      return { on: true, text: 'On the map \u00b7 ' + how + ' \u00b7 ' + who + (when ? ' \u00b7 ' + when : '') };
+    }
+    // ONE quiet line under the place's grid -- never a badge on the field
+    provLine(holder) {
+      var line = el('div', 'ts-prov');
+      line.dataset.ts = 'prov';
+      line.appendChild(el('span', 'ts-prov-dot'));
+      line.appendChild(el('span', 'ts-prov-text'));
+      holder._provEls = (holder._provEls || []).filter(function (n) { return n.isConnected; });
+      holder._provEls.push(line);
+      this.renderProv(holder);
+      return line;
+    }
+    renderProv(holder) {
+      var w = this.provWords(holder);
+      (holder._provEls || []).forEach(function (n) {
+        // a line is written whether or not its section is in the document yet (the walk builds sections before it mounts them)
+        n.className = 'ts-prov' + (w.on ? ' ts-prov--on' : '');
+        n.querySelector('.ts-prov-text').textContent = w.text;
+      });
+    }
+    attachTypeahead(streetInput, targets, holder) {
+      var self = this;
+      if (!this.esriKey()) return;   // no key, no list -- never a block
+      holder = holder || {};
       var list = el('ul', 'ts-suggest');
       list.setAttribute('role', 'listbox');
       list.hidden = true;
       streetInput.setAttribute('autocomplete', 'off');
       streetInput.parentNode.style.position = 'relative';
       streetInput.parentNode.appendChild(list);
-      var timer = null, active = -1, features = [];
-      var hide = function () { list.hidden = true; list.innerHTML = ''; active = -1; features = []; };
+      var timer = null, active = -1, rows = [], settling = false;
+      var hide = function () { list.hidden = true; list.innerHTML = ''; active = -1; rows = []; };
       var renderList = function () {
         clear(list);
-        features.forEach(function (f, i) {
-          var li = el('li', null, f.place_name || f.text || '');
+        rows.forEach(function (s, i) {
+          var li = el('li', null, s.text || '');
           li.setAttribute('role', 'option');
           if (i === active) li.setAttribute('aria-selected', 'true');
           li.dataset.i = String(i);
           list.appendChild(li);
         });
-        list.hidden = features.length === 0;
+        list.hidden = rows.length === 0;
       };
-      var pick = function (i) {
-        var f = features[i];
-        if (!f) return;
-        var parts = { street: (f.address ? f.address + ' ' : '') + (f.text || ''), city: '', state: '', zip: '' };
-        (f.context || []).forEach(function (c) {
-          var kind = String(c.id || '').split('.')[0];
-          if (kind === 'place') parts.city = c.text || '';
-          else if (kind === 'region') parts.state = (String(c.short_code || '').split('-').pop() || '').toUpperCase() || c.text || '';
-          else if (kind === 'postcode') parts.zip = c.text || '';
-        });
+      var pick = async function (i) {
+        var s = rows[i];
+        if (!s) return;
+        hide();
+        var c = null;
+        try { c = await self.esriCandidate(s.text, s.magicKey); } catch (e) { c = null; }
+        if (!c) { self.takeOffMap(holder); return; }
+        var parts = { street: c.street, city: c.city, state: c.state, zip: c.zip };
+        settling = true;
         ['street', 'city', 'state', 'zip'].forEach(function (k) {
           var input = targets[k];
           if (!input) return;
           input.value = parts[k] || '';
           input.dispatchEvent(new Event('input', { bubbles: true }));
         });
-        hide();
+        settling = false;
+        self.placeOnMap(holder, c);
       };
       streetInput.addEventListener('input', function () {
+        if (settling) return;
         if (timer) clearTimeout(timer);
         var q = streetInput.value.trim();
+        // typing in the street after a pick takes the place OFF the map (his call 3) -- no dialog, the line says so
+        if (self.onMap(holder) && q !== String(holder._picked_street || '').trim()) self.takeOffMap(holder);
         if (q.length < 3) { hide(); return; }
         timer = setTimeout(async function () {
           try {
-            var url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
-              encodeURIComponent(q) + '.json?autocomplete=true&country=us&types=address&limit=5&access_token=' +
-              encodeURIComponent(token);
-            var res = await fetch(url);
+            var res = await fetch(self.esriUrl('suggest', { text: q, category: 'Address', maxSuggestions: 5 }));
             if (!res.ok) { hide(); return; }
             var body = await res.json();
-            features = (body.features || []).filter(function (f) { return Array.isArray(f.center); });
+            rows = (body.suggestions || []).filter(function (s) { return s && s.magicKey && !s.isCollection; });
             active = -1; renderList();
           } catch (e) { hide(); }
         }, 300);
@@ -642,12 +776,12 @@
       var dup = el('div', 'ts-dup'); dup.dataset.ts = 'namedup';
       secA.appendChild(dup);
       host.appendChild(secA);
-      // F16: the billing address types ahead
+      // F16: the billing address types ahead (3.2.0: its pick's coordinate rides the F14 copy into the place, never the account row)
       var bs = grid.querySelector('[data-wf="billing_street_address"]');
       if (bs) this.attachTypeahead(bs, {
         street: bs, city: grid.querySelector('[data-wf="billing_city"]'),
         state: grid.querySelector('[data-wf="billing_state"]'), zip: grid.querySelector('[data-wf="billing_zip_code"]')
-      });
+      }, this.billingGeo);
 
       var secP = el('div', 'ts-sec');
       secP.appendChild(this.secHead(fam('people').title,
@@ -780,6 +914,12 @@
           p.vals.city = this.acct.billing_city || '';
           p.vals.state = this.acct.billing_state || '';
           p.vals.postal_code = this.acct.billing_zip_code || '';
+          // 3.2.0 (his call 5): the billing pick's coordinate and provenance ride the copy -- the place is born on the map
+          var bg = this.billingGeo || {};
+          if (this.onMap(bg)) {
+            GEO_KEYS.forEach(function (k) { if (bg[k] !== undefined && bg[k] !== null) p.vals[k] = bg[k]; });
+            p.vals._picked_street = p.vals.street_address;
+          }
           p.sub = 'people';   // F20: services still wait for done-with-people
         }
         this.places.push(p);
@@ -800,14 +940,16 @@
       var grid = el('div', 'ts-fields');
       L.fields.forEach(function (f) { grid.appendChild(self.labeled(f, p.vals)); });
       secL.appendChild(grid);
+      secL.appendChild(this.provLine(p.vals));   // 3.2.0: on the map, or not yet -- one quiet line under the grid
       var st = grid.querySelector('[data-wf="street_address"]');
       if (st) this.attachTypeahead(st, {
         street: st, city: grid.querySelector('[data-wf="city"]'),
         state: grid.querySelector('[data-wf="state"]'), zip: grid.querySelector('[data-wf="postal_code"]')
-      });
+      }, p.vals);
       if (!p.done && p.sub === 'place') {
         var nav1 = el('div', 'ts-stepnav');
-        nav1.appendChild(this.nextBtn('Next', function () { p.sub = 'people'; self.renderAll(); }));
+        // 3.2.0 (his call 3): Next sends a typed address with no pick to Esri once, then moves on either way
+        nav1.appendChild(this.nextBtn('Next', function () { self.ensurePlaced(p.vals).then(function () { p.sub = 'people'; self.renderAll(); }); }));
         secL.appendChild(nav1);
         host.appendChild(secL);
         return;
@@ -1067,7 +1209,7 @@
       if (bs2) this.attachTypeahead(bs2, {
         street: bs2, city: gridA.querySelector('[data-wf="billing_city"]'),
         state: gridA.querySelector('[data-wf="billing_state"]'), zip: gridA.querySelector('[data-wf="billing_zip_code"]')
-      });
+      }, this.billingGeo);
 
       // the agreement: identity + THE TERM VALUES (Q-M a -- the modes were set up front)
       var descF = fld('agreement', 'description');
@@ -1119,11 +1261,12 @@
         var gridP = el('div', 'ts-fields');
         L.fields.forEach(function (f) { gridP.appendChild(self.labeled(f, p.vals)); });
         s.appendChild(gridP);
+        s.appendChild(self.provLine(p.vals));   // 3.2.0: the Summary's place carries the line too
         var stp = gridP.querySelector('[data-wf="street_address"]');
         if (stp) self.attachTypeahead(stp, {
           street: stp, city: gridP.querySelector('[data-wf="city"]'),
           state: gridP.querySelector('[data-wf="state"]'), zip: gridP.querySelector('[data-wf="postal_code"]')
-        });
+        }, p.vals);
         if (self.simple()) {
           s.appendChild(el('p', 'ts-quiet', "the account's people keep this place -- the tie is implied"));
         } else {
@@ -1169,7 +1312,13 @@
           street_address: p.vals.street_address || '',
           city: p.vals.city || '', state: p.vals.state || '', postal_code: p.vals.postal_code || '',
           access_information: p.vals.access_information || null,
-          notes: p.vals.notes || null
+          notes: p.vals.notes || null,
+          // 3.2.0: the coordinate with its provenance, or nothing (the door writes the five together; absent = off the map)
+          latitude: self.onMap(p.vals) ? p.vals.latitude : null,
+          longitude: self.onMap(p.vals) ? p.vals.longitude : null,
+          geocode_provider: self.onMap(p.vals) ? (p.vals.geocode_provider || null) : null,
+          geocode_accuracy: self.onMap(p.vals) ? (p.vals.geocode_accuracy || null) : null,
+          geocoded_at: self.onMap(p.vals) ? (p.vals.geocoded_at || null) : null
         };
         if (EDIT && p.id) row.service_location_id = p.id;   // the row persists; absent = born by the act
         return row;
@@ -1250,6 +1399,7 @@
         btn.disabled = false;
         return this.failNote('no data client -- the shell did not provide supabase context');
       }
+      await this.ensurePlacedAll();   // 3.2.0 (his call 3): a typed address with no pick gets its one call before the act
       var r = await this.client.schema(TS.schema).rpc(TS.function, { payload: this.buildPayload() });
       btn.disabled = false;
       if (r.error) return this.failNote(TS.function + ': ' + r.error.message);
