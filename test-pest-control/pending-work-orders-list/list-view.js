@@ -195,20 +195,6 @@
 },
       // Every persona's gate for this entity. visibleFields() picks one by context.facet.
       personas: {
-  "FIELD_TECH": {
-    "fields": null,
-    "readonly": [],
-    "filters": {
-      "status": [
-        "active"
-      ]
-    },
-    "actions": [
-      "view",
-      "search"
-    ],
-    "seated": false
-  },
   "GENERIC_USER": {
     "fields": null,
     "readonly": [],
@@ -218,6 +204,22 @@
       "search",
       "sort",
       "filter"
+    ],
+    "seated": false
+  },
+  "FIELD_TECH": {
+    "fields": null,
+    "readonly": [],
+    "filters": {
+      "status": [
+        "active"
+      ]
+    },
+    "actions": [
+      "close_stop",
+      "search",
+      "view",
+      "run_day"
     ],
     "seated": false
   },

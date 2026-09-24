@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="../account-record-card/focus-page.css">
     <link rel="stylesheet" href="../cancel-work-order-gate/guarded-gate.css">
     <link rel="stylesheet" href="../defer-work-order-gate/guarded-gate.css">
+    <link rel="stylesheet" href="../my-day/technician.css">
     <link rel="stylesheet" href="../pending-work-orders-list/list-view.css">
     <link rel="stylesheet" href="../place-week-gate/guarded-gate.css">
     <link rel="stylesheet" href="../place-work-order-gate/guarded-gate.css">
@@ -80,6 +81,7 @@
         <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000030" hidden>
             <cds-side-nav-link href="#/operations/pending" data-feature-id="a0004000-0000-0000-0000-000000000032">Pending Work Orders</cds-side-nav-link>
             <cds-side-nav-link href="#/operations/scheduling" data-feature-id="a0004000-0000-0000-0000-000000000077">Scheduling</cds-side-nav-link>
+            <cds-side-nav-link href="#/operations/my-day" data-feature-id="a0004000-0000-0000-0000-000000000091">My day</cds-side-nav-link>
         </cds-side-nav-items>
         <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000040" hidden>
             <cds-side-nav-link href="#/administration" data-feature-id="a0004000-0000-0000-0000-000000000042">Policy and systems (a later leg)</cds-side-nav-link>
@@ -138,6 +140,7 @@
     <script src="../account-record-card/focus-page.js"></script>
     <script src="../cancel-work-order-gate/guarded-gate.js"></script>
     <script src="../defer-work-order-gate/guarded-gate.js"></script>
+    <script src="../my-day/technician.js"></script>
     <script src="../pending-work-orders-list/list-view.js"></script>
     <script src="../place-week-gate/guarded-gate.js"></script>
     <script src="../place-work-order-gate/guarded-gate.js"></script>
@@ -221,6 +224,17 @@
     "script": "../defer-work-order-gate/guarded-gate.js",
     "css": "../defer-work-order-gate/guarded-gate.css",
     "route": "/operations/pending/:id/defer"
+  },
+  {
+    "slug": "my-day",
+    "name": "My Day",
+    "zone": "main",
+    "order": 1,
+    "blueprintId": "d5000000-0000-0000-0000-000000000001",
+    "patternId": "technician-001",
+    "script": "../my-day/technician.js",
+    "css": "../my-day/technician.css",
+    "route": "/operations/my-day"
   },
   {
     "slug": "pending-work-orders-list",

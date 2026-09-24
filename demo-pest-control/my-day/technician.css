@@ -1,0 +1,113 @@
+/* Route Stop Technician -- THE TECHNICIAN'S DAY ON A PHONE (technician-001 1.0.0; SJ s52 leg 14 act (b)). The hand-held minimums
+   from the research, not the car-screen ones: 18 px for names, 15 to 16 px for everything read, 56 px buttons. Colour
+   under his law: blue for where you are and what you set, one red word for what is not done; no washes. One column,
+   built for 390 wide; a desk's screen reads it centred in a phone's column. Generated; do not edit. */
+.tp { max-width: 430px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; background: #fff; color: #161616; font-size: 16px; line-height: 1.4; }
+.tp[data-tech-busy] .tp-body { opacity: 0.6; }
+.tp-bar { padding: 10px 18px 8px; border-bottom: 1px solid #e0e0e0; }
+.tp-who { font-size: 12px; color: #6f6f6f; letter-spacing: 0.04em; text-transform: uppercase; }
+.tp-day { font-size: 20px; font-weight: 600; line-height: 1.2; }
+.tp-day span { color: #525252; font-weight: 400; }
+.tp-meta { font-size: 14px; color: #525252; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.tp-switch { display: inline-flex; border: 1px solid #c6c6c6; border-radius: 6px; overflow: hidden; font-size: 14px; font-weight: 500; margin: 10px 18px 0; }
+.tp-switch[hidden] { display: none; }
+.tp-switch button { padding: 8px 18px; min-width: 80px; text-align: center; background: #fff; border: 0; color: #525252; font: inherit; font-weight: 500; cursor: pointer; }
+.tp-switch button + button { border-left: 1px solid #c6c6c6; }
+.tp-switch button.is-on { background: #0f62fe; color: #fff; }
+.tp-alert { margin: 10px 18px 0; padding: 10px 12px; border: 2px solid #0f62fe; border-radius: 6px; background: #edf5ff; color: #0043ce; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.tp-alert[hidden] { display: none; }
+.tp-alert button { background: transparent; border: 0; color: #0043ce; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.tp-out { margin: 8px 18px 0; font-size: 14px; color: #525252; }
+.tp-out[hidden] { display: none; }
+.tp-out.is-bad { color: #da1e28; }
+.tp-body { flex: 1; padding: 6px 0 12px; }
+.tp-quiet { color: #6f6f6f; padding: 14px 18px; font-size: 15px; }
+.tp-error { color: #da1e28; padding: 10px 18px; font-size: 14px; }
+/* THE LIST: four things per stop -- the order, the name, the planned time, the service (D-A.2) */
+.tp-list { list-style: none; margin: 0; padding: 0; }
+.tp-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 2px 10px; padding: 12px 18px; border-bottom: 1px solid #e0e0e0; font-variant-numeric: tabular-nums; align-items: baseline; cursor: pointer; }
+.tp-row .tp-seq { font-family: ui-monospace, Consolas, monospace; font-size: 14px; color: #6f6f6f; }
+.tp-row .tp-name { font-size: 18px; font-weight: 600; line-height: 1.2; }
+.tp-row .tp-win { font-family: ui-monospace, Consolas, monospace; font-size: 14px; color: #525252; justify-self: end; }
+.tp-row .tp-l2 { grid-column: 2 / 4; font-size: 15px; color: #525252; }
+.tp-row .tp-tag { grid-column: 2 / 4; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #0043ce; font-weight: 600; }
+.tp-row--cur { background: #edf5ff; box-shadow: inset 4px 0 #0f62fe; }
+.tp-row--cur .tp-name, .tp-row--cur .tp-l2 { color: #0043ce; }
+.tp-row--done { color: #6f6f6f; padding: 8px 18px; background: #f4f4f4; }
+.tp-row--done .tp-name { font-size: 15px; font-weight: 500; color: #6f6f6f; }
+.tp-row--done .tp-win { color: #6f6f6f; }
+.tp-row--done .tp-seq::before { content: "\2713"; margin-right: 4px; }
+.tp-row--fold { background: #f4f4f4; color: #6f6f6f; }
+.tp-row--fold .tp-name { font-size: 15px; font-weight: 500; color: #6f6f6f; }
+.tp-row--fold.is-open { background: #fff; color: #161616; }
+.tp-row--fold.is-open .tp-name { color: #161616; }
+.tp-count { padding: 10px 18px; font-size: 14px; color: #6f6f6f; border-bottom: 1px solid #e0e0e0; }
+/* THE MAP (D-A.3): the pins numbered in the released order on the board's seam -- a blank ground with no key */
+.tp-map { margin: 10px 18px 0; height: 470px; border-radius: 8px; border: 1px solid #e0e0e0; background: #f4f4f4; position: relative; overflow: hidden; }
+.tp-map-ground { position: absolute; inset: 0; }
+.tp-map-you { position: absolute; left: 14px; bottom: 12px; font-size: 12px; color: #525252; background: #fff; padding: 3px 8px; border-radius: 4px; border: 1px solid #e0e0e0; z-index: 2; }
+.tp-pin { width: 24px; height: 24px; border-radius: 50%; background: #161616; color: #fff; font-family: ui-monospace, Consolas, monospace; font-size: 12px; font-weight: 500; display: grid; place-items: center; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.tp-pin--done { background: #8d8d8d; }
+.tp-pin--cur { background: #0f62fe; }
+.tp-map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* THE FOOT: the big buttons */
+.tp-foot { padding: 12px 18px 18px; display: grid; gap: 10px; border-top: 1px solid #e0e0e0; position: sticky; bottom: 0; background: #fff; }
+.tp-foot:empty { display: none; }
+.tp-big { display: block; width: 100%; height: 56px; border-radius: 8px; border: 1px solid #c6c6c6; background: #fff; color: #161616; font: inherit; font-size: 18px; font-weight: 600; cursor: pointer; }
+.tp-big:disabled { opacity: 0.5; cursor: not-allowed; }
+.tp-big--primary { background: #161616; color: #fff; border-color: #161616; }
+.tp-big--accent { background: #0f62fe; color: #fff; border-color: #0f62fe; }
+.tp-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tp-pair .tp-big { font-size: 16px; }
+/* THE STOP (S-1, S-3) */
+.tp-stop { padding: 14px 18px 0; display: grid; gap: 6px; }
+.tp-stop .tp-sname { font-size: 22px; font-weight: 600; line-height: 1.15; }
+.tp-stop .tp-addr { font-size: 16px; color: #525252; }
+.tp-stop .tp-svc { font-size: 16px; }
+.tp-stop .tp-dist { font-family: ui-monospace, Consolas, monospace; font-size: 14px; color: #525252; }
+.tp-back { background: transparent; border: 0; color: #0f62fe; font: inherit; font-size: 15px; padding: 8px 18px 0; text-align: left; cursor: pointer; }
+.tp-kv { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 15px; padding: 0 18px; margin-top: 10px; }
+.tp-kv i { font-style: normal; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #6f6f6f; padding-top: 3px; }
+.tp-kv b { font-weight: 600; }
+.tp-kv .tp-code { font-family: ui-monospace, Consolas, monospace; font-size: 20px; font-weight: 500; }
+.tp-kv .tp-warn { color: #750e13; background: #fff1f1; padding: 2px 6px; border-radius: 4px; display: inline-block; font-weight: 600; }
+.tp-sec { margin: 12px 18px 0; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #6f6f6f; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
+.tp-hist { margin: 0; padding: 0 18px; list-style: none; }
+.tp-hist li { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; padding: 8px 0; border-bottom: 1px solid #e0e0e0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.tp-hist .tp-d { font-family: ui-monospace, Consolas, monospace; color: #525252; }
+.tp-hist .tp-n { grid-column: 2; color: #6f6f6f; }
+.tp-hist .tp-n a { color: #0f62fe; }
+.tp-stamp { margin: 10px 18px 0; font-family: ui-monospace, Consolas, monospace; font-size: 13px; color: #6f6f6f; }
+.tp-stamp b { color: #525252; font-weight: 500; }
+/* THE NOTES and THE PHOTOS faces (sheet 4) */
+.tp-field { padding: 12px 18px 0; display: grid; gap: 6px; }
+.tp-field label { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #6f6f6f; }
+.tp-field textarea, .tp-field input, .tp-field select { width: 100%; font: inherit; font-size: 16px; color: #161616; background: #fff; border: 1px solid #c6c6c6; border-radius: 6px; padding: 10px; min-height: 48px; }
+.tp-field textarea { min-height: 60px; }
+.tp-small { height: 48px; font-size: 16px; }
+.tp-photos { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 18px 0; }
+.tp-thumb { width: 96px; height: 96px; border-radius: 6px; background: #f4f4f4; border: 1px solid #e0e0e0; object-fit: cover; display: grid; place-items: center; font-size: 11px; color: #6f6f6f; }
+/* THE CLOSE (sheet 5): every line done unless you say otherwise */
+.tp-lines { margin: 0; padding: 0 18px; list-style: none; }
+.tp-line { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 12px 0; border-bottom: 1px solid #e0e0e0; align-items: center; }
+.tp-line .tp-what { font-size: 17px; font-weight: 600; }
+.tp-line .tp-st { font-size: 14px; font-weight: 600; color: #0e6027; background: #defbe6; padding: 3px 10px; border-radius: 14px; }
+.tp-line .tp-st.is-x { color: #750e13; background: #fff1f1; }
+.tp-line .tp-exc { grid-column: 1 / 3; font-size: 14px; color: #525252; }
+.tp-line .tp-exc button { background: transparent; border: 0; color: #0f62fe; font: inherit; font-size: 14px; padding: 0; border-bottom: 1px solid #0f62fe; cursor: pointer; }
+.tp-panel { grid-column: 1 / 3; border: 2px solid #0f62fe; border-radius: 6px; padding: 10px 12px; background: #fff; display: grid; gap: 8px; margin-top: 6px; }
+.tp-panel label { font-size: 12px; color: #525252; }
+.tp-panel select, .tp-panel textarea, .tp-panel input { width: 100%; font: inherit; font-size: 16px; color: #161616; background: #fff; border: 1px solid #c6c6c6; border-radius: 6px; padding: 10px; min-height: 48px; }
+.tp-panel textarea { min-height: 64px; }
+.tp-panel .tp-hint { font-size: 13px; color: #525252; }
+.tp-seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid #c6c6c6; border-radius: 6px; overflow: hidden; font-size: 15px; font-weight: 500; }
+.tp-seg button { padding: 12px 0; text-align: center; background: #fff; border: 0; font: inherit; font-weight: 500; color: #525252; cursor: pointer; }
+.tp-seg button.is-on { background: #0f62fe; color: #fff; }
+/* THE DAY'S CLOSE (sheet 6) */
+.tp-sum { padding: 14px 18px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+.tp-sum div { border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
+.tp-sum i { display: block; font-style: normal; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #6f6f6f; }
+.tp-sum b { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.tp-sum small { display: block; font-size: 13px; color: #525252; }
+.tp-sum .tp-wide { grid-column: 1 / 3; }
+.tp-sum .tp-wide small { font-size: 14px; color: #161616; }
