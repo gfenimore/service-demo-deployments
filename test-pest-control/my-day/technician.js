@@ -1,5 +1,21 @@
 /**
- * Route Stop Technician - Generated Blueprint UI (THE TECHNICIAN'S DAY ON A PHONE, technician-001 1.0.0)
+ * Route Stop Technician - Generated Blueprint UI (THE TECHNICIAN'S DAY ON A PHONE, technician-001 1.1.0)
+ *
+ * 1.1.0 THE SECOND ROUND (SJ s52 leg 15, 2026-09-24; Q21, Q22, Q23 RULED (a) at his word; the mockup's round 4 approved
+ * "Sheets 4-6 approved, draw the leg"; the states paper's section 6; the rows and the doors at 20260924000002 and
+ * 20260924000003):
+ *   - ONE DOOR FOR WHAT THE TECHNICIAN SAYS (Q21): the service lines stand on the stop face from the moment he arrives,
+ *     each with "Something to report" -- the same panel the close sheet opens; Keep writes the note AT ONCE through the
+ *     door with the line named (add_stop_note p_item), the verdict and the reason ride Accept as before; the words on a
+ *     line are READ FROM THE ROWS (gap D: a phone that died mid-stop opens a close sheet that remembers); the Notes face
+ *     is RETIRED (Stop | Photos); a closed stop's lines take "Something to add", a note only (Q-T4).
+ *   - THE RAIN-OUT (Q23): Close my day returns the never-reached stops to the pool in the same act; the summary says so
+ *     before the stamp ("6 not reached ... back in the pool when you close") and after ("6 back in the pool"); a
+ *     closed day's never-reached row reads "back in the pool".
+ *   - REOPEN MY DAY (Q22): on the closed summary, until midnight of the day's own date (the phone's clock, Q20), the
+ *     door reopen_day with the phone's date; the face says what came back and what the office had placed; the day's
+ *     line carries both clocks ("closed 1:12, reopened 1:40").
+ *   - the photo resized on the phone before the upload (card 76): 1600 px on the long side, a record still.
  *
  * 1.0.0 (SJ s52 leg 14 act (b), 2026-09-23; the paper docs/working/s52-the-technicians-app.md -- the scenarios in HIS
  * words CLOSED 2026-09-22 "the rest stands", the mockup APPROVED in two rounds "Approve all! Go!"; the definition's
@@ -20,7 +36,9 @@
  *      the display under (today's on this stop, then the account's standing notes); Photos taken here; COLLECT FEES at
  *      the door -- captured now, WRITTEN at Accept with the stop, one act (7b): never cash; a check with its number; a
  *      card the processor's reference only; then the phone goes in the pocket.
- *   5. THE CLOSE (S-5): THE EXCEPTION PRINCIPLE, his law -- every line reads done; "Something to report" opens the line's
+ *   5. THE CLOSE (S-5): THE EXCEPTION PRINCIPLE, his law -- every line is done unless he says otherwise (the open stop draws NO
+ *      verdict chip on a clean line, his chair 2026-09-25: "done" is a word for the rows, read on the close sheet and the closed
+ *      stop; a not-done line reads its chip anywhere); "Something to report" opens the line's
  *      panel: NOT DONE with a reason he can attest at the curb (the client's list, other with a note) or a condition
  *      noted; what rides the close read back (the notes, the photo, the fees); Accept is stamp three; the not-done line
  *      returns to the pool as a new work order; the list re-reads and the next stop is current without a tap (S-6).
@@ -42,8 +60,8 @@
 (function() {
   'use strict';
 
-  var FACE = {"schema":"services_template","alert":{"poll_seconds":60},"doors":{"arrive":"arrive","close_day":"close_day","on_my_way":"on_my_way","start_day":"start_day","close_stop":"close_stop","add_stop_note":"add_stop_note","add_stop_photo":"add_stop_photo","fix_check_number":"fix_check_number"},"reads":{"day":"v_my_day","curb":"v_stop_curb","close":"v_day_close","changes":"day_changes","reasons":"v_not_done_reasons"},"verbs":{"run_day":"run_day","close_stop":"close_stop"},"photos":{"bucket":"documents"},"personas":{"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["close_stop","search","view","run_day"],"seated":true},"OPS_MANAGER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":false}}};
-  var SKELETON = "<!-- Route Stop Technician -- THE TECHNICIAN'S DAY ON A PHONE (technician-001 1.0.0; SJ s52 leg 14 act (b), 2026-09-23; the mockup\n     approved at his eye 2026-09-22 \"Approve all! Go!\"). Generated; do not edit. The shell mounts into an EMPTY host (the\n     s37 skeleton lesson): this markup is written by technician.js FIRST, then filled. One column; the faces take turns\n     in the body; the foot holds the big buttons. -->\n<div class=\"tp\" data-blueprint=\"d5000000-0000-0000-0000-000000000001\" data-tech-view=\"day\">\n  <header class=\"tp-bar\" data-tech=\"bar\">\n    <div class=\"tp-who\" data-tech=\"who\"></div>\n    <div class=\"tp-day\" data-tech=\"title\"></div>\n    <div class=\"tp-meta\" data-tech=\"meta\"></div>\n  </header>\n  <div class=\"tp-switch\" data-tech=\"switch\" hidden></div>\n  <div class=\"tp-alert\" data-tech=\"alert\" hidden></div>\n  <p class=\"tp-out\" data-tech-out=\"1\" hidden></p>\n  <div class=\"tp-body\" data-tech=\"body\"></div>\n  <footer class=\"tp-foot\" data-tech=\"foot\"></footer>\n</div>\n";
+  var FACE = {"schema":"services_template","alert":{"poll_seconds":60},"doors":{"arrive":"arrive","close_day":"close_day","on_my_way":"on_my_way","start_day":"start_day","close_stop":"close_stop","reopen_day":"reopen_day","add_stop_note":"add_stop_note","add_stop_photo":"add_stop_photo","fix_check_number":"fix_check_number"},"reads":{"day":"v_my_day","curb":"v_stop_curb","close":"v_day_close","changes":"day_changes","reasons":"v_not_done_reasons"},"verbs":{"run_day":"run_day","close_stop":"close_stop"},"photos":{"bucket":"documents"},"personas":{"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["close_stop","search","view","run_day"],"seated":true},"OPS_MANAGER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":false}}};
+  var SKELETON = "<!-- Route Stop Technician -- THE TECHNICIAN'S DAY ON A PHONE (technician-001 1.1.0; SJ s52 leg 15 THE PHONE'S SECOND ROUND, 2026-09-24,\n     the mockup's round 4 approved at his eye; 1.0.0 at leg 14, 2026-09-23, \"Approve all! Go!\"). Generated; do not edit. The shell mounts into an EMPTY host (the\n     s37 skeleton lesson): this markup is written by technician.js FIRST, then filled. One column; the faces take turns\n     in the body; the foot holds the big buttons. -->\n<div class=\"tp\" data-blueprint=\"d5000000-0000-0000-0000-000000000001\" data-tech-view=\"day\">\n  <header class=\"tp-bar\" data-tech=\"bar\">\n    <div class=\"tp-who\" data-tech=\"who\"></div>\n    <div class=\"tp-day\" data-tech=\"title\"></div>\n    <div class=\"tp-meta\" data-tech=\"meta\"></div>\n  </header>\n  <div class=\"tp-switch\" data-tech=\"switch\" hidden></div>\n  <div class=\"tp-alert\" data-tech=\"alert\" hidden></div>\n  <p class=\"tp-out\" data-tech-out=\"1\" hidden></p>\n  <div class=\"tp-body\" data-tech=\"body\"></div>\n  <footer class=\"tp-foot\" data-tech=\"foot\"></footer>\n</div>\n";
   var READS = FACE.reads || {};
   var DOORS = FACE.doors || {};
   var REASONS = READS.reasons || 'v_not_done_reasons';
@@ -92,6 +110,24 @@
   function todayIso() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() < 9 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate(); }
   function mmdd(s) { var t = String(s || ''); return /^\d{4}-\d\d-\d\d/.test(t) ? t.slice(5, 10) : t; }
   function weekday(s) { var d = new Date(String(s) + 'T00:00:00'); return isNaN(d.getTime()) ? '' : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()]; }
+  // card 76 (1), leg 15: the photo is resized ON THE PHONE before the upload -- 1600 px on the long side, a record still, not the
+  // camera's 4 MB; a small picture (or a browser without the bitmap door) goes as taken
+  function shrinkPhoto(file) {
+    return new Promise(function (resolve) {
+      var asIs = { bytes: file, shrunk: false, width: 0, height: 0 };
+      try {
+        if (!file || !/^image\//.test(file.type || '') || typeof createImageBitmap !== 'function') return resolve(asIs);
+        createImageBitmap(file).then(function (bmp) {
+          var max = 1600, w = bmp.width, h = bmp.height;
+          if (Math.max(w, h) <= max) { if (bmp.close) bmp.close(); return resolve(asIs); }
+          var k = max / Math.max(w, h);
+          var cv = document.createElement('canvas'); cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+          cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height); if (bmp.close) bmp.close();
+          cv.toBlob(function (blob) { resolve(blob ? { bytes: blob, shrunk: true, width: cv.width, height: cv.height } : asIs); }, 'image/jpeg', 0.85);
+        }).catch(function () { resolve(asIs); });
+      } catch (e) { resolve(asIs); }
+    });
+  }
   function straightMiles(lat1, lon1, lat2, lon2) {
     var R = 3958.8, toR = Math.PI / 180;
     var dLat = (lat2 - lat1) * toR, dLon = (lon2 - lon1) * toR;
@@ -125,7 +161,7 @@
       this.client = null;
       this.view = 'day';            // day . stop . close . dayclose
       this.pane = 'list';           // the day's switcher: list . map
-      this.stopPane = 'stop';       // the stop's switcher: stop . notes . photos
+      this.stopPane = 'stop';       // the stop's switcher: stop . photos (the Notes face retired at 1.1.0, Q21)
       this.rows = [];               // the shown day's stops (reads.day)
       this.day = null;              // the shown day's columns (the first row)
       this.days = [];               // every released day of the login, by date
@@ -328,7 +364,7 @@
         var back = btn('tp-back', '\u2039 ' + (this.view === 'close' ? ((this.curb && this.curb.place) || 'the stop') : 'Today'), 'back', function () { if (self.view === 'close') { self.view = 'stop'; self.renderAll(); } else self.backToDay(); });
         back.style.padding = '0';
         title.appendChild(back);
-        meta.textContent = this.dayStarted() ? (plural(Number(d.stops_closed) || 0, 'stop').replace(/ stops?$/, ' done') + DOT + (this.leftRows().length) + ' left' + DOT + 'ends ' + clock12(d.day_to)) : (plural(Number(d.stops_total) || this.rows.length, 'stop') + DOT + clock12(d.day_from) + ' to ' + clock12(d.day_to));
+        meta.textContent = this.dayStarted() ? (plural(Number(d.stops_closed) || 0, 'stop').replace(/ stops?$/, ' done') + DOT + (this.leftRows().length) + ' left' + DOT + 'ends ' + clock12(d.day_to) + this.reopenWords()) : (plural(Number(d.stops_total) || this.rows.length, 'stop') + DOT + clock12(d.day_from) + ' to ' + clock12(d.day_to));
         return;
       }
       if (this.view === 'dayclose' && !this.dayClosed()) {
@@ -337,15 +373,17 @@
         var back3 = btn('tp-back', '‹ Today\'s list', 'back', function () { self3.view = 'day'; self3.say(null); self3.schedulePoll(); self3.renderAll(); });
         back3.style.padding = '0';
         title.appendChild(back3);
-        meta.textContent = plural(Number(d.stops_closed) || 0, 'stop').replace(/ stops?$/, ' done') + DOT + (this.leftRows().length) + ' left' + DOT + 'ends ' + clock12(d.day_to);
+        meta.textContent = plural(Number(d.stops_closed) || 0, 'stop').replace(/ stops?$/, ' done') + DOT + (this.leftRows().length) + ' left' + DOT + 'ends ' + clock12(d.day_to) + this.reopenWords();
         return;
       }
       title.appendChild(document.createTextNode((today ? 'Today' : weekday(d.route_date) + ' ' + mmdd(d.route_date)) + (this.dayClosed() ? ', done' : '')));
       if (d.zones) { var z = el('span', null, DOT + d.zones); title.appendChild(z); }
-      if (this.dayClosed()) meta.textContent = 'started ' + hhmm(d.day_started_at) + DOT + 'closed ' + hhmm(d.day_closed_at);
-      else if (this.dayStarted()) meta.textContent = plural(Number(d.stops_closed) || 0, 'stop').replace(/ stops?$/, ' done') + DOT + (this.leftRows().length) + ' left' + DOT + 'ends ' + clock12(d.day_to);
+      // Q22: a day that was reopened carries both clocks on its line -- the record is what happened
+      if (this.dayClosed()) meta.textContent = 'started ' + hhmm(d.day_started_at) + (d.day_reopened_at ? DOT + 'closed ' + hhmm(d.day_first_closed_at) + ', reopened ' + hhmm(d.day_reopened_at) : '') + DOT + 'closed ' + hhmm(d.day_closed_at);
+      else if (this.dayStarted()) meta.textContent = plural(Number(d.stops_closed) || 0, 'stop').replace(/ stops?$/, ' done') + DOT + (this.leftRows().length) + ' left' + DOT + 'ends ' + clock12(d.day_to) + this.reopenWords();
       else meta.textContent = plural(Number(d.stops_total) || this.rows.length, 'stop') + DOT + clock12(d.day_from) + ' to ' + clock12(d.day_to) + (d.planned_miles ? DOT + (Math.round(Number(d.planned_miles) * 10) / 10) + ' mi' : '');
     }
+    reopenWords() { var d = this.day; return (d && d.day_reopened_at && !this.dayClosed()) ? DOT + 'closed ' + hhmm(d.day_first_closed_at) + ', reopened ' + hhmm(d.day_reopened_at) : ''; }
     renderSwitch() {
       var s = this.$('switch'); clear(s);
       var self = this;
@@ -356,8 +394,8 @@
         s.appendChild(btn(this.pane === 'map' ? 'is-on' : '', 'Map', 'switch-map', function () { self.pane = 'map'; self.renderAll(); }));
       } else if (this.view === 'stop' && this.curb && (this.curb.stop_state === 'arrived' || this.curb.stop_state === 'closed')) {
         s.hidden = false;
+        // 1.1.0 (Q21): Stop | Photos -- the Notes face retired; what he says hangs on a service line, on the Stop pane
         s.appendChild(btn(this.stopPane === 'stop' ? 'is-on' : '', 'Stop', 'tab-stop', function () { self.stopPane = 'stop'; self.renderAll(); }));
-        if (DOORS.add_stop_note) s.appendChild(btn(this.stopPane === 'notes' ? 'is-on' : '', 'Notes', 'tab-notes', function () { self.stopPane = 'notes'; self.renderAll(); }));
         if (DOORS.add_stop_photo) s.appendChild(btn(this.stopPane === 'photos' ? 'is-on' : '', 'Photos', 'tab-photos', function () { self.stopPane = 'photos'; self.renderAll(); }));
       } else s.hidden = true;
     }
@@ -420,7 +458,7 @@
         li.appendChild(el('span', 'tp-seq', row.seq));
         li.appendChild(el('span', 'tp-name', row.place));
         li.appendChild(el('span', 'tp-win', clock12(row.eta)));
-        var l2 = (row.service || '-') + (row.account && row.account !== row.place ? DOT + row.account : '');
+        var l2 = (row.service || '-') + (row.account && row.account !== row.place ? DOT + row.account : '') + (row.in_pool ? DOT + 'back in the pool' : '');   // Q23: a never-reached stop of a closed day reads where its work went
         if (isCur && self.here && row.latitude && row.longitude) l2 += DOT + (Math.round(straightMiles(self.here.lat, self.here.lon, Number(row.latitude), Number(row.longitude)) * 10) / 10) + ' mi';
         li.appendChild(el('span', 'tp-l2', l2));
         if (isCur) li.appendChild(el('span', 'tp-tag', row.stop_state === 'arrived' ? 'arrived at ' + hhmm(row.arrived_at) : (row.on_my_way_at ? 'next' + DOT + 'on my way at ' + hhmm(row.on_my_way_at) : 'next')));
@@ -546,7 +584,6 @@
         st.innerHTML = parts.join(DOT);
         b.appendChild(st);
       }
-      if (this.stopPane === 'notes') return this.renderNotes(b);
       if (this.stopPane === 'photos') return this.renderPhotos(b);
       // THE CURB READ (S-1.4, S-3.2): the gate, the notes, who is home
       var kv = el('div', 'tp-kv'); kv.setAttribute('data-tech', 'kv');
@@ -554,6 +591,9 @@
       if (c.field_notes) { kv.appendChild(el('i', null, 'notes')); var n = el('span', null, ''); n.setAttribute('data-tech', 'kv-notes'); var m = /^([A-Z][A-Z ]{2,})(\b.*)$/.exec(c.field_notes); if (m) { n.appendChild(el('span', 'tp-warn', m[1].trim())); n.appendChild(document.createTextNode(' ' + m[2].trim())); } else n.textContent = c.field_notes; kv.appendChild(n); }
       if (c.contact_name) { kv.appendChild(el('i', null, c.stop_state === 'pending' ? 'people' : 'home')); var p = el('span', null, ''); p.setAttribute('data-tech', 'kv-people'); p.appendChild(el('b', null, c.contact_name)); p.appendChild(document.createTextNode(DOT + 'prefers ' + (c.prefers === 'voice' ? 'a call' : c.prefers))); kv.appendChild(p); }
       if (kv.childNodes.length) b.appendChild(kv);
+      // THE LINES (1.1.0, Q21): once arrived, the service lines with their one door stand here, under the curb; on a closed stop
+      // they read their verdicts and take a note only
+      if (c.stop_state === 'arrived' || c.stop_state === 'closed') this.renderLines(b, c.stop_state === 'closed', 'stop-lines');
       // THE LAST THREE (S-3.4)
       b.appendChild(el('div', 'tp-sec', 'last three visits'));
       var h = el('ul', 'tp-hist'); h.setAttribute('data-tech', 'hist');
@@ -575,33 +615,70 @@
       }
       if (this.feesOpen) this.renderFeesPanel(b);
     }
-    // THE NOTES face (sheet 4): a note any time; today's notes on this stop, then the account's standing notes
-    renderNotes(b) {
-      var self = this, c = this.curb;
-      if (DOORS.add_stop_note && !this.dayClosed() && this.may(VERB_CLOSE)) {
-        var f = el('div', 'tp-field'); f.appendChild(el('label', null, 'a note to the office' + DOT + 'this stop'));
-        var ta = el('textarea'); ta.setAttribute('data-tech', 'note-input'); f.appendChild(ta);
-        f.appendChild(btn('tp-big tp-small', 'Add the note', 'note-add', async function () {
-          if (!ta.value.trim()) return;
-          self.busy(true);   // the face says when it is writing (a chair waits on its word)
-          // Q20 (his law 2026-09-24: all time displays as local time): the clock in the note's line is the phone's own
-          var r = await self.rpc(DOORS.add_stop_note, { p_stop: c.route_stop_id, p_by: self.byWord(), p_text: ta.value.trim(), p_clock: hhmm(new Date().toISOString()) });
-          if (r.ok) { ta.value = ''; self.say(null); await self.reopenStop(); } else self.say(r.words, true);
-          self.busy(false);
-        }));
-        b.appendChild(f);
-      }
-      b.appendChild(el('div', 'tp-sec', 'notes on this stop today'));
-      var h = el('ul', 'tp-hist'); h.setAttribute('data-tech', 'notes-today');
-      String(c.notes || '').split('\n').filter(Boolean).forEach(function (line) { var m = /^(\d\d:\d\d) [^:]*: (.*)$/.exec(line); var li = el('li'); li.appendChild(el('span', 'tp-d', m ? m[1] : '')); li.appendChild(el('span', null, m ? m[2] : line)); h.appendChild(li); });
-      if (!h.childNodes.length) { var q = el('li'); q.appendChild(el('span', 'tp-d', '\u2014')); q.appendChild(el('span', null, 'none yet')); h.appendChild(q); }
-      b.appendChild(h);
-      b.appendChild(el('div', 'tp-sec', 'the account\'s standing notes'));
-      var s = el('ul', 'tp-hist'); s.setAttribute('data-tech', 'notes-standing');
-      if (c.field_notes) { var l1 = el('li'); l1.appendChild(el('span', 'tp-d', 'office')); l1.appendChild(el('span', null, c.field_notes)); s.appendChild(l1); }
-      (c.history || []).forEach(function (v) { if (v.note) { var li = el('li'); li.appendChild(el('span', 'tp-d', v.served_on)); li.appendChild(el('span', null, v.note + (v.technician ? DOT + v.technician.split(' ')[0] : ''))); s.appendChild(li); } });
-      if (!s.childNodes.length) { var q2 = el('li'); q2.appendChild(el('span', 'tp-d', '\u2014')); q2.appendChild(el('span', null, 'none')); s.appendChild(q2); }
-      b.appendChild(s);
+    // THE LINES (1.1.0, Q21 -- ONE DOOR FOR WHAT THE TECHNICIAN SAYS): the service lines, each with "Something to report" -- the same
+    // panel on the stop face (once arrived) and on the close sheet; Keep writes the note AT ONCE through the door with the line
+    // named, the verdict and the reason ride Accept; the words on a line are READ FROM THE ROWS (the line's note) with the verdict
+    // held in memory until Accept -- never the phone's memory alone (gap D). On a CLOSED stop the lines read their verdicts from
+    // the rows and "Something to add" takes a note only (Q-T4), until the day closes.
+    lastNote(row) { var n = String((row && row.note) || '').split(' | ').filter(Boolean); return n.length ? n[n.length - 1].replace(/^\d\d:\d\d [^:]*: /, '') : ''; }
+    lineWords(l, x) {
+      var rowNote = this.lastNote(l);
+      var notDone = x ? x.done === false : l.status === 'not_done';
+      var head = notDone ? 'why not: ' + this.reasonWord(x ? x.reason : l.reason) : ((rowNote || (x && x.note)) ? 'noted' : '');
+      var tail = rowNote || (x && x.note) || '';
+      return [head, tail].filter(Boolean).join(DOT);
+    }
+    renderLines(b, closedStop, mark) {
+      var self = this, c = this.curb; if (!c) return;
+      var mayWrite = !closedStop && this.may(VERB_CLOSE);
+      var mayAdd = closedStop && !!DOORS.add_stop_note && !this.dayClosed() && this.may(VERB_CLOSE);
+      b.appendChild(el('div', 'tp-sec', 'the services' + DOT + (closedStop ? 'closed at ' + hhmm(c.departed_at) : 'done unless you say otherwise')));
+      var ul = el('ul', 'tp-lines'); ul.setAttribute('data-tech', mark || 'close-lines');
+      (c.lines || []).forEach(function (l) {
+        var x = closedStop ? null : (self.exceptions[l.item] || null);
+        var notDone = closedStop ? l.status === 'not_done' : !!(x && x.done === false);
+        var li = el('li', 'tp-line'); li.setAttribute('data-tech', 'line'); li.setAttribute('data-item', l.item); li.setAttribute('data-verdict', notDone ? 'not_done' : 'done');
+        li.appendChild(el('span', 'tp-what', l.service + (l.target && l.target !== c.place ? DOT + l.target : '')));
+        // the verdict's chip: NOT on the open stop's clean line (his chair 2026-09-25: a green "done" before Close this stop asserts
+        // what the rows do not hold; the heading already says "done unless you say otherwise") -- a not-done line reads its chip
+        // anywhere; the close sheet reads every verdict before the stamp; the closed stop reads what the rows say
+        if (notDone || closedStop || mark !== 'stop-lines') li.appendChild(el('span', 'tp-st' + (notDone ? ' is-x' : ''), notDone ? 'not done' : 'done'));
+        var exc = el('span', 'tp-exc');
+        var words = self.lineWords(l, x);
+        if (self.panelItem !== l.item) {
+          if (words) exc.appendChild(document.createTextNode(words + DOT));
+          if (mayWrite) exc.appendChild(btn(null, words ? 'change' : 'Something to report', 'line-report', function () { self.panelItem = l.item; self.renderAll(); }));
+          else if (mayAdd) exc.appendChild(btn(null, 'Something to add', 'line-add', function () { self.panelItem = l.item; self.renderAll(); }));
+        }
+        li.appendChild(exc);
+        if (self.panelItem === l.item) li.appendChild(closedStop ? self.addPanel(l) : self.linePanel(l, x));
+        ul.appendChild(li);
+      });
+      b.appendChild(ul);
+    }
+    // the note written at once, on its line, with THE PHONE'S CLOCK (Q20); the face says when it is writing (a chair waits on its word)
+    async writeLineNote(item, text) {
+      var c = this.curb; if (!c || !DOORS.add_stop_note) return false;
+      this.busy(true);
+      var r = await this.rpc(DOORS.add_stop_note, { p_stop: c.route_stop_id, p_by: this.byWord(), p_text: text, p_clock: hhmm(new Date().toISOString()), p_item: item });
+      this.busy(false);
+      if (!r.ok) { this.say(r.words, true); return false; }
+      this.say(null); return true;
+    }
+    // Q-T4 under Q21: a closed stop takes a note ONLY, on the line it was about; the verdict, the reason and the amount are the office's
+    addPanel(l) {
+      var self = this;
+      var p = el('div', 'tp-panel'); p.setAttribute('data-tech', 'panel');
+      p.appendChild(el('label', null, 'something to add' + DOT + 'a note only; the verdict is the office\'s to change'));
+      var ta = el('textarea'); ta.setAttribute('data-tech', 'panel-note'); p.appendChild(ta);
+      var acts = el('div', 'tp-pair');
+      acts.appendChild(btn('tp-big tp-small tp-big--accent', 'Keep', 'panel-keep', async function () {
+        if (!ta.value.trim()) return;
+        if (await self.writeLineNote(l.item, ta.value.trim())) { self.panelItem = null; await self.reopenStop(); }
+      }));
+      acts.appendChild(btn('tp-big tp-small', 'Cancel', 'panel-cancel', function () { self.panelItem = null; self.renderAll(); }));
+      p.appendChild(acts);
+      return p;
     }
     // THE PHOTOS face (sheet 4, S-4.2): the thumbnails taken here and Take a photo -- the bytes to the bucket, the row through the door
     renderPhotos(b) {
@@ -622,13 +699,17 @@
           var file = inp.files && inp.files[0]; if (!file) return;
           self.busy(true);
           var tenant = (self.context && self.context.tenant_id) || 'tenant';
-          var ref = tenant + '/' + c.route_stop_id + '/' + Date.now() + '-' + (file.name || 'photo.jpg').replace(/[^A-Za-z0-9._-]/g, '_');
+          // card 76 (1): resized on the phone first -- 1600 px on the long side; the name keeps its stem, the bytes are a jpeg then
+          var shot = await shrinkPhoto(file);
+          var name = file.name || 'photo.jpg';
+          if (shot.shrunk) name = name.replace(/\.[^.]+$/, '') + '.jpg';
+          var ref = tenant + '/' + c.route_stop_id + '/' + Date.now() + '-' + name.replace(/[^A-Za-z0-9._-]/g, '_');
           try {
-            var up = await self.client.storage.from(BUCKET).upload(ref, file, { contentType: file.type || 'image/jpeg', upsert: false });
+            var up = await self.client.storage.from(BUCKET).upload(ref, shot.bytes, { contentType: shot.shrunk ? 'image/jpeg' : (file.type || 'image/jpeg'), upsert: false });
             if (up.error) throw new Error(up.error.message);
-            var r = await self.rpc(DOORS.add_stop_photo, { p_stop: c.route_stop_id, p_by: self.byWord(), p_file_name: file.name || 'photo.jpg', p_storage_ref: ref });
+            var r = await self.rpc(DOORS.add_stop_photo, { p_stop: c.route_stop_id, p_by: self.byWord(), p_file_name: name, p_storage_ref: ref });
             if (!r.ok) throw new Error(r.words);
-            self.say(null); await self.reopenStop();
+            self.say(shot.shrunk ? 'The photo landed, resized to ' + shot.width + ' x ' + shot.height + '.' : null, false); await self.reopenStop();
           } catch (e) { self.say('the photo did not land: ' + ((e && e.message) || String(e)), true); }
           self.busy(false);
         });
@@ -663,26 +744,11 @@
       head.appendChild(el('div', 'tp-sname', 'Close this stop'));
       head.appendChild(el('div', 'tp-addr', 'arrived ' + hhmm(c.arrived_at) + (c.arrived_at ? DOT + Math.max(0, Math.round((Date.now() - new Date(c.arrived_at).getTime()) / 60000)) + ' min on site' : '')));
       b.appendChild(head);
-      b.appendChild(el('div', 'tp-sec', 'the services' + DOT + 'done unless you say otherwise'));
-      var ul = el('ul', 'tp-lines'); ul.setAttribute('data-tech', 'close-lines');
-      (c.lines || []).forEach(function (l) {
-        var x = self.exceptions[l.item] || null;
-        var li = el('li', 'tp-line'); li.setAttribute('data-tech', 'line'); li.setAttribute('data-item', l.item); li.setAttribute('data-verdict', x && x.done === false ? 'not_done' : 'done');
-        li.appendChild(el('span', 'tp-what', l.service + (l.target && l.target !== c.place ? DOT + l.target : '')));
-        li.appendChild(el('span', 'tp-st' + (x && x.done === false ? ' is-x' : ''), x && x.done === false ? 'not done' : 'done'));
-        var exc = el('span', 'tp-exc');
-        if (self.panelItem !== l.item) {
-          exc.appendChild(btn(null, x ? (x.done === false ? 'why not: ' + (self.reasonWord(x.reason)) + (x.note ? DOT + x.note : '') : 'noted: ' + x.note) : 'Something to report', 'line-report', function () { self.panelItem = l.item; self.renderAll(); }));
-        } else exc.appendChild(document.createTextNode(''));
-        li.appendChild(exc);
-        if (self.panelItem === l.item) li.appendChild(self.linePanel(l, x));
-        ul.appendChild(li);
-      });
-      b.appendChild(ul);
+      // 1.1.0 (Q21): the same lines as the stop face -- the reports made at the curb already on their lines, read from the rows
+      this.renderLines(b, false, 'close-lines');
       b.appendChild(el('div', 'tp-sec', 'riding this close'));
       var h = el('ul', 'tp-hist'); h.setAttribute('data-tech', 'riding');
-      var notes = String(c.notes || '').split('\n').filter(Boolean);
-      var r1 = el('li'); r1.appendChild(el('span', 'tp-d', 'notes')); r1.appendChild(el('span', null, notes.length ? notes.length + DOT + notes.map(function (n) { return n.replace(/^\d\d:\d\d [^:]*: /, ''); }).join('; ') : 'none')); h.appendChild(r1);
+      // no notes row since 1.1.0: a note lives on its line
       var r2 = el('li'); r2.appendChild(el('span', 'tp-d', 'photo')); r2.appendChild(el('span', null, (c.photos || []).length ? plural((c.photos || []).length, 'photo') : 'none')); h.appendChild(r2);
       var r3 = el('li'); r3.appendChild(el('span', 'tp-d', 'fees')); var fs = el('span', null, ''); fs.setAttribute('data-tech', 'riding-fees');
       if (this.fees && this.fees.stop === c.route_stop_id && this.fees.method !== 'none') { fs.appendChild(document.createTextNode(this.fees.method + (this.fees.reference ? ' ' + this.fees.reference : '') + DOT + money(this.fees.amount) + DOT)); }
@@ -699,7 +765,11 @@
     linePanel(l, x) {
       var self = this;
       var p = el('div', 'tp-panel'); p.setAttribute('data-tech', 'panel');
-      var state = { done: x ? x.done !== false : true, reason: (x && x.reason) || '', note: (x && x.note) || '' };
+      // 1.1.0 (Q21): with the door standing, Keep WRITES the note at once on the line (the verdict and the reason held for Accept);
+      // without the door (an older declaration) the note rides Accept in memory, 1.0.0's way
+      var writesNow = !!(DOORS.add_stop_note && !this.dayClosed());
+      var rowNote = this.lastNote(l);
+      var state = { done: x ? x.done !== false : true, reason: (x && x.reason) || '', note: (!writesNow && x && x.note) || '' };
       var seg = el('div', 'tp-seg'); seg.style.gridTemplateColumns = '1fr 1fr';
       seg.appendChild(btn(state.done ? 'is-on' : '', 'Done, noted', 'panel-done', function () { state.done = true; draw(); }));
       seg.appendChild(btn(!state.done ? 'is-on' : '', 'Not done', 'panel-notdone', function () { state.done = false; draw(); }));
@@ -718,13 +788,18 @@
           body.appendChild(el('div', 'tp-hint', 'Goes back to the office to place again. Your reason rides with it.'));
         }
         body.appendChild(el('label', null, state.done ? 'what you saw' : 'a note (other needs one)'));
+        if (rowNote) body.appendChild(el('div', 'tp-hint', 'On the line already: ' + rowNote));
         var ta = el('textarea'); ta.value = state.note; ta.setAttribute('data-tech', 'panel-note'); ta.addEventListener('input', function () { state.note = ta.value; }); body.appendChild(ta);
         var acts = el('div', 'tp-pair');
-        var keep = btn('tp-big tp-small tp-big--accent', 'Keep', 'panel-keep', function () {
+        var keep = btn('tp-big tp-small tp-big--accent', 'Keep', 'panel-keep', async function () {
           if (!state.done && !state.reason) return;
-          if (state.done && !state.note.trim()) delete self.exceptions[l.item];
-          else self.exceptions[l.item] = { done: state.done, reason: state.done ? null : state.reason, note: state.note.trim() || null };
-          self.panelItem = null; self.renderAll();
+          if (!state.done && state.reason === 'other' && !state.note.trim() && !rowNote) { self.say('Other needs a note: why the line was not done.', true); return; }
+          var text = state.note.trim();
+          if (writesNow && text) { if (!(await self.writeLineNote(l.item, text))) return; text = ''; }
+          if (state.done && !text) delete self.exceptions[l.item];
+          else self.exceptions[l.item] = { done: state.done, reason: state.done ? null : state.reason, note: text || null };
+          self.panelItem = null;
+          if (writesNow && state.note.trim()) await self.reopenStop(); else self.renderAll();
         });
         keep.disabled = !state.done && !state.reason;
         acts.appendChild(keep);
@@ -758,12 +833,16 @@
       // word before the last stamp, so the stops left to the office must be read on it)
       var stopsSmall = [];
       if (Number(s.lines_not_done)) stopsSmall.push(Number(s.lines_not_done) + ' not done' + DOT + (s.not_done_reasons || ''));
-      if (Number(s.stops_pending)) stopsSmall.push(Number(s.stops_pending) + ' not reached');
+      // Q23 THE RAIN-OUT: before the stamp the stops never reached; after it, where they went (back in the pool, or placed by the office since)
+      var pending = Number(s.stops_pending) || 0, inPool = Number(s.back_in_pool) || 0;
+      if (pending && !this.dayClosed()) stopsSmall.push(pending + ' not reached');
+      else if (pending) { if (inPool) stopsSmall.push(inPool + ' back in the pool'); if (pending > inPool) stopsSmall.push((pending - inPool) + ' placed by the office'); }
       tile('stops', 'stops', (s.stops_closed || 0) + ' of ' + (s.stops_total || 0), stopsSmall.length ? stopsSmall.join(DOT) : 'all closed');
       tile('onsite', 'on site', this.hm(s.on_site_minutes), 'planned ' + this.hm(s.planned_on_site_minutes));
       tile('drive', 'drive', (s.drive_minutes === null || s.drive_minutes === undefined) ? '\u2014' : s.drive_minutes + ' min', 'planned ' + (s.planned_drive_minutes || 0) + (s.planned_drive_miles ? DOT + (Math.round(Number(s.planned_drive_miles) * 10) / 10) + ' mi' : ''));
       tile('checks', 'checks', String(s.checks_count || 0), money(s.checks_sum || 0) + ' to hand in' + (Number(s.cards_count) ? DOT + plural(Number(s.cards_count), 'card') : ''));
-      tile('office', 'to the office', '', plural(Number(s.notes_count) || 0, 'note') + DOT + plural(Number(s.photos_count) || 0, 'photo') + DOT + (Number(s.returned_count) || 0) + ' back in the pool', true);
+      tile('office', 'to the office', '', plural(Number(s.notes_count) || 0, 'note') + DOT + plural(Number(s.photos_count) || 0, 'photo') + DOT + (Number(s.returned_count) || 0) + ' back in the pool'
+        + (pending && !this.dayClosed() ? DOT + plural(pending, 'stop') + ' back in the pool when you close' : (this.dayClosed() && inPool ? DOT + plural(inPool, 'stop') + ' in the pool' : '')), true);
       b.appendChild(g);
     }
     hm(m) { var n = Math.round(Number(m) || 0); return n >= 60 ? Math.floor(n / 60) + ' h ' + (n % 60 < 10 ? '0' : '') + (n % 60) : n + ' min'; }
@@ -822,7 +901,12 @@
       } else if (this.view === 'dayclose') {
         this.renderTomorrow(f);
         if (!this.dayClosed()) { if (this.may(VERB_RUN)) f.appendChild(btn('tp-big tp-big--primary', 'Close my day', 'close-day', function () { self.closeDay(); })); }
-        else f.appendChild(btn('tp-big', '\u2039 Today\'s list', 'back-list', function () { self.view = 'day'; self.renderAll(); }));
+        else {
+          // Q22 REOPEN MY DAY: a technician's door until midnight of the day's own date, by the phone's clock (Q20); on any other
+          // date the door refuses, so the button is not drawn (a door that does not open is not drawn)
+          if (DOORS.reopen_day && this.may(VERB_RUN) && this.day.route_date === todayIso()) f.appendChild(btn('tp-big', 'Reopen my day' + DOT + 'until midnight', 'reopen-day', function () { self.reopenDay(); }));
+          f.appendChild(btn('tp-big', '\u2039 Today\'s list', 'back-list', function () { self.view = 'day'; self.renderAll(); }));
+        }
       }
     }
     // TOMORROW'S RULE (round 3, his call 2026-09-24: "if the next day has not been released, do we want to enable that button at
@@ -866,9 +950,23 @@
       this.busy(false);
       if (!r.ok) { this.say('Close my day was refused: ' + r.words, true); return; }
       this.summary = r.data || this.summary;
-      this.say('Your day is closed.', false);
+      var back = Number((r.data || {}).returned_now) || 0;
+      this.say('Your day is closed.' + (back ? ' ' + plural(back, 'stop') + ' never reached went back to the pool.' : ''), false);
       await this.load(true);
       this.view = 'dayclose'; await this.readSummary(); this.renderAll();
+    }
+    // Q22: the day taken back on its own date; the face says what came back and what the office had placed meanwhile
+    async reopenDay() {
+      if (!this.day || !DOORS.reopen_day) return;
+      this.busy(true);
+      var r = await this.rpc(DOORS.reopen_day, { p_route: this.day.route_id, p_by: this.byWord(), p_today: todayIso() });
+      this.busy(false);
+      if (!r.ok) { this.say('Reopen my day was refused: ' + r.words, true); return; }
+      var d = r.data || {}, left = d.left_to_the_office || [];
+      this.alertSince = d.reopened_at || new Date().toISOString();
+      this.say('Reopened at ' + hhmm(d.reopened_at) + DOT + plural(Number(d.taken_back) || 0, 'stop') + ' back on your list' + (left.length ? DOT + left.length + ' placed by the office (' + left.map(function (x) { return x.place; }).join(', ') + ')' : '') + '.', false);
+      this.view = 'day'; this.pane = 'list'; this.foldOpen = false; this.summary = null;
+      await this.load(true);
     }
   }
 
