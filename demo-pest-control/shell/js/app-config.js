@@ -59,8 +59,6 @@
             mapboxToken: 'pk.eyJ1IjoiZ2Zlbmltb3JlNTMiLCJhIjoiY210MDhua3F0MDIxNDJ3b2dkbXI1dWd0dCJ9.c76YTkNeZHQYHlH1LtPFgg',
             esriKey: 'AAPTavwuaxZ3ayUgcMKBPCcUyUA..U4C8SBk3jahBW2GSEHZRtEjCHa_HyxlbyanGREUhOjqWYnDMFdjfSdcvG7aS7dGDV45m0P1gJWhwCqVLisvf0sQws_6cYVQSFxY4WLIpfOZlEl_3veaWe0xvGyZQZ7ejXzYqW6u5XunwBDbYDSnQkh3QPVI4e3W-AYnH_UQSxhIrzpyRI7Fl2SINJr9Ho1T06TzBme-NN35r_uYVCSPgBtKwxbHYX4ZvEsr5XWQA9WXhyNLtsrU.AT1_0Ra25u2I'
         },
-        user_id:   'system',
-        role:      'admin',
         locale:    'en-US',
         timezone:  'UTC',
 

@@ -741,6 +741,8 @@
                 sb.anonKey && !placeholder.test(sb.url) && !placeholder.test(sb.anonKey);
 
             if (!REQUIRES_AUTH) {
+                // An open app has no login: who is asking is the open web role, said so (G11).
+                if (window.AppContext) { window.AppContext.user_id = 'anon'; window.AppContext.role = 'anon'; }
                 if (configSane) { makeShellData(sb, null); }
                 bootGateSix();
                 return;
@@ -756,7 +758,10 @@
             function enter(session) {
                 // Kept for components on shells without ShellData; here ShellData is the live path.
                 window.AppContext.authHeaders = { Authorization: 'Bearer ' + session.access_token };
-                if (session.user && session.user.email) { window.AppContext.user_id = session.user.email; }
+                // WHO IS ASKING IS THE SESSION'S, never a constant on the face (SJ s53 4e, gate G11):
+                // the user is the login, the role the one its token carries.
+                window.AppContext.user_id = (session.user && (session.user.email || session.user.id)) || null;
+                window.AppContext.role = (session.user && session.user.role) || 'authenticated';
                 var gate = document.getElementById('shell-signin-gate');
                 if (gate) { gate.remove(); }
                 // Re-entry after a mid-session sign-in (the gate re-shown on session death):

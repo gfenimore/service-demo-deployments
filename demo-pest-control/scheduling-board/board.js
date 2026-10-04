@@ -13,7 +13,7 @@
  * dialog); THE ROOM IN THE CLIENT'S UNIT.
  *
  * 2.0.0 (SJ s52 leg 6 act (a), 2026-09-13; READING E, THE PLANNING JOB, passed whole 2026-09-12 -- "I think it looks
- * great! I approve Reading E now"; the paper .project-models/demand/services-template-routing.planning-job.md):
+ * great! I approve Reading E now"; the paper .project-models/demand/services-template-routing/planning-job.md):
  * THE MACHINE HAS RUN when the board opens (the sweep at the lead, PROPOSAL 0); the human tweaks with the cost shown.
  * The day's schedules are CARDS IN A GRID under collapsible AREA and ZONE headings whose totals a closed heading still
  * reads (his item 4; `groups`); each card is a SCORECARD -- THE HEALTH, NOT A SCORE (his cut 09-11): the bar in the
