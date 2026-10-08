@@ -1,5 +1,6 @@
 /**
  * Work Order - Generated Blueprint UI
+ * Component ID: a0004000-0000-0000-0000-000000000036
  * Blueprint ID: c8000000-0000-0000-0000-000000000001
  * Pattern: LIST-VIEW-SIMPLE
  * Entity: work_order
@@ -48,6 +49,7 @@
     
     // Metadata (from Blueprint definition)
     this.metadata = {
+      component_id: 'a0004000-0000-0000-0000-000000000036',
       blueprint_id: 'c8000000-0000-0000-0000-000000000001',
       title: 'Work Order',
       pattern_type: 'LIST-VIEW-SIMPLE',
@@ -1308,5 +1310,5 @@
   // ═══════════════════════════════════════════════════════════════════════
   if (typeof window !== 'undefined') {
     window.PatternRegistry = window.PatternRegistry || {};
-    window.PatternRegistry['c8000000-0000-0000-0000-000000000001'] = window.WorkOrderBlueprintUI;
+    window.PatternRegistry['a0004000-0000-0000-0000-000000000036'] = window.WorkOrderBlueprintUI;
   }

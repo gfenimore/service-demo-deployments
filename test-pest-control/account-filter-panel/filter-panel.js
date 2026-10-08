@@ -190,7 +190,8 @@ class AccountFilterPanelUI {
         return {
             id: this.id,
             pattern: 'FILTER-PANEL',
-            blueprint_id: 'c4000000-0000-0000-0000-000000000001',
+            component_id: 'a0004000-0000-0000-0000-000000000012',
+            blueprint_id: 'c1000000-0000-0000-0000-000000000001',
             entity: 'account',
             filterCount: (this.config.filters || []).length,
             mounted: this._mounted
@@ -669,6 +670,6 @@ class AccountFilterPanelUI {
   if (typeof window !== 'undefined') {
     window.AccountFilterPanelUI = AccountFilterPanelUI;
     window.PatternRegistry = window.PatternRegistry || {};
-    window.PatternRegistry['c4000000-0000-0000-0000-000000000001'] = AccountFilterPanelUI;
+    window.PatternRegistry['a0004000-0000-0000-0000-000000000012'] = AccountFilterPanelUI;
   }
 })();

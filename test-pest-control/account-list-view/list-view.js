@@ -1,5 +1,6 @@
 /**
  * Account - Generated Blueprint UI
+ * Component ID: a0004000-0000-0000-0000-000000000005
  * Blueprint ID: c1000000-0000-0000-0000-000000000001
  * Pattern: LIST-VIEW-SIMPLE
  * Entity: account
@@ -48,6 +49,7 @@
     
     // Metadata (from Blueprint definition)
     this.metadata = {
+      component_id: 'a0004000-0000-0000-0000-000000000005',
       blueprint_id: 'c1000000-0000-0000-0000-000000000001',
       title: 'Account',
       pattern_type: 'LIST-VIEW-SIMPLE',
@@ -1309,5 +1311,5 @@
   // ═══════════════════════════════════════════════════════════════════════
   if (typeof window !== 'undefined') {
     window.PatternRegistry = window.PatternRegistry || {};
-    window.PatternRegistry['c1000000-0000-0000-0000-000000000001'] = window.AccountBlueprintUI;
+    window.PatternRegistry['a0004000-0000-0000-0000-000000000005'] = window.AccountBlueprintUI;
   }

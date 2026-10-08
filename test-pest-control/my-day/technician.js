@@ -49,6 +49,7 @@
  * Every read is NARROWED to the employee behind the login by the engine; every door refuses another technician's day.
  * The face names the reads and the doors; the rows decide. The role gate (`personas`) narrows by verb where a facet
  * stands; a login with no facet narrows nothing (the one-man client runs his own day on the owner's login).
+ * Component ID: a0004000-0000-0000-0000-000000000092
  * Blueprint ID: d5000000-0000-0000-0000-000000000001
  * Pattern: TECHNICIAN
  *
@@ -61,7 +62,7 @@
   'use strict';
 
   var FACE = {"schema":"services_template","alert":{"poll_seconds":60},"doors":{"arrive":"arrive","close_day":"close_day","on_my_way":"on_my_way","start_day":"start_day","close_stop":"close_stop","reopen_day":"reopen_day","add_stop_note":"add_stop_note","add_stop_photo":"add_stop_photo","fix_check_number":"fix_check_number"},"reads":{"day":"v_my_day","curb":"v_stop_curb","close":"v_day_close","changes":"day_changes","reasons":"v_not_done_reasons"},"verbs":{"run_day":"run_day","close_stop":"close_stop"},"photos":{"bucket":"documents"},"personas":{"GENERIC_USER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter"],"seated":false},"FIELD_TECH":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["close_stop","search","view","run_day"],"seated":true},"OPS_MANAGER":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","create","cancel","defer","place","place_week","sequence","release"],"seated":false},"ADMIN_FULL":{"fields":null,"readonly":[],"filters":null,"actions":["view","search","sort","filter","edit","delete","export","bulk_actions","create","cancel","defer","place","place_week","sequence","release"],"seated":true},"CUSTOMER_SERVICE":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","edit","log_call","schedule","cancel","defer","place"],"seated":false},"SERVICE_MANAGER":{"fields":null,"readonly":[],"filters":{"status":["active"]},"actions":["view","search","sort","filter","schedule","assign_tech","create","cancel","defer","place","place_week","sequence","release"],"seated":false}}};
-  var SKELETON = "<!-- Route Stop Technician -- THE TECHNICIAN'S DAY ON A PHONE (technician-001 1.1.0; SJ s52 leg 15 THE PHONE'S SECOND ROUND, 2026-09-24,\n     the mockup's round 4 approved at his eye; 1.0.0 at leg 14, 2026-09-23, \"Approve all! Go!\"). Generated; do not edit. The shell mounts into an EMPTY host (the\n     s37 skeleton lesson): this markup is written by technician.js FIRST, then filled. One column; the faces take turns\n     in the body; the foot holds the big buttons. -->\n<div class=\"tp\" data-blueprint=\"d5000000-0000-0000-0000-000000000001\" data-tech-view=\"day\">\n  <header class=\"tp-bar\" data-tech=\"bar\">\n    <div class=\"tp-who\" data-tech=\"who\"></div>\n    <div class=\"tp-day\" data-tech=\"title\"></div>\n    <div class=\"tp-meta\" data-tech=\"meta\"></div>\n  </header>\n  <div class=\"tp-switch\" data-tech=\"switch\" hidden></div>\n  <div class=\"tp-alert\" data-tech=\"alert\" hidden></div>\n  <p class=\"tp-out\" data-tech-out=\"1\" hidden></p>\n  <div class=\"tp-body\" data-tech=\"body\"></div>\n  <footer class=\"tp-foot\" data-tech=\"foot\"></footer>\n</div>\n";
+  var SKELETON = "<!-- Route Stop Technician -- THE TECHNICIAN'S DAY ON A PHONE (technician-001 1.1.0; SJ s52 leg 15 THE PHONE'S SECOND ROUND, 2026-09-24,\n     the mockup's round 4 approved at his eye; 1.0.0 at leg 14, 2026-09-23, \"Approve all! Go!\"). Generated; do not edit. The shell mounts into an EMPTY host (the\n     s37 skeleton lesson): this markup is written by technician.js FIRST, then filled. One column; the faces take turns\n     in the body; the foot holds the big buttons. -->\n<div class=\"tp\" data-component-id=\"a0004000-0000-0000-0000-000000000092\" data-blueprint-id=\"d5000000-0000-0000-0000-000000000001\" data-tech-view=\"day\">\n  <header class=\"tp-bar\" data-tech=\"bar\">\n    <div class=\"tp-who\" data-tech=\"who\"></div>\n    <div class=\"tp-day\" data-tech=\"title\"></div>\n    <div class=\"tp-meta\" data-tech=\"meta\"></div>\n  </header>\n  <div class=\"tp-switch\" data-tech=\"switch\" hidden></div>\n  <div class=\"tp-alert\" data-tech=\"alert\" hidden></div>\n  <p class=\"tp-out\" data-tech-out=\"1\" hidden></p>\n  <div class=\"tp-body\" data-tech=\"body\"></div>\n  <footer class=\"tp-foot\" data-tech=\"foot\"></footer>\n</div>\n";
   var READS = FACE.reads || {};
   var DOORS = FACE.doors || {};
   var REASONS = READS.reasons || 'v_not_done_reasons';
@@ -181,7 +182,7 @@
       this.out = null; this.outBad = false;
     }
 
-    getMetadata() { return { blueprintId: 'd5000000-0000-0000-0000-000000000001', pattern: 'TECHNICIAN', entity: 'route_stop' }; }
+    getMetadata() { return { componentId: 'a0004000-0000-0000-0000-000000000092', blueprintId: 'd5000000-0000-0000-0000-000000000001', pattern: 'TECHNICIAN', entity: 'route_stop' }; }
 
     mount(container) {
       this.container = container;
@@ -226,7 +227,7 @@
     busy(on) { if (!this.root) return; if (on) this.root.setAttribute('data-tech-busy', '1'); else this.root.removeAttribute('data-tech-busy'); }
     hear(code, message) {
       // RI-909: the shell must HEAR a role-loaded read fall -- session dead -> the sign-in gate; session live -> the note stands
-      if (this.container) this.container.dispatchEvent(new CustomEvent('blueprint:error', { bubbles: true, detail: { code: code, blueprintId: 'd5000000-0000-0000-0000-000000000001', message: message } }));
+      if (this.container) this.container.dispatchEvent(new CustomEvent('blueprint:error', { bubbles: true, detail: { code: code, componentId: 'a0004000-0000-0000-0000-000000000092', blueprintId: 'd5000000-0000-0000-0000-000000000001', message: message } }));
     }
     say(words, bad) { this.out = words || null; this.outBad = !!bad; this.renderOut(); }
     renderOut() {
@@ -973,6 +974,6 @@
   if (typeof window !== 'undefined') {
     window.RouteStopTechnicianBlueprintUI = RouteStopTechnicianBlueprintUI;
     window.PatternRegistry = window.PatternRegistry || {};
-    window.PatternRegistry['d5000000-0000-0000-0000-000000000001'] = window.RouteStopTechnicianBlueprintUI;
+    window.PatternRegistry['a0004000-0000-0000-0000-000000000092'] = window.RouteStopTechnicianBlueprintUI;
   }
 })();

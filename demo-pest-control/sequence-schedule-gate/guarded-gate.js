@@ -1,5 +1,6 @@
 /**
  * Sequence the day - Guarded Gate (contract compliant)
+ * Component ID: a0004000-0000-0000-0000-000000000084
  * Blueprint ID: cf000000-0000-0000-0000-000000000001
  * Pattern: GUARDED-GATE
  * Gate: SCHEDULE.SEQUENCE.CONFIRM
@@ -113,6 +114,7 @@
       this._recordId = null;
       this._boundHandlers = new Map();
       this.metadata = {
+        component_id: 'a0004000-0000-0000-0000-000000000084',
         blueprint_id: 'cf000000-0000-0000-0000-000000000001',
         pattern_type: 'GUARDED-GATE',
         gate_code: GATE.code,
@@ -513,5 +515,5 @@
   // ═══════════════════════════════════════════════════════════════════════
   if (typeof window !== 'undefined') {
     window.PatternRegistry = window.PatternRegistry || {};
-    window.PatternRegistry['cf000000-0000-0000-0000-000000000001'] = window.RouteGateUI;
+    window.PatternRegistry['a0004000-0000-0000-0000-000000000084'] = window.RouteGateUI;
   }
