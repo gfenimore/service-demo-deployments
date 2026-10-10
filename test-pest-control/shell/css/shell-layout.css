@@ -5,64 +5,166 @@
  * THIS FILE REPLACES FOUR. The sidebar shell ships shell-reset, shell-structure, shell-theme-bw
  * and shell-responsive -- roughly 690 lines of hand-rolled CSS. Carbon supplies every one of those
  * concerns: a reset, a grid, four themes as token sets, and breakpoints. What is left is the
- * handful of rules that place the content region against Carbon's FIXED header and side-nav, plus
- * the persona switcher, which is ours and not Carbon's.
+ * handful of rules that place the content region against Carbon's FIXED header, the shell's own
+ * two rows of links (the modules in the header, the places under it), plus the persona switcher,
+ * which is ours and not Carbon's.
  *
  * Everything below uses Carbon tokens rather than literal values, for the same reason the factory's
  * own tokens-base.css said "patterns MUST use these via var(), never hardcode": a literal here
  * would not follow a theme change, and the whole point of the token layer is that it does.
+ *
+ * THE RAIL LEFT (SJ s55 leg 6b, his word 2026-10-09 "All four as recommended"; his ask at View
+ * accounts' chair: "move the 'left-nav' function to display under the top-level menu"). Until this
+ * leg a fixed 16rem cds-side-nav stood down the left with the selected module's places, and the
+ * content region was positioned around it. The places are a ROW under the header now, the rail is
+ * gone entirely (answer b), and the content region takes the whole width.
  */
 
-/* ── content region ──────────────────────────────────────────────────────────────────────────
-   Carbon's header is 48px (3rem) and fixed; the side-nav is 16rem and fixed. Neither is in the
-   document flow, so the content region is positioned around them by hand -- this is the one
-   layout fact a Carbon UI Shell page still has to state for itself.
-*/
-/* FOLLOW THE BLUE -- THE SELECTED FUNCTION (SJ s51 leg 3b, his chair 2026-09-07: "My View Accounts function
-   should still be indicated ... just follow the blue!"). Carbon's own selected state is a 3px bar at the
-   edge under a grey shade -- true but not OBVIOUS on a record. Styled on the HOST (the shadow tree keeps
-   its own colours): a blue wash and a 4px bar in the interactive blue, the same blue as the module's line.
-   No outline: that stays Carbon's for focus. */
-cds-side-nav-link[active] {
-    background: var(--cds-highlight, #d0e2ff);
-    box-shadow: inset 4px 0 0 0 var(--cds-border-interactive, #0f62fe);
+/* ── the modules, in the header's slot ───────────────────────────────────────────────────────
+   The shell's own links, not Carbon's header-nav (which Carbon hides below 1056 wide -- a phone
+   could not change module). Carbon tokens with the WHITE theme's values as fallbacks: no theme
+   class scopes this page, so the header renders white (measured 2026-10-09 on the regenerated
+   demo: cds-header background rgb(255,255,255)) and the tokens are unset here -- a dark-theme
+   fallback would paint pale text on white. At every width the strip is one line; where it does
+   not fit it scrolls sideways (answer c: the modules stay reachable on a phone). */
+.shell-modules {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    margin-left: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
 }
 
-.app-content {
+.shell-modules::-webkit-scrollbar {
+    display: none;
+}
+
+/* The brand keeps one line: at 375 wide "Demo Pest Control" wrapped to three and spilled under the
+   header onto the row (measured 2026-10-09). white-space inherits into Carbon's shadow anchor; the
+   host clips what still does not fit. */
+cds-header-name {
+    flex: 0 0 auto;
+    max-width: 45%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.shell-modules__module {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.16px;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--cds-text-secondary, #525252);
+    transition: background-color 110ms, color 110ms;
+}
+
+.shell-modules__module:hover {
+    color: var(--cds-text-primary, #161616);
+    background: var(--cds-background-hover, #e5e5e5);
+}
+
+.shell-modules__module:focus-visible {
+    outline: 2px solid var(--cds-focus, #0f62fe);
+    outline-offset: -2px;
+}
+
+/* FOLLOW THE BLUE -- THE SELECTED MODULE: the same blue line Carbon's header-nav drew, 3px along the
+   bottom (an inset shadow, so it never moves the text). */
+.shell-modules__module[active] {
+    color: var(--cds-text-primary, #161616);
+    box-shadow: inset 0 -3px 0 0 var(--cds-border-interactive, #0f62fe);
+}
+
+/* ── the row under the header: the selected module's places ─────────────────────────────────
+   Carbon's header is 3rem and fixed, so the row clears it with a margin and then STICKS under it
+   as the content scrolls. In flow, auto height: on a phone the places WRAP to a second line
+   (answer c) and the content simply starts lower. One group per module; the shell shows the
+   selected module's group and hides the rest (syncModuleNav in index.html). */
+.shell-row {
+    position: sticky;
+    top: 3rem;
+    z-index: 90;
     margin-top: 3rem;
-    margin-left: 16rem;
+    padding: 0 1rem;
+    background: var(--cds-layer-01, #f4f4f4);
+    border-bottom: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+}
+
+.shell-row__places {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.shell-row__places[hidden] {
+    display: none;
+}
+
+.shell-row__place {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.16px;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--cds-text-secondary, #525252);
+    transition: background-color 110ms, color 110ms;
+}
+
+.shell-row__place:hover {
+    color: var(--cds-text-primary, #161616);
+    background: var(--cds-layer-hover-01, #e8e8e8);
+}
+
+.shell-row__place:focus-visible {
+    outline: 2px solid var(--cds-focus, #0f62fe);
+    outline-offset: -2px;
+}
+
+/* FOLLOW THE BLUE -- THE SELECTED FUNCTION (SJ s51 leg 3b, his chair 2026-09-07: "My View Accounts function
+   should still be indicated ... just follow the blue!"). The rail drew a blue wash and a 4px bar at its left
+   edge; the row draws the same wash and the same 4px bar along its bottom (an inset shadow, as the rail's
+   was), the same blue as the module's line. The chairs read the paint, not the attribute. */
+.shell-row__place[active] {
+    color: var(--cds-text-primary, #161616);
+    background: var(--cds-highlight, #d0e2ff);
+    box-shadow: inset 0 -4px 0 0 var(--cds-border-interactive, #0f62fe);
+}
+
+/* ── content region ──────────────────────────────────────────────────────────────────────────
+   Under the row, the whole width (the rail is gone). The header is fixed and the row is sticky in
+   flow, so the content needs no top margin of its own. */
+.app-content {
+    margin-top: 0;
+    margin-left: 0;
     padding: 2rem;
-    min-height: calc(100vh - 3rem);
+    min-height: calc(100vh - 3rem - 2.5rem);
     background: var(--cds-background);
     color: var(--cds-text-primary);
-    /* Matches Carbon's own side-nav collapse timing so the content does not lag behind it. */
-    transition: margin-left 110ms cubic-bezier(0.2, 0, 1, 0.9);
 }
 
-/* ── side-nav below the header ──────────────────────────────────────────────────────────────
-   cds-side-nav renders its NAVIGATION in shadow DOM with position:fixed, so it starts at the
-   viewport TOP and overlays the fixed header's left region -- caught on the first Demo Pest
-   Control render (s31, 2026-08-19): the module panel sat on the brand and clipped it. The
-   first fix (top/height on the host) moved only the host box, which is empty; the fixed
-   internals ignored it and the overlap SHIPPED (his find on the deployed app, 2026-08-20).
+/* A phone: the header's brand tightens, the content's gutter narrows; the row wraps on its own. */
+@media (max-width: 671px) {
+    .shell-row {
+        padding: 0 0.5rem;
+    }
 
-   The working fix, measured live on that deployment before landing here: give the HOST a
-   transform. A transformed element becomes the containing block for fixed-position
-   descendants -- shadow DOM included -- so Carbon's internal nav now positions against the
-   host box (items land at exactly 3rem) instead of the viewport. */
-cds-side-nav {
-    position: fixed;
-    top: 3rem;
-    left: 0;
-    bottom: 0;
-    transform: translateZ(0);
-}
+    .shell-row__place,
+    .shell-modules__module {
+        padding: 0 0.75rem;
+    }
 
-/* Carbon collapses the side-nav below 1056px. The content has to reclaim the space on the same
-   breakpoint, or there is a 16rem hole where the nav used to be. */
-@media (max-width: 1055px) {
     .app-content {
-        margin-left: 0;
         padding: 1rem;
     }
 }
@@ -72,10 +174,11 @@ cds-side-nav {
 }
 
 /* ── the bare page (SJ s52 leg 12, the Details sheet) ────────────────────────────────────────
-   ?bare=1 on the page: no header, no side-nav, the content from the top edge -- the page as another
-   page frames it. The same tokens, the same content region; only the chrome is gone. */
+   ?bare=1 on the page: no header, no row, the content from the top edge -- the page as another
+   page frames it, and as the technician's phone opens My day. The same tokens, the same content
+   region; only the chrome is gone. */
 body[data-shell-bare] cds-header,
-body[data-shell-bare] cds-side-nav {
+body[data-shell-bare] .shell-row {
     display: none !important;
 }
 
@@ -91,7 +194,7 @@ body[data-shell-bare] .app-content {
    pretending to be a Carbon component, because it is a development affordance and looking
    slightly foreign is honest.
 
-   margin-left:auto pushes it to the right of the header nav.
+   margin-left:auto pushes it to the right of the module strip.
 */
 .shell-persona {
     margin-left: auto;
@@ -130,19 +233,11 @@ body[data-shell-bare] .app-content {
 }
 
 /* ── before Carbon upgrades ──────────────────────────────────────────────────────────────────
-   The custom elements are inert until the ESM import resolves. Undefined elements are display:
-   inline by default, so an un-upgraded page would render the nav as a run of words across the top.
-   Blocking them out keeps a slow CDN looking like a plain page rather than a broken one -- and
-   :not([data-carbon-ready]) means these rules stop applying the moment Carbon lands.
+   cds-header is inert until the ESM import resolves; an undefined element is display: inline by
+   default. Blocking it out keeps a slow CDN looking like a plain page rather than a broken one --
+   and :not([data-carbon-ready]) means the rule stops applying the moment Carbon lands. The module
+   strip and the row are the shell's own elements and need no upgrade.
 */
-body:not([data-carbon-ready]) cds-header,
-body:not([data-carbon-ready]) cds-side-nav {
+body:not([data-carbon-ready]) cds-header {
     display: block;
-}
-
-body:not([data-carbon-ready]) cds-header-nav-item,
-body:not([data-carbon-ready]) cds-side-nav-link,
-body:not([data-carbon-ready]) cds-side-nav-menu-item {
-    display: block;
-    padding: 0.25rem 1rem;
 }

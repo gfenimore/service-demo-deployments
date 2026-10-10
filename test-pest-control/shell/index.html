@@ -48,51 +48,62 @@
 
     <!-- ═══ HEADER ═══════════════════════════════════════════════════════════════════════════ -->
     <cds-header aria-label="Demo Pest Control">
-        <cds-header-menu-button button-label-active="Close menu" button-label-inactive="Open menu"></cds-header-menu-button>
         <cds-header-name href="#" prefix="">Demo Pest Control</cds-header-name>
 
-        <cds-header-nav menu-bar-label="Demo Pest Control">
-            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000002">Accounts</cds-header-nav-item>
-            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000030">Operations</cds-header-nav-item>
-            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000040">Administration</cds-header-nav-item>
-            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000050">Finance</cds-header-nav-item>
-            <cds-header-nav-item href="#" data-module-id="a0004000-0000-0000-0000-000000000060">Performance</cds-header-nav-item>
-        </cds-header-nav>
+        <!--
+          THE MODULES (SJ s55 leg 6b, his word 2026-10-09: "All four as recommended"). Until this leg the
+          modules were Carbon header-nav items inside its header-nav, which Carbon hides below 1056 wide
+          -- a phone could not change module. With the rail gone (answer b) there is no drawer
+          to fall back on, so the modules are the shell's own links in the header's slot, styled with
+          Carbon's tokens, visible at every width: a strip that scrolls sideways on a phone (answer c).
+          No menu button: there is nothing left for it to open.
+          Each module's link lands its own route -- its first place in nav order (the generator stamps
+          `route` on the module; s39 Q8 rule 3). syncModuleNav() below marks the current one `active`.
+        -->
+        <nav class="shell-modules" aria-label="Modules">
+            <a class="shell-modules__module" href="#/accounts" data-module-id="a0004000-0000-0000-0000-000000000002">Accounts</a>
+            <a class="shell-modules__module" href="#/operations/pending" data-module-id="a0004000-0000-0000-0000-000000000030">Operations</a>
+            <a class="shell-modules__module" href="#/administration" data-module-id="a0004000-0000-0000-0000-000000000040">Administration</a>
+            <a class="shell-modules__module" href="#/finance" data-module-id="a0004000-0000-0000-0000-000000000050">Finance</a>
+            <a class="shell-modules__module" href="#/performance" data-module-id="a0004000-0000-0000-0000-000000000060">Performance</a>
+        </nav>
 
     </cds-header>
 
-    <!-- ═══ SIDE NAV ═════════════════════════════════════════════════════════════════════════
-      THE HEADER DRIVES THIS NAV (s39 Q8, his red pen: "the current arrangement is irritating").
-      Until s39 the header and this nav each rendered the SAME module tree, fully and
-      independently -- two copies, no relationship. Now the header names the MODULES and this
-      nav shows ONLY the selected module's PLACES: its features with concrete routes (View
-      Accounts, New Account). A parameterized route (/accounts/:id) is a record's page --
-      reached from a list, never from a nav -- so it is not an item (the generator stamps
-      `parameterized` on the tree). One <cds-side-nav-items> group per module; syncModuleNav()
-      below shows the selected module's group and hides the rest, keyed by the hash alone.
+    <!-- ═══ THE ROW UNDER THE HEADER ═════════════════════════════════════════════════════════
+      THE HEADER DRIVES THIS ROW (s39 Q8, his red pen: "the current arrangement is irritating";
+      SJ s55 leg 6b, his ask at View accounts' chair 2026-10-09: "we were going to move the
+      'left-nav' function to display under the top-level menu"). Until s39 the header and a left
+      rail each rendered the SAME module tree -- two copies, no relationship. s39 made the header
+      name the MODULES and the rail show ONLY the selected module's PLACES. Leg 6b moves the
+      rail's job here, under the header, and the rail leaves entirely (his answer b): one
+      arrangement instead of two.
+      The row shows the selected module's places FLAT (his answer a): one link per function, its
+      default screen (View Accounts, New Account; Pending Work Orders, Scheduling, My day). A
+      parameterized route (/accounts/:id) is a record's page -- reached from a list, never from a
+      nav -- so it is not a link (the generator stamps `parameterized` on the tree). One
+      .shell-row__places group per module; syncModuleNav() below shows the selected module's group
+      and hides the rest, keyed by the hash alone. On a phone the row WRAPS (his answer c).
     -->
-    <!-- `expanded`: this nav is the module's standing navigation, not a drawer -- collapsed it
-         renders two-letter stubs ("V..", "N..") and the demo reads as broken (s39 Q8, the chair's
-         own screenshot caught it). -->
-    <cds-side-nav is-not-child-of-header expanded aria-label="Side navigation" collapse-mode="fixed">
-        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000002" hidden>
-            <cds-side-nav-link href="#/accounts" data-feature-id="a0004000-0000-0000-0000-000000000004">View Accounts</cds-side-nav-link>
-        </cds-side-nav-items>
-        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000030" hidden>
-            <cds-side-nav-link href="#/operations/pending" data-feature-id="a0004000-0000-0000-0000-000000000032">Pending Work Orders</cds-side-nav-link>
-            <cds-side-nav-link href="#/operations/scheduling" data-feature-id="a0004000-0000-0000-0000-000000000077">Scheduling</cds-side-nav-link>
-            <cds-side-nav-link href="#/operations/my-day" data-feature-id="a0004000-0000-0000-0000-000000000091">My day</cds-side-nav-link>
-        </cds-side-nav-items>
-        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000040" hidden>
-            <cds-side-nav-link href="#/administration" data-feature-id="a0004000-0000-0000-0000-000000000042">Policy and systems (a later leg)</cds-side-nav-link>
-        </cds-side-nav-items>
-        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000050" hidden>
-            <cds-side-nav-link href="#/finance" data-feature-id="a0004000-0000-0000-0000-000000000052">Billing and payments (a later leg)</cds-side-nav-link>
-        </cds-side-nav-items>
-        <cds-side-nav-items data-for-module="a0004000-0000-0000-0000-000000000060" hidden>
-            <cds-side-nav-link href="#/performance" data-feature-id="a0004000-0000-0000-0000-000000000062">Dashboards and analysis (a later leg)</cds-side-nav-link>
-        </cds-side-nav-items>
-    </cds-side-nav>
+    <nav class="shell-row" aria-label="The module's places">
+        <div class="shell-row__places" data-for-module="a0004000-0000-0000-0000-000000000002" hidden>
+            <a class="shell-row__place" href="#/accounts" data-feature-id="a0004000-0000-0000-0000-000000000004">View Accounts</a>
+        </div>
+        <div class="shell-row__places" data-for-module="a0004000-0000-0000-0000-000000000030" hidden>
+            <a class="shell-row__place" href="#/operations/pending" data-feature-id="a0004000-0000-0000-0000-000000000032">Pending Work Orders</a>
+            <a class="shell-row__place" href="#/operations/scheduling" data-feature-id="a0004000-0000-0000-0000-000000000077">Scheduling</a>
+            <a class="shell-row__place" href="#/operations/my-day" data-feature-id="a0004000-0000-0000-0000-000000000091">My day</a>
+        </div>
+        <div class="shell-row__places" data-for-module="a0004000-0000-0000-0000-000000000040" hidden>
+            <a class="shell-row__place" href="#/administration" data-feature-id="a0004000-0000-0000-0000-000000000042">Policy and systems (a later leg)</a>
+        </div>
+        <div class="shell-row__places" data-for-module="a0004000-0000-0000-0000-000000000050" hidden>
+            <a class="shell-row__place" href="#/finance" data-feature-id="a0004000-0000-0000-0000-000000000052">Billing and payments (a later leg)</a>
+        </div>
+        <div class="shell-row__places" data-for-module="a0004000-0000-0000-0000-000000000060" hidden>
+            <a class="shell-row__place" href="#/performance" data-feature-id="a0004000-0000-0000-0000-000000000062">Dashboards and analysis (a later leg)</a>
+        </div>
+    </nav>
 
     <!-- ═══ CONTENT ══════════════════════════════════════════════════════════════════════════
       #app-content is the zone shell-core mounts into, under the same id the sidebar shell uses.
@@ -154,8 +165,9 @@
 
     <script>
         // THE BARE PAGE (SJ s52 leg 12, 2026-09-17; the Details sheet): opened with ?bare=1 the shell draws no header and no
-        // side-nav -- the page alone, so another page can frame it (the sitting frames the account's record narrowed to a
-        // location over its pane). Nothing else changes: the same mounts, the same routes, the same sign-in.
+        // row -- the page alone, so another page can frame it (the sitting frames the account's record narrowed to a
+        // location over its pane; the technician's phone opens My day bare). Nothing else changes: the same mounts, the
+        // same routes, the same sign-in.
         if (/(?:^\?|[?&])bare=1(?:&|$)/.test(window.location.search || '')) { document.body.setAttribute('data-shell-bare', '1'); }
         // GATE 6 -- what mounts where, projected from app_components.
         window.ShellMounts = [
@@ -467,16 +479,17 @@
             }
         }
 
-        // THE HEADER DRIVES THE LEFT NAV (s39 Q8). The hash is the single source of truth: boot,
-        // a header click, a row click and a bookmarked URL all pass through here. The module that
-        // owns the current route (longest matching feature route wins) has its side-nav group
-        // shown and its header item marked current; every other group is hidden.
+        // THE HEADER DRIVES THE ROW (s39 Q8; SJ s55 leg 6b moved the rail's job under the header). The
+        // hash is the single source of truth: boot, a header click, a row click and a bookmarked URL
+        // all pass through here. The module that owns the current route (longest matching feature
+        // route wins) has its row group shown and its header link marked current; every other group
+        // is hidden. A bookmarked deep URL lands with its module selected (s39 Q8 rule 4).
         function syncModuleNav() {
             var hash = (window.location.hash || '#').slice(1) || '/';
-            var groups = document.querySelectorAll('cds-side-nav-items[data-for-module]');
+            var groups = document.querySelectorAll('.shell-row__places[data-for-module]');
             var best = null, bestLen = -1;
             groups.forEach(function (g) {
-                g.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
+                g.querySelectorAll('.shell-row__place[href]').forEach(function (a) {
                     var r = (a.getAttribute('href') || '').slice(1);
                     if (r && hash.indexOf(r) === 0 && r.length > bestLen) {
                         best = g.getAttribute('data-for-module'); bestLen = r.length;
@@ -486,24 +499,22 @@
             if (!best && groups.length) best = groups[0].getAttribute('data-for-module');
             groups.forEach(function (g) { g.hidden = g.getAttribute('data-for-module') !== best; });
             // THE MODULE HOLDS ITS MARK until another module is chosen (his chair, SJ s51 2026-09-07).
-            // Carbon 2.x (header-nav-item) paints the line from `is-active` AND ONLY when the host carries
-            // no aria-current="page" (`--current: isActive && ariaCurrent !== "page"`); the old `active` +
-            // `aria-current` pair painted nothing. Carbon writes aria-current on its own anchor.
-            document.querySelectorAll('cds-header-nav-item[data-module-id]').forEach(function (it) {
-                var on = it.getAttribute('data-module-id') === best;
-                it.removeAttribute('aria-current'); it.removeAttribute('active');
-                if (on) { it.setAttribute('is-active', ''); } else { it.removeAttribute('is-active'); }
+            // The module links are the shell's own since leg 6b (no Carbon header-nav-item, no `is-active`
+            // dance): `active` on the link, and the layout stylesheet paints the blue line from it.
+            document.querySelectorAll('.shell-modules__module[data-module-id]').forEach(function (it) {
+                if (it.getAttribute('data-module-id') === best) { it.setAttribute('active', ''); }
+                else { it.removeAttribute('active'); }
             });
             // THE FUNCTION HOLDS ITS MARK while the focus shows its screens -- the record and its acts
             // included (his chair, SJ s51 2026-09-07): the link whose route is the LONGEST PREFIX of the
             // hash is current, not only an exact match. /operations/pending/<id>/cancel keeps
             // "Pending Work Orders" lit.
             var bestLink = null, bestLinkLen = -1;
-            document.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
+            document.querySelectorAll('.shell-row__place[href]').forEach(function (a) {
                 var r = (a.getAttribute('href') || '').slice(1);
                 if (r && (hash === r || hash.indexOf(r + '/') === 0) && r.length > bestLinkLen) { bestLink = a; bestLinkLen = r.length; }
             });
-            document.querySelectorAll('cds-side-nav-link[href]').forEach(function (a) {
+            document.querySelectorAll('.shell-row__place[href]').forEach(function (a) {
                 if (a === bestLink) { a.setAttribute('active', ''); a.setAttribute('aria-current', 'page'); }
                 else { a.removeAttribute('active'); a.removeAttribute('aria-current'); }
             });
@@ -573,11 +584,11 @@
                     el.style.display = visible ? '' : 'none';
                     if (visible) shown.push(slug);
                 });
-                // CURRENT LOCATION -- carbon side-nav items carry href="#<route>"; aria-current
-                // carries the fact to anyone not looking at the colour.
-                // The side-nav LINKS are syncModuleNav's (the longest-prefix rule, his chair 2026-09-07);
+                // CURRENT LOCATION on any component's own data-route links; aria-current carries the
+                // fact to anyone not looking at the colour.
+                // The ROW's links are syncModuleNav's (the longest-prefix rule, his chair 2026-09-07);
                 // an exact match here would un-light "Pending Work Orders" the moment a record opened.
-                document.querySelectorAll('cds-side-nav-menu-item, [data-route]').forEach(function (a) {
+                document.querySelectorAll('[data-route]').forEach(function (a) {
                     var r = a.getAttribute('data-route') || (a.getAttribute('href') || '').replace(/^#/, '');
                     var isHere = r === route;
                     if (isHere) { a.setAttribute('aria-current', 'page'); a.setAttribute('active', ''); }
@@ -639,7 +650,7 @@
             }
             window.ShellRecordRouteUnder = recordRouteUnder;
 
-            // Carbon renders nav links with href="#/route"; intercept them into the router.
+            // The row's and the header's links carry href="#/route"; intercept them into the router.
             document.addEventListener('click', function (e) {
                 var path = e.composedPath ? e.composedPath() : [e.target];
                 for (var i = 0; i < path.length; i++) {
@@ -654,7 +665,7 @@
                 }
             });
 
-            var navOrder = [].slice.call(document.querySelectorAll('cds-side-nav-menu-item, cds-side-nav-link'))
+            var navOrder = [].slice.call(document.querySelectorAll('.shell-row__place'))
                              .map(function (a) { return (a.getAttribute('href') || '').replace(/^#/, ''); })
                              .filter(function (r) { return routes.indexOf(r) !== -1; });
 
