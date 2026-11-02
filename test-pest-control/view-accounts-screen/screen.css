@@ -1,0 +1,57 @@
+/**
+ * SCREEN (screen-filters-list-001) -- layout only.
+ * Component ID: a0004000-0000-0000-0000-000000000015
+ * Blueprint ID: c1000000-0000-0000-0000-000000000001
+ * Entity: account
+ *
+ * A screen owns NO look of its own: the parts it holds are patterns with their own faces, and the shell's theme
+ * (Carbon's tokens) paints the page. What a screen decides is where its regions sit -- stacked (one above the
+ * other, the whole width) or beside (a filters column at the left of the list). Carbon tokens with the white
+ * theme's values as fallbacks, for the same reason the shell's layout stylesheet uses them: a literal would not
+ * follow a theme change.
+ */
+
+#account-screen.screen {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#account-screen .screen__title {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 400;
+    color: var(--cds-text-primary, #161616);
+}
+
+#account-screen .screen__regions {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    align-items: start;
+}
+
+/* stacked: every region a full-width row, in the card's order */
+#account-screen .screen__regions--stacked {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* beside: the first region a column at the left, the rest share the remaining width */
+#account-screen .screen__regions--beside {
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+}
+
+@media (max-width: 768px) {
+    #account-screen .screen__regions--beside {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+#account-screen .screen__region {
+    min-width: 0;
+}
+
+#account-screen .screen__region:empty {
+    display: none;
+}

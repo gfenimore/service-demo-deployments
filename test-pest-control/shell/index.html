@@ -26,9 +26,8 @@
          dropped the whole GATE 6 apparatus: emitted components were never linked, loaded or
          mounted, and the first Demo Pest Control render was an empty frame with a working nav.
          Shell CSS loads first so a component can override it. -->
-    <link rel="stylesheet" href="../account-filter-panel/filter-panel.css">
+    <link rel="stylesheet" href="../view-accounts-screen/screen.css">
     <link rel="stylesheet" href="../account-edit-tearsheet/tearsheet.css">
-    <link rel="stylesheet" href="../account-list-view/list-view.css">
     <link rel="stylesheet" href="../account-record-card/focus-page.css">
     <link rel="stylesheet" href="../cancel-work-order-gate/guarded-gate.css">
     <link rel="stylesheet" href="../defer-work-order-gate/guarded-gate.css">
@@ -43,6 +42,8 @@
     <link rel="stylesheet" href="../sequence-schedule-gate/guarded-gate.css">
     <link rel="stylesheet" href="../work-order-focus-page/focus-page.css">
     <link rel="stylesheet" href="../account-intake-tearsheet/tearsheet.css">
+    <link rel="stylesheet" href="../account-filter-panel/filter-panel.css">
+    <link rel="stylesheet" href="../account-list-view/list-view.css">
 </head>
 <body data-app-id="a0004000-0000-0000-0000-000000000001" data-shell-type="carbon-hybrid">
 
@@ -145,9 +146,8 @@
          put in them. One mounting system owns the page (C5, 2026-08-14) -- this IS that
          system; the wiring generator's files stay reference-only beside it.
          ================================================================== -->
-    <script src="../account-filter-panel/filter-panel.js"></script>
+    <script src="../view-accounts-screen/screen.js"></script>
     <script src="../account-edit-tearsheet/tearsheet.js"></script>
-    <script src="../account-list-view/list-view.js"></script>
     <script src="../account-record-card/focus-page.js"></script>
     <script src="../cancel-work-order-gate/guarded-gate.js"></script>
     <script src="../defer-work-order-gate/guarded-gate.js"></script>
@@ -162,6 +162,8 @@
     <script src="../sequence-schedule-gate/guarded-gate.js"></script>
     <script src="../work-order-focus-page/focus-page.js"></script>
     <script src="../account-intake-tearsheet/tearsheet.js"></script>
+    <script src="../account-filter-panel/filter-panel.js"></script>
+    <script src="../account-list-view/list-view.js"></script>
 
     <script>
         // THE BARE PAGE (SJ s52 leg 12, 2026-09-17; the Details sheet): opened with ?bare=1 the shell draws no header and no
@@ -172,15 +174,15 @@
         // GATE 6 -- what mounts where, projected from app_components.
         window.ShellMounts = [
   {
-    "slug": "account-filter-panel",
-    "name": "Account Filter Panel",
+    "slug": "view-accounts-screen",
+    "name": "View Accounts Screen",
     "zone": "main",
     "order": 0,
-    "componentId": "a0004000-0000-0000-0000-000000000012",
+    "componentId": "a0004000-0000-0000-0000-000000000015",
     "blueprintId": "c1000000-0000-0000-0000-000000000001",
-    "patternId": "filter-panel-001",
-    "script": "../account-filter-panel/filter-panel.js",
-    "css": "../account-filter-panel/filter-panel.css",
+    "patternId": "screen-filters-list-001",
+    "script": "../view-accounts-screen/screen.js",
+    "css": "../view-accounts-screen/screen.css",
     "route": "/accounts"
   },
   {
@@ -194,18 +196,6 @@
     "script": "../account-edit-tearsheet/tearsheet.js",
     "css": "../account-edit-tearsheet/tearsheet.css",
     "route": "/accounts/:id/edit"
-  },
-  {
-    "slug": "account-list-view",
-    "name": "Account List View",
-    "zone": "main",
-    "order": 1,
-    "componentId": "a0004000-0000-0000-0000-000000000005",
-    "blueprintId": "c1000000-0000-0000-0000-000000000001",
-    "patternId": "list-view-simple-001",
-    "script": "../account-list-view/list-view.js",
-    "css": "../account-list-view/list-view.css",
-    "route": "/accounts"
   },
   {
     "slug": "account-record-card",
@@ -374,6 +364,36 @@
     "script": "../account-intake-tearsheet/tearsheet.js",
     "css": "../account-intake-tearsheet/tearsheet.css",
     "route": "/accounts/new"
+  },
+  {
+    "slug": "account-filter-panel",
+    "name": "Account Filter Panel",
+    "zone": "filters",
+    "order": 0,
+    "componentId": "a0004000-0000-0000-0000-000000000012",
+    "blueprintId": "c1000000-0000-0000-0000-000000000001",
+    "patternId": "filter-panel-001",
+    "parentComponentId": "a0004000-0000-0000-0000-000000000015",
+    "parentSlug": "view-accounts-screen",
+    "depth": 1,
+    "script": "../account-filter-panel/filter-panel.js",
+    "css": "../account-filter-panel/filter-panel.css",
+    "route": "/accounts"
+  },
+  {
+    "slug": "account-list-view",
+    "name": "Account List View",
+    "zone": "list",
+    "order": 0,
+    "componentId": "a0004000-0000-0000-0000-000000000005",
+    "blueprintId": "c1000000-0000-0000-0000-000000000001",
+    "patternId": "list-view-simple-001",
+    "parentComponentId": "a0004000-0000-0000-0000-000000000015",
+    "parentSlug": "view-accounts-screen",
+    "depth": 1,
+    "script": "../account-list-view/list-view.js",
+    "css": "../account-list-view/list-view.css",
+    "route": "/accounts"
   }
 ];
 
@@ -421,11 +441,27 @@
             window.ShellMounted = [];
             var canFetch = preflightDataAccess();
             (window.ShellMounts || []).forEach(function (m) {
-                var zoneEl = document.querySelector('[data-zone="' + m.zone + '"]');
-                if (!zoneEl) {
-                    console.error('[AppShell] no mount point for zone "' + m.zone + '" (' + m.slug + ')');
-                    failed++;
-                    return;
+                // A PART INSIDE A PART (SJ s56 Q9, 2026-10-10): a component whose row names a parent mounts
+                // into the parent's REGION -- the [data-zone] its parent's pattern rendered inside the
+                // parent's host -- never into the shell's zone of the same name. The manifest is sorted
+                // parents first, so the parent's host stands by the time its parts are reached.
+                var zoneEl;
+                if (m.parentComponentId) {
+                    var parentHost = document.querySelector('.mounted-component[data-component-id="' + m.parentComponentId + '"]');
+                    zoneEl = parentHost ? parentHost.querySelector('[data-zone="' + m.zone + '"][data-parent="' + m.parentComponentId + '"]') : null;
+                    if (!zoneEl) {
+                        console.error('[AppShell] no region "' + m.zone + '" on parent ' + (m.parentSlug || m.parentComponentId) +
+                                      ' for ' + m.slug + ' -- is the parent mounted, and does its pattern offer that region?');
+                        failed++;
+                        return;
+                    }
+                } else {
+                    zoneEl = document.querySelector('[data-zone="' + m.zone + '"]');
+                    if (!zoneEl) {
+                        console.error('[AppShell] no mount point for zone "' + m.zone + '" (' + m.slug + ')');
+                        failed++;
+                        return;
+                    }
                 }
                 var Cls = (window.PatternRegistry || {})[m.componentId];
                 if (!Cls) {
@@ -438,6 +474,8 @@
                     var host = document.createElement('div');
                     host.className = 'mounted-component';
                     host.setAttribute('data-component', m.slug);
+                    host.setAttribute('data-component-id', m.componentId);
+                    if (m.parentComponentId) { host.setAttribute('data-parent-component', m.parentSlug || m.parentComponentId); }
                     zoneEl.appendChild(host);
 
                     var instance = new Cls();
@@ -723,7 +761,11 @@
                     // the card is where the picture puts it. Without one, the handoff is the whole act
                     // (the s31 list-beside-detail shape).
                     var here = window.ShellNavigation.getCurrentRoute();
-                    var rec = window.ShellRecordRouteUnder ? window.ShellRecordRouteUnder(here) : null;
+                    // THE LIST NAMES THE RECORD ROUTE ITS ROWS OPEN (SJ s56 housekeeping H, card 21; his run 7's SC-7, 2026-10-16: a
+                    // list at its own route, /accounts-assembled, had nothing nested under it and a row click opened nothing). The
+                    // list's `record_route` setting rides on the event and is read BEFORE the nesting rule; absent, the rule stands.
+                    var named = (typeof d.record_route === 'string' && d.record_route.indexOf('/:') !== -1) ? d.record_route : null;
+                    var rec = named || (window.ShellRecordRouteUnder ? window.ShellRecordRouteUnder(here) : null);
                     if (rec) { window.ShellNavigation.navigate(rec.replace(/:[^/]+/, encodeURIComponent(id))); }
                     // Already ON the record's page (the parented form's post-save/cancel emit lands
                     // here): re-run the current route's showing so verb-called components STAND
@@ -735,10 +777,84 @@
             if (d.route) { window.ShellNavigation.navigate(d.route); }
         });
 
+        // BLUEPRINT MODE (SJ s56 Q14 and Q15, RULED 2026-10-11; leg 3 THE ASSEMBLY SCREEN). Opened with ?blueprint=1 the
+        // shell is THE STAGE's subject: the factory frames this page to show the app as it draws itself. Every mounted
+        // component's host is SELECTABLE (a click says which part, and nothing inside the part acts -- no filter narrows,
+        // no row navigates, no door is pressed); every region a screen offers gains "place a part"; the route is said
+        // out loud. The shell posts to its framer: part-selected, place-requested, route-changed. The header and the
+        // row keep working -- the menu IS how a feature is chosen (his word: "The menu."). Nothing else changes.
+        var BLUEPRINT_MODE = /(?:^\?|[?&])blueprint=1(?:&|$)/.test(window.location.search || '');
+        function installBlueprintMode() {
+            if (!BLUEPRINT_MODE) return;
+            document.body.setAttribute('data-shell-blueprint', '1');
+            var style = document.createElement('style');
+            style.textContent =
+                '[data-shell-blueprint] .mounted-component { outline: 2px solid transparent; outline-offset: 2px; cursor: pointer; transition: outline-color .12s; }' +
+                '[data-shell-blueprint] .mounted-component:hover { outline-color: var(--cds-support-info, #8a3ffc); }' +
+                '[data-shell-blueprint] .mounted-component.is-blueprint-selected { outline-color: var(--cds-support-info, #8a3ffc); outline-style: solid; box-shadow: 0 0 0 4px rgba(138, 63, 252, .15); }' +
+                // a part's insides take no mouse (nothing inside acts); a part INSIDE a part and a "place a part" button keep it,
+                // else every real click lands on the outermost part (s56 card 10, his chair 2026-10-12: the panel was unreachable)
+                '[data-shell-blueprint] .mounted-component * { pointer-events: none; }' +
+                '[data-shell-blueprint] .mounted-component .mounted-component, [data-shell-blueprint] .mounted-component .shell-blueprint-place { pointer-events: auto; }' +
+                '[data-shell-blueprint] .shell-blueprint-place { display: inline-block; margin: .25rem 0; padding: .25rem .75rem; font: inherit; font-size: .75rem; color: var(--cds-link-primary, #0f62fe); background: transparent; border: 1px dashed var(--cds-link-primary, #0f62fe); cursor: pointer; }' +
+                '[data-shell-blueprint] .pattern-mount[data-parent] { outline: 1px dashed var(--cds-border-strong, #8d8d8d); outline-offset: 4px; min-height: 2rem; }';
+            document.head.appendChild(style);
+            var manifestById = {};
+            (window.ShellMounts || []).forEach(function (m) { manifestById[m.componentId] = m; });
+            function post(msg) { try { window.parent.postMessage(msg, '*'); } catch (ignored) { /* no framer: the mode still marks the page */ } }
+            function sayRoute() { post({ type: 'route-changed', route: (window.location.hash || '#').slice(1) || '/' }); }
+            // THE CLICK SELECTS (capture phase, before any component's own handler; the hosts' children take no pointer events).
+            document.addEventListener('click', function (e) {
+                var place = e.target.closest ? e.target.closest('.shell-blueprint-place') : null;
+                if (place) {
+                    e.preventDefault(); e.stopPropagation();
+                    post({ type: 'place-requested', blueprint_id: place.getAttribute('data-blueprint-id') || null,
+                           parent_component_id: place.getAttribute('data-parent-id'), parent_slug: place.getAttribute('data-parent-slug'),
+                           zone: place.getAttribute('data-zone') });
+                    return;
+                }
+                var host = e.target.closest ? e.target.closest('.mounted-component') : null;
+                if (!host) return;
+                e.preventDefault(); e.stopPropagation();
+                var all = document.querySelectorAll('.mounted-component.is-blueprint-selected');
+                for (var i = 0; i < all.length; i++) all[i].classList.remove('is-blueprint-selected');
+                host.classList.add('is-blueprint-selected');
+                var m = manifestById[host.getAttribute('data-component-id')] || {};
+                var region = host.parentElement && host.parentElement.closest ? host.parentElement.closest('[data-zone]') : null;
+                post({ type: 'part-selected', component_id: host.getAttribute('data-component-id'), slug: host.getAttribute('data-component'),
+                       pattern_id: m.patternId || null, blueprint_id: m.blueprintId || null, zone: region ? region.getAttribute('data-zone') : (m.zone || null),
+                       parent_component_id: m.parentComponentId || null, parent_slug: m.parentSlug || null });
+            }, true);
+            // EVERY REGION OFFERS "place a part" (a region a screen pattern rendered: [data-zone][data-parent]).
+            function offerRegions() {
+                var regions = document.querySelectorAll('.pattern-mount[data-zone][data-parent]');
+                for (var i = 0; i < regions.length; i++) {
+                    var r = regions[i];
+                    if (r.querySelector(':scope > .shell-blueprint-place')) continue;
+                    var parentId = r.getAttribute('data-parent');
+                    var pm = manifestById[parentId] || {};
+                    var b = document.createElement('button');
+                    b.type = 'button'; b.className = 'shell-blueprint-place';
+                    b.textContent = 'place a part in ' + r.getAttribute('data-zone');
+                    b.setAttribute('data-zone', r.getAttribute('data-zone'));
+                    b.setAttribute('data-parent-id', parentId);
+                    b.setAttribute('data-parent-slug', pm.slug || parentId);
+                    b.setAttribute('data-blueprint-id', pm.blueprintId || '');
+                    r.appendChild(b);
+                }
+            }
+            offerRegions();
+            document.addEventListener('screen:mounted', function () { setTimeout(offerRegions, 0); });
+            window.addEventListener('hashchange', function () { sayRoute(); setTimeout(offerRegions, 50); });
+            sayRoute();
+            console.log('[AppShell] BLUEPRINT MODE on: hosts selectable, doors inert, regions offering a part');
+        }
+
         function bootGateSix() {
             if (window.AppShell && typeof window.AppShell.init === 'function') { window.AppShell.init(); }
             mountDeclaredComponents();
             wireRoutes();
+            installBlueprintMode();
         }
 
         // THE SIGN-IN GATE (s31, 2026-08-19; ruling Q2 option A). Emitted only when the app

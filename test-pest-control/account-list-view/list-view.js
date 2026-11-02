@@ -149,6 +149,8 @@
   "requiresTenantFiltering": true,
   "primaryKey": "account_id"
 },
+      // s56 card 21: the route this list's rows open (a route carrying :id), read by the shell's bridge before the nesting rule
+      recordRoute: null,
       // s39 Q6: the search box's declared fields -- OR across them, ANDed with everything else.
       search: {
   "fields": [
@@ -1235,9 +1237,12 @@
     // `entity` is the key the generator supplies; `entityName` never was, so this emitted `//<id>`
     // in every deployed list (measured 2026-08-22). The shell's bridge takes the id and moves to the
     // feature's record route itself; this route is the fallback for shells without a bridge.
+    // `record_route` (SJ s56 card 21): the route this list's rows open, from its settings; the shell's bridge reads it
+    // before the nesting rule. Null when the blueprint names none.
     this.emit('blueprint:navigate', {
       route: `/account/${id}`,
       id: id,
+      record_route: this.config.recordRoute || null,
       params: { mode: 'view', record }
     });
   }
